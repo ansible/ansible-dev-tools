@@ -1,0 +1,68 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools >= 45",
+  "setuptools_scm[toml]>=6.2"
+]
+
+[project]
+requires-python = ">=3.9"
+classifiers = [
+  'Development Status :: 2 - Pre-Alpha',
+  'Intended Audience :: Developers',
+  'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+  'Operating System :: OS Independent',
+  'Topic :: Software Development',
+  'Topic :: Utilities',
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: Implementation :: CPython',
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+name = "ansible-cdk"
+description = "The ansible content development kit."
+readme = "README.md"
+authors = [{ "name" = "Bradley A. Thornton", "email" = "bthornto@redhat.com" }]
+maintainers = [{ "name" = "Ansible by Red Hat", "email" = "info@ansible.com" }]
+license = { text = "GPL-3.0-only" }
+keywords = ["ansible"]
+
+[project.urls]
+homepage = "https://github.com/ansible-community/ansible-cdk"
+documentation = "https://ansible-cdk.readthedocs.io/en/latest/"
+repository = "https://github.com/ansible-community/ansible-cdk"
+changelog = "https://github.com/ansible-community/ansible-cdk/releases"
+
+[project.scripts]
+ansible-cdk = "ansible_cdk.cli:main"
+
+
+[tool.setuptools.dynamic]
+optional-dependencies.docs = { file = [".config/requirements-docs.txt"] }
+optional-dependencies.test = { file = [".config/requirements-test.txt"] }
+optional-dependencies.lock = { file = [".config/requirements-lock.txt"] }
+dependencies = { file = [".config/requirements.in"] }
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/ansible_cdk/_version.py"
+
+[tool.pylint]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.ruff]
+# Allow lines to be as long as 120 characters.
+line-length = 100
+fix = true
+
+[tool.pylint.messages_control]
+disable = [
+  "too-few-public-methods",
+  "too-many-locals",
+]
