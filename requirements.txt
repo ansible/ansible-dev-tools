@@ -7,7 +7,6 @@
 ansible-builder==3.0.0
 ansible-compat==4.1.5
 ansible-core==2.15.2
-ansible-creator @ git+https://github.com/NilashishC/ansible-creator.git
 ansible-lint==6.17.2
 ansible-navigator==3.4.2
 ansible-runner==2.3.3
