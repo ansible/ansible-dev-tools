@@ -1,6 +1,5 @@
 # The ansible content development kit
 
-
 The `ansible-cdk` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
 The curated list of tools installed as part of the ansible content development kit includes:
@@ -20,7 +19,6 @@ The curated list of tools installed as part of the ansible content development k
 [pytest-ansible](https://github.com/ansible-community/pytest-ansible): A pytest plugin that enables the use of ansible in tests, enables the use of pytest as a collection unit test runner, and exposes molecule scenarios using a pytest fixture.
 
 [tox-ansible](https://github.com/tox-dev/tox-ansible): The tox-ansible plugin dynamically creates a full matrix of python interpreter and ansible-core version environments for running integration, sanity, and unit for an ansible collection both locally and in a Github action. tox virtual environments are leveraged for collection building, collection installation, dependency installation, and testing.
-
 
 ## Installation
 
