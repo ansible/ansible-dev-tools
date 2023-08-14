@@ -1,12 +1,17 @@
 """Parse the command line arguments."""
 import argparse
+
 from .version_builder import version_builder
 
 
-def parse():
-    """Parse the command line arguments."""
+def parse() -> argparse.Namespace:
+    """Parse the command line arguments.
+
+    Returns:
+        The arguments
+    """
     parser = argparse.ArgumentParser(
-        description=("The ansible content development kit.",),
+        description="The ansible content development kit.",
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
@@ -17,6 +22,4 @@ def parse():
         help="Print ansible-creator version and exit.",
     )
 
-    args = parser.parse_args()
-
-    return args
+    return parser.parse_args()

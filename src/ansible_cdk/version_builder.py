@@ -1,6 +1,7 @@
 """Build version text."""
 import importlib.metadata
 
+
 PKGS = [
     "ansible-cdk",
     "ansible-core",
@@ -15,8 +16,12 @@ PKGS = [
 ]
 
 
-def version_builder():
-    """Build a string of formatted versions."""
+def version_builder() -> str:
+    """Build a string of formatted versions.
+
+    Returns:
+        The versions string
+    """
     lines = []
     for pkg in PKGS:
         version = importlib.metadata.version(pkg)
