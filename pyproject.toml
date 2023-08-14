@@ -46,9 +46,12 @@ strict = true
 max-line-length = 100
 
 [tool.pylint.master]
+good-names = "i,j,k,ex,Run,_,f,fh"
 ignore = [
   "_version.py" # built by setuptools_scm
 ]
+jobs = 0
+no-docstring-rgx = "__.*__"
 
 [tool.pylint.messages_control]
 disable = ["too-few-public-methods", "too-many-locals"]
