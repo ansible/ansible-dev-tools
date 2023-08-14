@@ -1,0 +1,8 @@
+black
+mypy
+pip-tools
+pre-commit
+pydoclint
+pytest
+ruff
+toml-sort
