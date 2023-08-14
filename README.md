@@ -30,13 +30,13 @@ In addition to installing each of the above tools, `ansible-cdk` provides an eas
 
 ```
 $ ansible-cdk --version
-ansible-cdk                              0.1.1.dev0
-ansible-core                             2.15.2
 ansible-builder                          3.0.0
+ansible-cdk                              1.0.0
+ansible-core                             2.15.2
 ansible-lint                             6.17.2
 ansible-navigator                        3.4.2
 ansible-sign                             0.1.1
-molecule                                 6.0.0
+molecule                                 5.1.0
 pytest-ansible                           4.0.0
 tox-ansible                              2.0.9
 ```
