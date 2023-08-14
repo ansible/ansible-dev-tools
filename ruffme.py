@@ -1,5 +1,7 @@
 import requests
+
 from bs4 import BeautifulSoup
+
 
 url = "https://github.com/charliermarsh/ruff/issues/970"
 
@@ -28,8 +30,5 @@ for entry in done:
     name = entry[0]
     pylint_code = entry[1]
 
-    if len(entry) == 3:
-        ruff_code = entry[2]
-    else:
-        ruff_code = f"PL{entry[1]}"
+    ruff_code = entry[2] if len(entry) == 3 else f"PL{entry[1]}"
     print(f'  "{pylint_code}", # {name} / ruff {ruff_code}')
