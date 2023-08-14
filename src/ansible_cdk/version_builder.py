@@ -3,9 +3,9 @@ import importlib.metadata
 
 
 PKGS = [
+    "ansible-builder",
     "ansible-cdk",
     "ansible-core",
-    "ansible-builder",
     # "ansible-creator",
     "ansible-lint",
     "ansible-navigator",
@@ -23,7 +23,7 @@ def version_builder() -> str:
         The versions string
     """
     lines = []
-    for pkg in PKGS:
+    for pkg in sorted(PKGS):
         version = importlib.metadata.version(pkg)
         lines.append(f"{pkg: <40} {version}")
 
