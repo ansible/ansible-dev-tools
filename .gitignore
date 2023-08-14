@@ -166,4 +166,4 @@ cython_debug/
 # and should all have detailed explanations
 
 # Version created and populated by setuptools_scm
-/src/ansible_navigator/_version.py
+/src/ansible_cdk/_version.py
