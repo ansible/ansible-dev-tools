@@ -1,4 +1,3 @@
-
 """A runpy entry point for ansible-cdk.
 
 This makes it possible to invoke CLI

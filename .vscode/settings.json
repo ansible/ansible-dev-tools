@@ -13,5 +13,5 @@
   "mypy.targets": ["src", "tests"],
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
+  }
 }

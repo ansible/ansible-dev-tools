@@ -38,9 +38,8 @@ homepage = "https://github.com/ansible-community/ansible-cdk"
 repository = "https://github.com/ansible-community/ansible-cdk"
 
 [tool.mypy]
-strict = true
 files = ["src", "tests"]
-
+strict = true
 
 [tool.pydoclint]
 allow-init-docstring = true

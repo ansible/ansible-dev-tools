@@ -1,9 +1,11 @@
 """Basic smoke tests."""
 
-from ansible_cdk.version_builder import PKGS
-import pytest
 import subprocess
 import sys
+
+import pytest
+
+from ansible_cdk.version_builder import PKGS
 
 
 @pytest.mark.parametrize("package", PKGS)

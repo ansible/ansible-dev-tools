@@ -1,9 +1,9 @@
 {
-    "recommendations": [
-        "ms-python.black-formatter",
-        "ms-python.pylint",
-        "charliermarsh.ruff",
-        "matangover.mypy",
-        "esbenp.prettier-vscode"
-    ]
+  "recommendations": [
+    "ms-python.black-formatter",
+    "ms-python.pylint",
+    "charliermarsh.ruff",
+    "matangover.mypy",
+    "esbenp.prettier-vscode"
+  ]
 }
