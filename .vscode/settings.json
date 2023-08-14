@@ -1,0 +1,17 @@
+{
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  // Override the pyproject.toml and disable xdist to enable test debugging
+  "python.testing.pytestArgs": ["-n0", "--dist", "no"],
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  },
+  "mypy.runUsingActiveInterpreter": true,
+  "mypy.targets": ["src", "tests"],
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
