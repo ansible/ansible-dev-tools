@@ -1,7 +1,8 @@
 black
-pytest
-ruff
+mypy
+pip-tools
 pre-commit
 pydoclint
+pytest
+ruff
 toml-sort
-mypy

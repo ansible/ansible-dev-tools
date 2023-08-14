@@ -1,0 +1,72 @@
+name: tox
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  create: # is used for publishing to PyPI and TestPyPI
+    tags: # any tag regardless of its name, no branches
+      - "**"
+  push: # only publishes pushes to the main branch to TestPyPI
+    branches: # any integration branch but not tag
+      - "main"
+  pull_request:
+
+jobs:
+  pre:
+    name: pre
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.generate_matrix.outputs.matrix }}
+    steps:
+      - name: Determine matrix
+        id: generate_matrix
+        uses: coactions/dynamic-matrix@v1
+        with:
+          min_python: "3.9"
+          max_python: "3.11"
+          default_python: "3.11" # used by jobs in other_names
+          other_names: |
+            lint
+
+  tox:
+    name: ${{ matrix.name }} / python ${{ matrix.python_version }}
+    runs-on: ubuntu-20.04
+    needs: pre
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.pre.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # needed by setuptools-scm
+
+      - name: Set up Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: Install tox
+        run: python3 -m pip install --upgrade "tox>=4.0.2"
+
+      - name: Log Python info (${{ matrix.python_version }})
+        run: |
+          command -v python
+          python --version --version
+          python3 -m pip freeze --all
+
+      - name: "tox -e ${{ matrix.passed_name }}"
+        continue-on-error: ${{ matrix.devel || false }}
+        run: python3 -m tox -e ${{ matrix.passed_name }}
+
+  tox_passed:
+    needs: tox
+    runs-on: ubuntu-latest
+    steps:
+      - run: >-
+          python -c "assert set([
+          '${{ needs.tox.result }}',
+          ]) == {'success'}"
