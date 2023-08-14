@@ -1,6 +1,21 @@
 """Basic smoke tests."""
 
+from ansible_cdk.version_builder import PKGS
+import pytest
+import subprocess
+import sys
 
-def test_run() -> None:
+
+@pytest.mark.parametrize("package", PKGS)
+def test_version(package: str) -> None:
     """Placeholder."""
-    assert True
+    command = f"{sys.executable} -m ansible_cdk --version"
+    proc = subprocess.run(
+        args=command,
+        shell=True,
+        text=True,
+        check=True,
+        capture_output=True,
+    )
+    assert proc.returncode == 0
+    assert package in proc.stdout

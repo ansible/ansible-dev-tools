@@ -39,6 +39,8 @@ repository = "https://github.com/ansible-community/ansible-cdk"
 
 [tool.mypy]
 strict = true
+files = ["src", "tests"]
+
 
 [tool.pydoclint]
 allow-init-docstring = true
@@ -73,8 +75,8 @@ disable = [
   "C0123", # unidiomatic-typecheck / ruff E721
   "C0131", # typevar-double-variance / ruff PLC0131
   "C0132", # typevar-name-mismatch / ruff PLC0132
-  "C0198", # bad-docstring-quotes / ruff Q002
-  "C0199", # docstring-first-line-empty / ruff D210
+  # "C0198", # bad-docstring-quotes / ruff Q002
+  # "C0199", # docstring-first-line-empty / ruff D210
   "C0201", # consider-iterating-dictionary / ruff SIM118
   "C0202", # bad-classmethod-argument / ruff PLC0202
   "C0205", # single-string-used-for-slots / ruff PLC0205
@@ -88,9 +90,9 @@ disable = [
   "C0412", # ungrouped-imports / ruff I001
   "C0413", # wrong-import-position / ruff E402
   "C0414", # useless-import-alias / ruff PLC0414
-  "C0501", # consider-using-any-or-all / ruff PLC0501
-  "C1901", # compare-to-empty-string / ruff PLC1901
-  "C2201", # misplaced-comparison-constant / ruff SIM300
+  # "C0501", # consider-using-any-or-all / ruff PLC0501
+  # "C1901", # compare-to-empty-string / ruff PLC1901
+  # "C2201", # misplaced-comparison-constant / ruff SIM300
   "C3001", # unnecessary-lambda-assignment / ruff PLC3001
   "C3002", # unnecessary-direct-lambda-call / ruff PLC3002
   "E0001", # syntax-error / ruff E999
@@ -140,7 +142,7 @@ disable = [
   "R0912", # too-many-branches / ruff PLR0912
   "R0913", # too-many-arguments / ruff PLR0913
   "R0915", # too-many-statements / ruff PLR0915
-  "R1260", # too-complex / ruff C901
+  # "R1260", # too-complex / ruff C901
   "R1701", # consider-merging-isinstance / ruff PLR1701
   "R1705", # no-else-return / ruff RET505
   "R1706", # consider-using-ternary / ruff SIM108
@@ -161,10 +163,10 @@ disable = [
   "R1729", # use-a-generator / ruff C417
   "R1734", # use-list-literal / ruff C405
   "R1735", # use-dict-literal / ruff C406
-  "R2004", # magic-value-comparison / ruff PLR2004
-  "R5501", # else-if-used / ruff PLR5501
-  "R6002", # consider-using-alias / ruff UP006
-  "R6003", # consider-alternative-union-syntax / ruff UP007
+  # "R2004", # magic-value-comparison / ruff PLR2004
+  # "R5501", # else-if-used / ruff PLR5501
+  # "R6002", # consider-using-alias / ruff UP006
+  # "R6003", # consider-alternative-union-syntax / ruff UP007
   "W0102", # dangerous-default-value / ruff B006
   "W0104", # pointless-statement / ruff B018
   "W0106", # expression-not-assigned / ruff B018
@@ -178,7 +180,7 @@ disable = [
   "W0130", # duplicate-value / ruff PLW0130
   "W0131", # named-expr-without-context / ruff PLW0131
   "W0150", # lost-exception / ruff B012
-  "W0160", # consider-ternary-expression / ruff SIM108
+  # "W0160", # consider-ternary-expression / ruff SIM108
   "W0199", # assert-on-tuple / ruff F631
   "W0301", # unnecessary-semicolon / ruff E703
   "W0401", # wildcard-import / ruff F403
@@ -218,9 +220,9 @@ disable = [
   "W1509", # subprocess-popen-preexec-fn / ruff PLW1509
   "W1510", # subprocess-run-check / ruff PLW1510
   "W1515", # forgotten-debug-statement / ruff T100
-  "W1641", # eq-without-hash / ruff PLW1641
-  "W2901", # redefined-loop-name / ruff PLW2901
-  "W3201", # bad-dunder-name / ruff PLW3201
+  # "W1641", # eq-without-hash / ruff PLW1641
+  # "W2901", # redefined-loop-name / ruff PLW2901
+  # "W3201", # bad-dunder-name / ruff PLW3201
   "W3301", # nested-min-max / ruff PLW3301
   "duplicate-code",
   "fixme",
