@@ -2,5 +2,6 @@ black
 pytest
 ruff
 pre-commit
+pydoclint
 toml-sort
 mypy

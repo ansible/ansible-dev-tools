@@ -19,7 +19,8 @@ PKGS = [
 def version_builder() -> str:
     """Build a string of formatted versions.
 
-    :returns: The versions string
+    Returns:
+        The versions string
     """
     lines = []
     for pkg in PKGS:

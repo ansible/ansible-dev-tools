@@ -7,7 +7,8 @@ from .version_builder import version_builder
 def parse() -> argparse.Namespace:
     """Parse the command line arguments.
 
-    :returns: The arguments
+    Returns:
+        The arguments
     """
     parser = argparse.ArgumentParser(
         description="The ansible content development kit.",

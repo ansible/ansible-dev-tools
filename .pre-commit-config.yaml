@@ -62,15 +62,12 @@ repos:
       - id: cspell
         name: Spell check with cspell
 
-  # untill ruff has parity with darglint
-  - repo: https://github.com/PyCQA/flake8.git
-    rev: 6.1.0
+  - repo: https://github.com/jsh9/pydoclint
+    rev: 0.1.5
     hooks:
-      - id: flake8
-        language_version: python3
-        additional_dependencies:
-          - darglint
-          - flake8-docstrings
+      - id: pydoclint
+        args:
+          - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/pylint.git
     rev: v3.0.0a6
@@ -81,7 +78,6 @@ repos:
         additional_dependencies:
           - pytest
           - tox
-          - pyyaml
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
     rev: v1.5.0
@@ -90,9 +86,8 @@ repos:
         additional_dependencies:
           - pytest
           - tox
-          - types-PyYAML
         args:
           - src
           - tests
-          - --python-version=3.8
+          - --python-version=3.9
         pass_filenames: false
