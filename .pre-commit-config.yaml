@@ -34,7 +34,7 @@ repos:
           - prettier-plugin-toml
           - prettier-plugin-sort-json
 
-  - repo: https://github.com/psf/black
+  - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 23.7.0
     hooks:
       - id: black
