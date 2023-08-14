@@ -1,6 +1,7 @@
 """Build version text."""
 import importlib.metadata
 
+
 PKGS = [
     "ansible-cdk",
     "ansible-core",
