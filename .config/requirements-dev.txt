@@ -1,0 +1,6 @@
+black
+pytest
+ruff
+pre-commit
+toml-sort
+mypy

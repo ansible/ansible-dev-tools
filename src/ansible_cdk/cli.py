@@ -6,7 +6,8 @@ from .arg_parser import parse
 
 class Cli:
     """The Cli class."""
-    def __init__(self):
+
+    def __init__(self) -> None:
         """Initialize the CLI and parse CLI args."""
         self.args: Namespace
 
@@ -19,7 +20,7 @@ class Cli:
         print("Hi")
 
 
-def main():
+def main() -> None:
     """Entry point for ansible-creator CLI."""
     cli = Cli()
     cli.parse_args()
