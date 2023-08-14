@@ -19,7 +19,7 @@ def parse() -> argparse.Namespace:
         "--version",
         action="version",
         version=version_builder(),
-        help="Print ansible-creator version and exit.",
+        help="Print the included tool versions and exit.",
     )
 
     return parser.parse_args()
