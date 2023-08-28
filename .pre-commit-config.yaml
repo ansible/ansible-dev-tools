@@ -25,7 +25,7 @@ repos:
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     # keep it before yamllint
-    rev: v3.0.1
+    rev: v3.0.2
     hooks:
       - id: prettier
         always_run: true
@@ -50,27 +50,27 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.0.284"
+    rev: "v0.0.286"
     hooks:
       - id: ruff
         args:
           - "--exit-non-zero-on-fix"
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v7.0.0
+    rev: v7.0.1
     hooks:
       - id: cspell
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: 0.1.5
+    rev: 0.3.0
     hooks:
       - id: pydoclint
         args:
           - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/pylint.git
-    rev: v3.0.0a6
+    rev: v3.0.0a7
     hooks:
       - id: pylint
         args:
@@ -80,7 +80,7 @@ repos:
           - tox
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.5.0
+    rev: v1.5.1
     hooks:
       - id: mypy
         additional_dependencies:
