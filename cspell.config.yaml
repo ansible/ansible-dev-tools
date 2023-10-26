@@ -27,6 +27,7 @@ ignorePaths:
   - tox.ini
   # Sample tox configurations
   - docs/*.ini
+  - mkdocs.yml
 
 languageSettings:
   - languageId: python

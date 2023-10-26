@@ -80,7 +80,7 @@ repos:
           - tox
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.5.1
+    rev: v1.6.1
     hooks:
       - id: mypy
         additional_dependencies:
@@ -90,5 +90,4 @@ repos:
         args:
           - src
           - tests
-          - --python-version=3.9
         pass_filenames: false

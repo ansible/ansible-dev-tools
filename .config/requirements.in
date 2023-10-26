@@ -6,3 +6,4 @@ ansible-sign
 molecule
 pytest-ansible
 tox-ansible
+setuptools
