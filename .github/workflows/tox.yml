@@ -30,6 +30,7 @@ jobs:
           default_python: "3.11" # used by jobs in other_names
           other_names: |
             lint
+            docs
 
   tox:
     name: ${{ matrix.name }} / python ${{ matrix.python_version }}

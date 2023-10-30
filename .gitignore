@@ -167,3 +167,5 @@ cython_debug/
 
 # Version created and populated by setuptools_scm
 /src/ansible_cdk/_version.py
+
+.DS_Store
