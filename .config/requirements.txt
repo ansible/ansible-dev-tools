@@ -13,7 +13,7 @@ ansible-runner==2.3.3
 ansible-sign==0.1.1
 attrs==23.1.0
 bindep==2.11.0
-black==23.9.1
+black==23.10.1
 bracex==2.3.post1
 cachetools==5.3.1
 certifi==2023.7.22
