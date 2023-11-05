@@ -71,7 +71,7 @@ ruamel-yaml-clib==0.2.7
 six==1.16.0
 subprocess-tee==0.4.1
 tox==4.8.0
-tox-ansible==2.0.9
+tox-ansible==2.0.14
 types-setuptools==68.0.0.3
 tzdata==2023.3
 urllib3==2.0.4
