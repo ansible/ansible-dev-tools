@@ -54,7 +54,7 @@ ptyprocess==0.7.0
 pycparser==2.21
 pygments==2.16.1
 pyproject-api==1.5.3
-pytest==7.4.0
+pytest==7.4.3
 pytest-ansible==4.0.0
 pytest-xdist==3.3.1
 python-daemon==3.0.1
