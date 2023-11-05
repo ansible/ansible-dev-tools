@@ -23,7 +23,6 @@ charset-normalizer==3.2.0
 click==8.1.6
 click-help-colors==0.9.1
 colorama==0.4.6
-coverage==7.3.0
 cryptography==41.0.3
 distlib==0.3.7
 distro==1.8.0
@@ -55,7 +54,7 @@ pycparser==2.21
 pygments==2.16.1
 pyproject-api==1.5.3
 pytest==7.4.0
-pytest-ansible==4.0.0
+pytest-ansible==4.1.1
 pytest-xdist==3.3.1
 python-daemon==3.0.1
 python-gnupg==0.5.1
