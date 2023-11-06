@@ -47,7 +47,7 @@ repos:
           - prettier-plugin-sort-json
 
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.10.1
     hooks:
       - id: black
 
@@ -62,13 +62,13 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.2
+    rev: v0.1.4
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v7.3.0
+    rev: v7.3.2
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -81,7 +81,7 @@ repos:
           - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/pylint.git
-    rev: v3.0.2
+    rev: v3.0.1
     hooks:
       - id: pylint
         args:
