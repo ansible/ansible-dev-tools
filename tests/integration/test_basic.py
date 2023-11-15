@@ -5,13 +5,13 @@ import sys
 
 import pytest
 
-from ansible_cdk.version_builder import PKGS
+from ansible_dev_tools.version_builder import PKGS
 
 
 @pytest.mark.parametrize("package", PKGS)
 def test_version(package: str) -> None:
     """Placeholder."""
-    command = f"{sys.executable} -m ansible_cdk --version"
+    command = f"{sys.executable} -m ansible_dev_tools --version"
     proc = subprocess.run(
         args=command,
         shell=True,

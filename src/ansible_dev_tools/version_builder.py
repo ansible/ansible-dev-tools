@@ -4,7 +4,7 @@ import importlib.metadata
 
 PKGS = [
     "ansible-builder",
-    "ansible-cdk",
+    "ansible-dev-tools",
     "ansible-core",
     # "ansible-creator",
     "ansible-lint",

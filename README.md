@@ -1,6 +1,6 @@
 # The ansible content development kit
 
-The `ansible-cdk` python package provides an easy way to install and discover the best tools available to create and test ansible content.
+The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
 The curated list of tools installed as part of the ansible content development kit includes:
 
@@ -22,16 +22,16 @@ The curated list of tools installed as part of the ansible content development k
 
 ## Installation
 
-`python -m pip install ansible-cdk`
+`python -m pip install ansible-dev-tools`
 
 ## Usage
 
-In addition to installing each of the above tools, `ansible-cdk` provides an easy way to show the versions of the content creation tools that make up the current development environment.
+In addition to installing each of the above tools, `ansible-dev-tools` provides an easy way to show the versions of the content creation tools that make up the current development environment.
 
 ```
-$ ansible-cdk --version
+$ adt --version
 ansible-builder                          3.0.0
-ansible-cdk                              1.0.0
+ansible-dev-tools                        1.0.0
 ansible-core                             2.15.2
 ansible-lint                             6.17.2
 ansible-navigator                        3.4.2

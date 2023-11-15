@@ -1,7 +1,7 @@
 ---
 site_name: Ansible CDK Documentation
-site_url: https://ansible.readthedocs.io/projects/ansible-cdk/
-repo_url: https://github.com/ansible/ansible-cdk
+site_url: https://ansible.readthedocs.io/projects/dev-tools/
+repo_url: https://github.com/ansible/ansible-dev-tools
 edit_uri: blob/main/docs/
 copyright: Copyright © 2023 Red Hat, Inc.
 docs_dir: docs
@@ -22,10 +22,10 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/ansible-cdk/
+      link: https://pypi.org/project/ansible-dev-tools/
       name: PyPI
     - icon: fontawesome/solid/scroll
-      link: https://github.com/ansible/ansible-cdk/releases
+      link: https://github.com/ansible/ansible-dev-tools/releases
       name: Releases
     - icon: simple/mastodon
       link: https://fosstodon.org/@ansible
@@ -34,10 +34,10 @@ extra:
       link: https://matrix.to/#/#devtools:ansible.com
       name: Matrix
     - icon: fontawesome/solid/comments
-      link: https://github.com/ansible/ansible-cdk/discussions
+      link: https://github.com/ansible/ansible-dev-tools/discussions
       name: Discussions
     - icon: fontawesome/brands/github-alt
-      link: https://github.com/ansible/ansible-cdk
+      link: https://github.com/ansible/ansible-dev-tools
       name: GitHub
 
 nav:

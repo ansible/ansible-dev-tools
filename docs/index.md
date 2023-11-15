@@ -1,8 +1,8 @@
-# Ansible Content Development Kit (CDK)
+# Ansible Development Tools (adt)
 
-## About Ansible CDK
+## About Ansible Development Tools
 
-The `ansible-cdk` python package provides an easy way to install and discover the best tools available to create and test ansible content.
+The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
 The curated list of tools installed as part of the ansible content development kit includes:
 

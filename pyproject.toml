@@ -23,23 +23,23 @@ classifiers = [
   'Topic :: Software Development',
   'Topic :: Utilities'
 ]
-description = "The ansible content development kit."
+description = "Ansible Developtment Tools kit bundles all tools needed for content creation and testing."
 dynamic = ["dependencies", "optional-dependencies", "version"]
 keywords = ["ansible"]
 license = {text = "GPL-3.0-only"}
 maintainers = [{"email" = "info@ansible.com", "name" = "Ansible by Red Hat"}]
-name = "ansible-cdk"
+name = "ansible-dev-tools"
 readme = "README.md"
 requires-python = ">=3.9"
 
 [project.scripts]
-ansible-cdk = "ansible_cdk.cli:main"
+adt = "ansible_dev_tools.cli:main"
 
 [project.urls]
-changelog = "https://github.com/ansible-community/ansible-cdk/releases"
-documentation = "https://ansible-cdk.readthedocs.io/en/latest/"
-homepage = "https://github.com/ansible-community/ansible-cdk"
-repository = "https://github.com/ansible-community/ansible-cdk"
+changelog = "https://github.com/ansible/ansible-dev-tools/releases"
+documentation = "https://ansible-dev-tools.readthedocs.io/en/latest/"
+homepage = "https://github.com/ansible/ansible-dev-tools"
+repository = "https://github.com/ansible/ansible-dev-tools"
 
 [tool.mypy]
 files = ["src", "tests"]
@@ -265,7 +265,7 @@ optional-dependencies.test = {file = [".config/requirements-test.txt"]}
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
-write_to = "src/ansible_cdk/_version.py"
+write_to = "src/ansible_dev_tools/_version.py"
 
 [tool.tomlsort]
 all = true
