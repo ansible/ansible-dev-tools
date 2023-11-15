@@ -17,7 +17,6 @@ classifiers = [
   'Programming Language :: Python :: 3.10',
   'Programming Language :: Python :: 3.11',
   'Programming Language :: Python :: 3.12',
-  'Programming Language :: Python :: 3.9',
   'Programming Language :: Python :: Implementation :: CPython',
   'Programming Language :: Python',
   'Topic :: Software Development',
@@ -30,7 +29,7 @@ license = {text = "GPL-3.0-only"}
 maintainers = [{"email" = "info@ansible.com", "name" = "Ansible by Red Hat"}]
 name = "ansible-dev-tools"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [project.scripts]
 adt = "ansible_dev_tools.cli:main"
