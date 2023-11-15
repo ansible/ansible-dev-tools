@@ -1,4 +1,4 @@
-# The ansible content development kit
+# Ansible automation developer tools
 
 The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
