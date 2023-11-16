@@ -8,6 +8,8 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 [ansible-builder](https://github.com/ansible/ansible-builder): Ansible Builder is a tool that automates the process of building execution environments using the schemas and tooling defined in various Ansible Collections and by the user.
 
+[ansible-creator](https://github.com/ansible/ansible-creator): The fastest way to generate all your ansible content!
+
 [ansible-lint](https://github.com/ansible/ansible-lint): Checks playbooks for practices and behavior that could potentially be improved.
 
 [ansible-navigator](https://github.com/ansible/ansible-navigator) A text-based user interface (TUI) for Ansible.
@@ -31,12 +33,13 @@ In addition to installing each of the above tools, `ansible-dev-tools` provides 
 ```
 $ adt --version
 ansible-builder                          3.0.0
+ansible-core                             2.16.0
+ansible-creator                          1.0.0
 ansible-dev-tools                        1.0.0
-ansible-core                             2.15.2
-ansible-lint                             6.17.2
-ansible-navigator                        3.4.2
+ansible-lint                             6.22.0
+ansible-navigator                        3.5.0
 ansible-sign                             0.1.1
-molecule                                 5.1.0
-pytest-ansible                           4.0.0
-tox-ansible                              2.0.9
+molecule                                 6.0.2
+pytest-ansible                           4.1.1
+tox-ansible                              2.0.14
 ```
