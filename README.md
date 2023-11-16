@@ -2,7 +2,7 @@
 
 The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
-The curated list of tools installed as part of the ansible content development kit includes:
+The curated list of tools installed as part of the Ansible automation developer tools package includes:
 
 [ansible-core](https://github.com/ansible/ansible): Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy and maintain. Automate everything from code deployment to network configuration to cloud management, in a language that approaches plain English, using SSH, with no agents to install on remote systems.
 
