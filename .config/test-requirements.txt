@@ -1,4 +1,5 @@
 black
+coverage
 mypy
 pip-tools
 pre-commit

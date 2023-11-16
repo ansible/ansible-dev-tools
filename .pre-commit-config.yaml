@@ -7,6 +7,8 @@ ci:
     chore: auto fixes from pre-commit.com hooks
 
     for more information, see https://pre-commit.ci
+  skip:
+    - deps
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -37,7 +39,7 @@ repos:
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     # keep it before yamllint
-    rev: v3.0.3
+    rev: v3.1.0
     hooks:
       - id: prettier
         always_run: true
@@ -47,7 +49,7 @@ repos:
           - prettier-plugin-sort-json
 
   - repo: https://github.com/psf/black
-    rev: 23.10.1
+    rev: 23.11.0
     hooks:
       - id: black
 
@@ -62,13 +64,13 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.4
+    rev: v0.1.5
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v7.3.2
+    rev: v8.0.0
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -91,7 +93,7 @@ repos:
           - tox
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.6.1
+    rev: v1.7.0
     hooks:
       - id: mypy
         additional_dependencies:
@@ -102,3 +104,22 @@ repos:
           - src
           - tests
         pass_filenames: false
+
+  - repo: https://github.com/jazzband/pip-tools
+    rev: 7.3.0
+    hooks:
+      - id: pip-compile
+        name: deps
+        alias: deps
+        always_run: true
+        entry: >
+          sh -c "
+          pip-compile -q --no-annotate --output-file=.config/lock-requirements.txt pyproject.toml --strip-extras &&
+          pip-compile -q --no-annotate --all-extras --output-file=.config/requirements.txt pyproject.toml --strip-extras"
+        files: ^.config\/requirements.*$
+        language: python
+        language_version: "3.10" # minimal we support officially
+        pass_filenames: false
+        # stages: [manual]
+        additional_dependencies:
+          - pip>=22.3.1
