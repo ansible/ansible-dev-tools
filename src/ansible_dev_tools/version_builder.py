@@ -6,7 +6,7 @@ PKGS = [
     "ansible-builder",
     "ansible-dev-tools",
     "ansible-core",
-    # "ansible-creator",
+    "ansible-creator",
     "ansible-lint",
     "ansible-navigator",
     "ansible-sign",

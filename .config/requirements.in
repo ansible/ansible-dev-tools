@@ -1,5 +1,5 @@
 ansible-builder
-# ansible-creator @ git+https://github.com/NilashishC/ansible-creator.git
+ansible-creator
 ansible-lint
 ansible-navigator
 ansible-sign

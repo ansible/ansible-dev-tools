@@ -2,11 +2,13 @@
 
 The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
 
-The curated list of tools installed as part of the ansible content development kit includes:
+The curated list of tools installed as part of the Ansible automation developer tools package includes:
 
 [ansible-core](https://github.com/ansible/ansible): Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy and maintain. Automate everything from code deployment to network configuration to cloud management, in a language that approaches plain English, using SSH, with no agents to install on remote systems.
 
 [ansible-builder](https://github.com/ansible/ansible-builder): Ansible Builder is a tool that automates the process of building execution environments using the schemas and tooling defined in various Ansible Collections and by the user.
+
+[ansible-creator](https://github.com/ansible/ansible-creator): The fastest way to generate all your ansible content!
 
 [ansible-lint](https://github.com/ansible/ansible-lint): Checks playbooks for practices and behavior that could potentially be improved.
 
@@ -31,12 +33,13 @@ In addition to installing each of the above tools, `ansible-dev-tools` provides 
 ```
 $ adt --version
 ansible-builder                          3.0.0
+ansible-core                             2.16.0
+ansible-creator                          1.0.0
 ansible-dev-tools                        1.0.0
-ansible-core                             2.15.2
-ansible-lint                             6.17.2
-ansible-navigator                        3.4.2
+ansible-lint                             6.22.0
+ansible-navigator                        3.5.0
 ansible-sign                             0.1.1
-molecule                                 5.1.0
-pytest-ansible                           4.0.0
-tox-ansible                              2.0.9
+molecule                                 6.0.2
+pytest-ansible                           4.1.1
+tox-ansible                              2.0.14
 ```
