@@ -36,7 +36,7 @@ adt = "ansible_dev_tools.cli:main"
 
 [project.urls]
 changelog = "https://github.com/ansible/ansible-dev-tools/releases"
-documentation = "https://ansible-dev-tools.readthedocs.io/en/latest/"
+documentation = "https://ansible.readthedocs.io/projects/dev-tools/"
 homepage = "https://github.com/ansible/ansible-dev-tools"
 repository = "https://github.com/ansible/ansible-dev-tools"
 
