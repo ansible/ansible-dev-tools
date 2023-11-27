@@ -42,6 +42,7 @@ extra:
 
 nav:
   - Home: index.md
+  - Contributor Guide: contributor_guide.md
 
 plugins:
   - autorefs
