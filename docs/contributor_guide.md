@@ -1,12 +1,12 @@
 # Contributor Guide
 
-To contribute to ansible-dev-tools, please use pull requests on a branch of your own fork.
+To contribute to `ansible-dev-tools` python package or to the list of tools part of it, please use pull requests on a branch of your own fork.
 
 After [creating your fork on GitHub], you can do:
 
 ```shell-session
-$ git clone --recursive git@github.com:your-name/ansible-dev-tools
-$ cd ansible-dev-tools
+$ git clone --recursive git@github.com:your-name/developer-tool-name
+$ cd developer-tool-name
 $ git checkout -b your-branch-name
 # DO SOME CODING HERE
 $ git add your new files
@@ -16,8 +16,12 @@ $ git push origin your-branch-name
 
 You will then be able to create a pull request from your commit.
 
-All fixes to core functionality (i.e. anything except docs or examples) should
-be accompanied by tests that fail prior to your change and succeed afterwards.
+Prerequisites:
+
+1. All fixes to core functionality (i.e. anything except docs or examples) should
+   be accompanied by tests that fail prior to your change and succeed afterwards.
+
+2. Before sending a PR, make sure that `tox -e lint` passes.
 
 Feel free to raise issues in the repo if you feel unable to contribute a code
 fix.
