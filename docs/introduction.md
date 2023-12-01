@@ -6,10 +6,11 @@ Ansible Development Tools or ADT for short, aims to streamline the setup and usa
 When it comes to creating automation content using Ansible, there are several packages available that can help users in different parts of the content creating journey. From bootstrapping new projects, all the way to ensuring content follows best practices and verifying it behaves as intended via well established test frameworks.
 
 ## Key Features
+
 - All-in-One Ansible Toolkit: ADT combines critical Ansible development packages into a unified Python package.
 
 - Simplified Ansible Automation: ADT focuses on crafting your automation scenarios and workflows with speed by reducing boilerplate code without
-dealing with the intricacies of managing and integrating different Ansible libraries.
+  dealing with the intricacies of managing and integrating different Ansible libraries.
 
 For those looking for an IDE based experience, we also recommend you get familiar with the [Ansible extension for VSCode](https://marketplace.visualstudio.com/items?itemName=redhat.ansible).
 
