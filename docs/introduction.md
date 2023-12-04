@@ -19,7 +19,7 @@ For those looking for an IDE based experience, we also recommend you get familia
 The curated list of tools installed as part of the Ansible Development Tools includes:
 
 - [ansible-core](https://github.com/ansible/ansible): Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy and maintain. Automate everything from code deployment to network configuration to cloud management, in a language that approaches plain English, using SSH, with no agents to install on remote systems.
-- [ansible-builder](https://github.com/ansible/ansible-builder): Ansible Builder is a tool that automates the process of building execution environments using the schemas and tooling defined in various Ansible Collections and by the user.
+- [ansible-builder](https://github.com/ansible/ansible-builder): Ansible Builder automates the process of building execution environments using the schemas and tooling defined in various Ansible Collections and by the user.
 - [ansible-lint](https://github.com/ansible/ansible-lint): Checks playbooks for practices and behavior that could potentially be improved.
 - [ansible-navigator](https://github.com/ansible/ansible-navigator) A text-based user interface (TUI) for Ansible.
 - [ansible-sign](https://github.com/ansible/ansible-sign): Utility for signing and verifying Ansible project directory contents.
