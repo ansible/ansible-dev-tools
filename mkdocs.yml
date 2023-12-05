@@ -46,6 +46,7 @@ nav:
   - Installation: installation.md
   - Getting Started: getting_started.md
   - User Guide: user_guide.md
+  - Contributor Guide: contributor_guide.md
 
 plugins:
   - autorefs
