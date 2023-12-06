@@ -1,9 +1,10 @@
 ansible-builder
 ansible-creator
+ansible-development-environment>=0.3.0
 ansible-lint
 ansible-navigator
 ansible-sign
 molecule
 pytest-ansible
-tox-ansible
 setuptools
+tox-ansible
