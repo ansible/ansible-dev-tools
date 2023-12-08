@@ -3,7 +3,7 @@
 ## Molecule
 
 To set up molecule, create a new directory in your collection called
-extensions, and inside that directory, run molecule init scenario to create
+extensions, and inside that directory, run `molecule init scenario` to create
 the default scenario.
 
 ```
@@ -12,10 +12,28 @@ cd extensions
 molecule init scenario
 ```
 
-add collection path to molecule.yml
-https://ansible.readthedocs.io/projects/molecule/configuration/
+Update molecule.yml to know where the collection path is
 
-include role in converge.yml
+```
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      collections_path: ${ANSIBLE_COLLECTIONS_PATH}
+```
+
+And set the collection path in the shell
+
+```
+export ANSIBLE_COLLECTIONS_PATH=/home/user/working/collections
+```
+
+Note that this should be the root `collections` directory, not the
+`ansible_collections` directory inside it. We set this to an environment
+variable so that the collection can be moved without having to update hardcoded
+directories inside the collection later.
+
+Finally, update converge.yml to include a role from your collection:
 
 ```
 ---
@@ -37,7 +55,8 @@ or a playbook:
   ansible.builtin.import_playbook: foo.bar.my_playbook
 ```
 
-molecule test
+This tells molecule what to run for the test. You can now run it with
+`molecule test`.
 
 ## pytest-ansible
 

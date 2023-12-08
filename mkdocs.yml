@@ -50,6 +50,7 @@ nav:
   - Getting Started: getting-started.md
   - User Guide:
       - user-guide/index.md
+      - Testing: user-guide/testing.md
       - Content Best Practices: user-guide/content-best-practices.md
   - Contributor Guide: contributor-guide.md
 
