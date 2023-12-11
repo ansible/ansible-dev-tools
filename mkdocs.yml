@@ -1,5 +1,5 @@
 ---
-site_name: Ansible CDK Documentation
+site_name: Ansible Development Tools Documentation
 site_url: https://ansible.readthedocs.io/projects/dev-tools/
 repo_url: https://github.com/ansible/ansible-dev-tools
 edit_uri: blob/main/docs/
@@ -13,11 +13,14 @@ theme:
     - content.code.copy
     - content.action.edit
     - navigation.expand
+    - navigation.path
     - navigation.sections
     - navigation.instant
     - navigation.indexes
     - navigation.tracking
+    - navigation.top
     - toc.integrate
+    - toc.follow
 
 extra:
   social:
@@ -44,9 +47,11 @@ nav:
   - Home: index.md
   - Introduction: introduction.md
   - Installation: installation.md
-  - Getting Started: getting_started.md
-  - User Guide: user_guide.md
-  - Contributor Guide: contributor_guide.md
+  - Getting Started: getting-started.md
+  - User Guide:
+      - user-guide/index.md
+      - Content Best Practices: user-guide/content-best-practices.md
+  - Contributor Guide: contributor-guide.md
 
 plugins:
   - autorefs
