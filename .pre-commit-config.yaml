@@ -39,7 +39,7 @@ repos:
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     # keep it before yamllint
-    rev: v4.0.0-alpha.3
+    rev: v4.0.0-alpha.4
     hooks:
       - id: prettier
         always_run: true
@@ -70,7 +70,7 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.1.0
+    rev: v8.1.1
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -114,9 +114,9 @@ repos:
         always_run: true
         entry: >
           sh -c "
-          pip-compile -q --no-annotate --output-file=.config/lock-requirements.txt pyproject.toml --strip-extras &&
-          pip-compile -q --no-annotate --all-extras --output-file=.config/requirements.txt pyproject.toml --strip-extras"
-        files: ^.config\/requirements.*$
+          pip-compile -q --upgrade --no-annotate --output-file=.config/lock-requirements.txt pyproject.toml --strip-extras &&
+          pip-compile -q --upgrade --no-annotate --all-extras --output-file=.config/requirements.txt pyproject.toml --strip-extras"
+        files: ^.config\/.*requirements.*$
         language: python
         language_version: "3.10" # minimal we support officially
         pass_filenames: false
