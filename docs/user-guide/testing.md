@@ -81,6 +81,8 @@ def test_integration(molecule_scenario: MoleculeScenario) -> None:
 
 Calling pytest will now run your molecule scenarios as a pytest job.
 
+Refer to the [pytest-ansible documentation] to see more options.
+
 ## tox-ansible
 
 tox-ansible automates the running of your pytest tests on many different Python
@@ -127,3 +129,8 @@ skip =
 ```
 
 This will avoid running tests with either of ansible-core 2.9 or devel.
+
+Refer to the [tox-ansible documentation] to see more options.
+
+[pytest-ansible documentation]: https://ansible.readthedocs.io/projects/pytest-ansible/
+[tox-ansible documentation]: https://ansible.readthedocs.io/projects/tox-ansible/
