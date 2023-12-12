@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 # Ansible Development Tools (ADT)
 
 ## Introduction

@@ -6,7 +6,7 @@ To set up molecule, create a new directory in your collection called
 extensions, and inside that directory, run `molecule init scenario` to create
 the default scenario.
 
-```
+```shell
 mkdir extensions
 cd extensions
 molecule init scenario
@@ -14,7 +14,7 @@ molecule init scenario
 
 Update molecule.yml to know where the collection path is
 
-```
+```yaml
 provisioner:
   name: ansible
   config_options:
@@ -24,7 +24,7 @@ provisioner:
 
 And set the collection path in the shell
 
-```
+```shell
 export ANSIBLE_COLLECTIONS_PATH=/home/user/working/collections
 ```
 
@@ -35,7 +35,7 @@ directories inside the collection later.
 
 Finally, update converge.yml to include a role from your collection:
 
-```
+```yaml
 ---
 - name: Include a role from a collection
   hosts: localhost
@@ -49,7 +49,7 @@ Finally, update converge.yml to include a role from your collection:
 
 or a playbook:
 
-```
+```yaml
 ---
 - name: Include a playbook from a collection
   ansible.builtin.import_playbook: foo.bar.my_playbook
@@ -63,7 +63,7 @@ This tells molecule what to run for the test. You can now run it with
 By adding a special test to tests/integration, your molecule tests can be run
 alongside your unit tests with pytest-ansible
 
-```
+```python
 """Tests for molecule scenarios."""
 from __future__ import absolute_import, division, print_function
 
@@ -90,7 +90,7 @@ and Ansible versions.
 
 To start, create an empty tox-ansible.ini in your collection root:
 
-```
+```shell
 touch tox-ansible.ini
 ```
 
@@ -98,9 +98,8 @@ This will be the configuration file for tox-ansible. We always start with an
 empty file to avoid unintentionally overriding tox-ansible environment
 configurations.
 
-To list the generated environments that can be run, call `tox list --ansible -c tox-ansible.ini`
-
-```
+```shell title="List generated environments" hl_lines="1"
+tox list --ansible -c tox-ansible.ini
 default environments:
 ...
 integration-py3.11-2.14      -> Integration tests using ansible-core 2.16 and python 3.12
@@ -118,10 +117,9 @@ unit-py3.11-milestone        -> Unit tests using ansible-core milestone and pyth
 
 This is limited to supported combinations, so tests may be run on Python 3.8
 with `ansible-core` 2.12, but not with `ansible-core` 2.14. Versions of
-ansible-core can be skipped in the tox-ansible.ini file in the `ansible`
-section like so:
+ansible-core can be configured to be skipped via config file:
 
-```
+```ini title="tox-ansible.ini"
 [ansible]
 skip =
     2.9

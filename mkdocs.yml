@@ -10,19 +10,32 @@ strict: true
 theme:
   name: ansible
   features:
-    - content.code.copy
+    - announce.dismiss
     - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
     - navigation.expand
-    - navigation.path
-    - navigation.sections
-    - navigation.instant
+    - navigation.footer
     - navigation.indexes
-    - navigation.tracking
+    - navigation.instant
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
     - toc.integrate
-    - toc.follow
 
 extra:
+  generator: false
   social:
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/ansible-dev-tools/
