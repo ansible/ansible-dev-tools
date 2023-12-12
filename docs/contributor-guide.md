@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 # Contributor Guide
 
 To contribute to `ansible-dev-tools` python package or to the list of tools part of it, please use pull requests on a branch of your own fork.

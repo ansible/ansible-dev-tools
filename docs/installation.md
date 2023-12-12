@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 ## Requirements
 
 - Python 3.10: ADT requires Python 3.10 or later. Make sure you have Python 3.10 installed on your system before proceeding.
