@@ -4,20 +4,23 @@
 #
 #    pip-compile --all-extras --no-annotate --output-file=.config/requirements.txt --strip-extras pyproject.toml
 #
+aiohttp==3.9.1
+aiosignal==1.3.1
 ansible-builder==3.0.0
 ansible-compat==4.1.10
-ansible-core==2.16.1
+ansible-core==2.16.2
 ansible-creator==0.0.1a4
 ansible-development-environment==0.3.0
 ansible-lint==6.22.1
 ansible-navigator==3.5.0
 ansible-runner==2.3.4
 ansible-sign==0.1.1
+async-timeout==4.0.3
 attrs==23.1.0
-babel==2.13.1
+babel==2.14.0
 beautifulsoup4==4.12.2
 bindep==2.11.0
-black==23.11.0
+black==23.12.0
 bracex==2.4
 build==1.0.3
 cachetools==5.3.2
@@ -36,7 +39,7 @@ cryptography==41.0.7
 csscompressor==0.9.5
 cssselect2==0.7.0
 defusedxml==0.7.1
-distlib==0.3.7
+distlib==0.3.8
 distro==1.8.0
 docstring-parser-fork==0.0.5
 docutils==0.20.1
@@ -44,6 +47,7 @@ enrich==1.2.7
 exceptiongroup==1.2.0
 execnet==2.0.2
 filelock==3.13.1
+frozenlist==1.4.0
 ghp-import==2.1.0
 griffe==0.38.1
 htmlmin2==0.1.13
@@ -74,6 +78,7 @@ mkdocs-monorepo-plugin==1.0.5
 mkdocstrings==0.24.0
 mkdocstrings-python==1.7.5
 molecule==6.0.2
+multidict==6.0.4
 mypy==1.7.1
 mypy-extensions==1.0.0
 nodeenv==1.8.0
@@ -102,7 +107,7 @@ pytest-ansible==4.1.1
 pytest-xdist==3.5.0
 python-daemon==3.0.1
 python-dateutil==2.8.2
-python-gnupg==0.5.1
+python-gnupg==0.5.2
 python-slugify==8.0.1
 pyyaml==6.0.1
 pyyaml-env-tag==0.1
@@ -136,6 +141,7 @@ wcmatch==8.5
 webencodings==0.5.1
 wheel==0.42.0
 yamllint==1.33.0
+yarl==1.9.4
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
