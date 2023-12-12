@@ -33,6 +33,8 @@ theme:
     - search.share
     - search.suggest
     - toc.integrate
+  icon:
+    alternate: fontawesome/solid/diagram-project
 
 extra:
   generator: false
@@ -55,6 +57,33 @@ extra:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/ansible/ansible-dev-tools
       name: GitHub
+  alternate:
+    - name: ansible-dev-tools
+      link: https://ansible.readthedocs.io/projects/dev-tools/
+    - name: ansible-lint
+      link: https://ansible.readthedocs.io/projects/lint/
+    - name: ansible-navigator
+      link: https://ansible.readthedocs.io/projects/navigator/
+    - name: molecule
+      link: https://ansible.readthedocs.io/projects/molecule/
+    - name: vscode-ansible (github marketplace)
+      link: https://marketplace.visualstudio.com/items?itemName=redhat.ansible
+    - name: creator-ee (github)
+      link: https://github.com/ansible/creator-ee
+    - name: pytest-ansible
+      link: https://github.com/ansible-community/pytest-molecule
+    - name: tox-ansible
+      link: https://ansible.readthedocs.io/projects/tox-ansible/
+    - name: creator
+      linke: https://github.com/ansible/ansible-creator
+    - name: ansible-compat
+      link: https://github.com/ansible/ansible-compat
+    - name: ansible-development-environment
+      link: https://github.com/ansible/ansible-development-environment
+    - name: team-devtools
+      link: https://github.com/ansible/team-devtools
+    - name: mkdocs-ansible
+      link: https://github.com/ansible/mkdocs-ansible
 
 nav:
   - Home: index.md
