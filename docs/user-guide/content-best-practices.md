@@ -7,6 +7,20 @@ Integrating lint into your Continuous Integration (CI) pipeline ensures that you
 To add Tox Entry for Linting:
 
 1. Create a `tox.ini` file in the root directory of your project. This file will contain the configuration for running various environments.
+
+```ini
+# tox.ini
+[tox]
+env_list = lint
+
+[testenv:lint]
+deps =
+    pre-commit
+    # Add other linters as needed
+commands =
+    pre-commit run --show-diff-on-failure --all-files
+```
+
 2. Update your CI configuration file (for example `.github/workflows/main.yml` for GitHub Actions) to include the tox command with the linting environment.
 3. Commit the changes to your repository and push them, to trigger the CI pipeline.
 
