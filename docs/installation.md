@@ -12,19 +12,19 @@ hide:
 
 `pip install ansible-dev-tools`
 
-Once installation is completed, visit [Getting Started](getting-started.md) guide for more details about ADT usage.
+Once installation is completed, see the [Getting Started](getting-started.md) guide for more details about ADT usage.
 
 ### Latest Releases
 
 - GitHub
-  Visit the [ADT GitHub releases page](https://github.com/ansible/ansible-dev-tools/releases) to view the latest releases. Each release includes detailed release notes outlining new features, improvements, and bug fixes.
+  To view the latest releases, see the [ADT GitHub releases page](https://github.com/ansible/ansible-dev-tools/releases). Each release includes detailed release notes outlining new features, improvements, and bug fixes.
 
 - PyPI
   The [PyPI page for ADT](https://pypi.org/project/ansible-dev-tools/) provides information on the latest stable release and allows you to download specific versions of the package.
 
 ## Upgrade
 
-To upgrade ADT to the latest version, you can use the following pip command:
+To upgrade ADT to the latest version, use the following pip command:
 
 `pip install --upgrade ansible-dev-tools`
 
@@ -36,7 +36,7 @@ If needed, you can downgrade ADT to a specific version using the following pip c
 
 ## Uninstallation
 
-If you need to uninstall ADT, you can use the following pip command:
+If you need to uninstall ADT, use the following pip command:
 
 `pip uninstall ansible-dev-tools`
 
