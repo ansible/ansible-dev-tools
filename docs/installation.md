@@ -12,8 +12,6 @@ hide:
 
 `pip install ansible-dev-tools`
 
-Once installation is completed, see the [Getting Started](getting-started.md) guide for more details about ADT usage.
-
 ### Latest Releases
 
 - GitHub

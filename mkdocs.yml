@@ -88,10 +88,10 @@ extra:
 nav:
   - Home: index.md
   - Installation: installation.md
-  - Getting Started: getting-started.md
   - User Guide:
       - user-guide/index.md
       - Testing: user-guide/testing.md
+      - Building a Collection: user-guide/building-collection.md
       - Content Best Practices: user-guide/content-best-practices.md
   - Contributor Guide: contributor-guide.md
 
