@@ -3,7 +3,7 @@
 This guide illustrates a comprehensive Ansible development workflow that showcases the integration of various tools within the Ansible ecosystem to create an Ansible collection. The tools featured in this workflow include:
 
 - [ansible-creator](https://github.com/ansible/ansible-creator)
-- [ansible-development-environmen (pip4a)](https://github.com/ansible/ansible-development-environment)
+- [ansible-development-environment (pip4a)](https://github.com/ansible/ansible-development-environment)
 - [ansible-lint](https://github.com/ansible/ansible-lint)
 - [ansible-navigator](https://github.com/ansible/ansible-navigator)
 - [VS Code Ansible extension](https://github.com/ansible/vscode-ansible)
@@ -28,13 +28,13 @@ NOTE: For a more detailed explanation about using Ansible Creator in the VS Code
 
 - With the initial collection structure in place, use 'ansible-development-environment' (pip4a) to install the newly created collection in editable mode, similar to Python modules.
 
-- Navigate to the cooelction directory and run:
+- Navigate to the collection directory and run:
 
 ```console
 $ pip4a install -e .
 ```
 
-- This installation method adds the collection in the system paths so that ansible knows about it. Additinally, it enhances the development process by allowing on-the-go changes to the module code.
+- This installation method adds the collection in the system paths so that ansible knows about it. Additionally, it enhances the development process by allowing on-the-go changes to the module code.
 
 - You can check if the collection is installed or not by using ansible-galaxy command. In the terminal, running the following command should show the name of the newly created collection:
 
@@ -60,7 +60,7 @@ NOTE: for details regarding the module development, refer to the [ansible module
 
 - Once you have completed writing the playbook that uses the newly collection module, saving the file will automatically run ansible-lint on the playbook.
 
-- With its integration in the extension, ansible-lint can detect mistakes, such as incorrect option values and missing required options, along with other rules for ansible best practices by providing feedback in the editor (red and yellow sqigly lines) and it the `Problems` tab in the vscode.
+- With its integration in the extension, ansible-lint can detect mistakes, such as incorrect option values and missing required options, along with other rules for ansible best practices by providing feedback in the editor (red and yellow squiggly lines) and it the `Problems` tab in the vscode.
 
 ![ansible-lint](../media/ansible-lint.gif)
 
