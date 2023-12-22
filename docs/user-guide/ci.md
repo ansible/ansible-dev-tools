@@ -55,7 +55,7 @@ jobs:
 
 The workflow run results in -
 
-![Alt text](./images/ci.png?raw=true "CI Run")
+![Alt text](docs/user-guide/images/ci.png?raw=true "CI Run")
 
 The workflow uses tox-ansible, pytest-ansibl to generate the matrix, which is used to run unit, sanity and integration tests.
 

@@ -29,7 +29,7 @@ jobs:
 
 The workflow run results in -
 
-![Alt text](./images/release.png?raw=true "Release collection")
+![Alt text](docs/user-guide/images/release.png?raw=true "Release collection")
 
 The release works in two parts, Automation hub release and then Ansible Galaxy release. If the Automation hub release fails, the Galaxy job is skipped.
 
