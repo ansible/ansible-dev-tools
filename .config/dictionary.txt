@@ -2,3 +2,6 @@ devel
 libera
 testenv
 Uninstallation
+netcommon
+Ansibuddy
+antsibull
