@@ -81,6 +81,6 @@ NOTE: for details regarding the module development, refer to the [ansible module
 
 - The Ansible extension along with ansible-lint continues to provide linting functionalities for the updated module code and running the playbook using ansible-navigator incorporates the new module code seamlessly.
 
-This unified development suite, incorporating ansible-creator, pip4a, ansible-lint, ansible-navigator, and vscode-ansible extension, enables content developers with an enhanced and efficient method for their Ansible development workflow.
+This unified development suite, incorporating ansible-creator, ansible-development-environment, ansible-lint, ansible-navigator, and vscode-ansible extension, enables content developers with an enhanced and efficient method for their Ansible development workflow.
 
 The integration of these tools streamlines the development process, offering a cohesive experience for building Ansible Collections.
