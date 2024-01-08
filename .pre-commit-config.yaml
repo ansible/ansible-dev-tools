@@ -64,13 +64,13 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.9
+    rev: v0.1.11
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.2.1
+    rev: v8.3.0
     hooks:
       - id: cspell
         name: Spell check with cspell
