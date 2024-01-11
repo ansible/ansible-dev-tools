@@ -5,7 +5,7 @@ common operations like testing collections, roles
 within a collection using two or more tools
 within ansible dev tools ecosystem.
 
-[Ansible Ecosystem](https://docs.ansible.com/ecosystem.html){:target="_blank"}
+[Ansible Ecosystem](https://docs.ansible.com/ecosystem.html){:target="\_blank"}
 is a collection of projects or tools which lets you expand automation to
 varying set of use cases.
 
