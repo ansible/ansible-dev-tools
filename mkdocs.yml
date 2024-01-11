@@ -92,6 +92,8 @@ nav:
       - user-guide/index.md
       - Testing: user-guide/testing.md
       - Content Best Practices: user-guide/content-best-practices.md
+      - CI: user-guide/ci-setup.md
+      - Release: user-guide/content-release.md
   - Contributor Guide: contributor-guide.md
 
 plugins:
