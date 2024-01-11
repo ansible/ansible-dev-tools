@@ -118,6 +118,7 @@ plugins:
               domains: [py, std]
 
 markdown_extensions:
+  - attr_list
   - markdown_include.include:
       base_path: docs
   - admonition
