@@ -6,7 +6,7 @@ This GitHub action releases the collection in Ansible Automation Hub and Ansible
 `AH_TOKEN`: The Automation Hub token required for to interact with Ansible Automation Hub.
 `ANSIBLE_GALAXY_API_KEY`: A Galaxy token required to interact with Ansible Galaxy.
 
-Note - ansible-github-actions/release.yaml uses release_ah.yaml and release_galaxy.yaml internally.
+Note - ansible-content-actions/release.yaml uses release_ah.yaml and release_galaxy.yaml internally.
 
 Filename: `release.yaml`
 
@@ -19,7 +19,7 @@ on:
 
 jobs:
   release:
-    uses: ansible/ansible-github-actions/.github/workflows/release.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/release.yaml@main
     with:
       environment: release
     secrets:
@@ -35,27 +35,45 @@ The release works in two parts, Automation hub release and then Ansible Galaxy r
 
 Example showing how only Automation hub release can be made, only `ah_token` would be required in those cases.
 
-### The release on AH workflow
+### Release on AH only, workflow
 
 Filename: `release.yaml`
 
 ```
 ---
-name: "Release collection"
+name: "Release collection on Automation Hub"
 on:
   release:
     types: [published]
 
 jobs:
   release_automation_hub:
-    uses: ansible/ansible-github-actions/.github/workflows/release_ah.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/release_ah.yaml@main
     with:
       environment: release
     secrets:
       ah_token: ${{ secrets.AH_TOKEN }}
 ```
 
-Same for galaxy releases only, please refer to the `release_galaxy.yaml` and specify `ansible_galaxy_api_key` secret.
+### Release on Galaxy only, workflow
+
+Filename: `release.yaml`
+
+```
+---
+name: "Release collection on Ansible Galaxy"
+on:
+  release:
+    types: [published]
+
+jobs:
+  release_automation_hub:
+    uses: ansible/ansible-content-actions/.github/workflows/release_galaxy.yaml@main
+    with:
+      environment: release
+    secrets:
+      ah_token: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
+```
 
 ## Detailed release process
 

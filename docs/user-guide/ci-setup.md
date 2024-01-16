@@ -22,16 +22,16 @@ on:
 
 jobs:
   changelog:
-    uses: ansible/ansible-github-actions/.github/workflows/changelog.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/changelog.yaml@main
     if: github.event_name == 'pull_request'
   ansible-lint:
-    uses: ansible/ansible-github-actions/.github/workflows/ansible_lint.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/ansible_lint.yaml@main
   sanity:
-    uses: ansible/ansible-github-actions/.github/workflows/sanity.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/sanity.yaml@main
   unit-galaxy:
-    uses: ansible/ansible-github-actions/.github/workflows/unit.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/unit.yaml@main
   integration:
-    uses: ansible/ansible-github-actions/.github/workflows/integration.yaml@main
+    uses: ansible/ansible-content-actions/.github/workflows/integration.yaml@main
   all_green:
     if: ${{ always() }}
     needs:
