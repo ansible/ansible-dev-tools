@@ -115,12 +115,7 @@ repos:
         stages: [manual]
         entry: >
           sh -c "
-          pip-compile -q --upgrade --no-annotate --output-file=.config/lock-requirements.txt pyproject.toml --strip-extras &&
-          pip-compile -q --upgrade --no-annotate --all-extras --output-file=.config/requirements.txt pyproject.toml --strip-extras"
+          pip-compile --upgrade --no-annotate --strip-extras --output-file=.config/requirements-lock.txt pyproject.toml &&
+          pip-compile --upgrade --no-annotate --all-extras --strip-extras --output-file=.config/constraints.txt pyproject.toml"
         files: ^.config\/.*requirements.*$
-        language: python
         language_version: "3.10" # minimal we support officially
-        pass_filenames: false
-        # stages: [manual]
-        additional_dependencies:
-          - pip>=22.3.1
