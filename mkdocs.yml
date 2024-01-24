@@ -78,8 +78,8 @@ extra:
       linke: https://github.com/ansible/ansible-creator
     - name: ansible-compat
       link: https://github.com/ansible/ansible-compat
-    - name: ansible-development-environment
-      link: https://github.com/ansible/ansible-development-environment
+    - name: ansible-dev-environment
+      link: https://github.com/ansible/ansible-dev-environment
     - name: team-devtools
       link: https://github.com/ansible/team-devtools
     - name: mkdocs-ansible

@@ -1,9 +1,11 @@
 """Build version text."""
+
 import importlib.metadata
 
 
 PKGS = [
     "ansible-builder",
+    "ansible-dev-environment",
     "ansible-dev-tools",
     "ansible-core",
     "ansible-creator",
