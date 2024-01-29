@@ -26,7 +26,7 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 NOTE: For a more detailed explanation about using Ansible Creator in the VS Code Ansible Extension, refer to [doc: ansible-creator].
 
-## Step 2: Installing your collection using ansible-development-environment (ade, pip4a)
+## Step 2: Installing your collection using ansible-development-environment (ade)
 
 - With the initial collection structure in place, use 'ansible-development-environment' (pip4a) to install the newly created collection in editable mode, similar to Python modules.
 
