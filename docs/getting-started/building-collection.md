@@ -33,7 +33,7 @@ NOTE: For a more detailed explanation about using Ansible Creator in the VS Code
 - Navigate to the collection directory and run the following command:
 
 ```console
-$ pip4a install -e .
+$ ade install -e .
 ```
 
 - This installation method adds the collection in the system paths, enabling Ansible to recognize it. Additionally, it improves the development process by allowing on-the-go changes to the module code.
