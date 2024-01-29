@@ -50,7 +50,7 @@ $ ansible-galaxy collection list
 
 - Navigate to the collection directory and navigate to `plugins/modules/`. Create a [module-name].py file and add documentation, examples and logic to the module.
 
-- Because you installed using pip4a, you can change module code dynamically and observe the effects during playbook execution.
+- Because you installed using ADE, you can change module code dynamically and observe the effects during playbook execution.
 
 NOTE: For more information about module development, refer to the [Developing modules](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html) section of the Ansible Developer Guide.
 
