@@ -3,7 +3,7 @@
 This guide illustrates a comprehensive Ansible development workflow that showcases the integration of various tools within the Ansible ecosystem to create an Ansible collection. The tools featured in this workflow include:
 
 - [ansible-creator](https://github.com/ansible/ansible-creator)
-- [ansible-development-environment (pip4a)](https://github.com/ansible/ansible-development-environment)
+- [ansible-dev-environment](https://github.com/ansible/ansible-dev-environment)
 - [ansible-lint](https://github.com/ansible/ansible-lint)
 - [ansible-navigator](https://github.com/ansible/ansible-navigator)
 - [VS Code Ansible extension](https://github.com/ansible/vscode-ansible)
