@@ -44,7 +44,7 @@ $ ade install -e .
 $ ansible-galaxy collection list
 ```
 
-![pip4-a](../media/pip4a-installation.gif)
+![ade](../media/ade-installation.gif)
 
 ## Step 3: Add python code to bring the collection to life
 
