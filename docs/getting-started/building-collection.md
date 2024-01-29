@@ -28,7 +28,7 @@ NOTE: For a more detailed explanation about using Ansible Creator in the VS Code
 
 ## Step 2: Installing your collection using ansible-development-environment (ade)
 
-- With the initial collection structure in place, use 'ansible-development-environment' (pip4a) to install the newly created collection in editable mode, similar to Python modules.
+- With the initial collection structure in place, use 'ansible-dev-environment' (ade) to install the newly created collection in editable mode, similar to Python modules.
 
 - Navigate to the collection directory and run the following command:
 
