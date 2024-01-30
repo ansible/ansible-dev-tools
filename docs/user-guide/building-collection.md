@@ -14,13 +14,13 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 - Check system requirements and install ansible-creator if needed. Ensure all requirements in the `system requirements` box have green ticks.
 
-![ansible-creator-menu](../media/ansible-creator-menu-installed.png)
+<!-- ![ansible-creator-menu](../media/ansible-creator-menu-installed.png) -->
 
 - Click "Initialize a collection" to open the "Init" interface. Fill the form with the collection name, initialization path, verbosity, and logging options. Click "Create" for scaffolding the collection in the desired location. You have the open to review the logs or open the log file in VS Code editor for details.
 
 - Click on `Open collection` button to add collection folder to the workspace.
 
-![scaffold-collection](../media/create-collection.png)
+<!-- ![scaffold-collection](../media/create-collection.png) -->
 
 NOTE: For a more detailed explanation about using Ansible Creator in the VS Code Ansible Extension, refer to [doc: ansible-creator].
 
@@ -60,7 +60,7 @@ NOTE: for details regarding the module development, refer to the [ansible module
 
 - With its integration in the extension, ansible-lint can detect mistakes, such as incorrect option values and missing required options, along with other rules for ansible best practices by providing feedback in the editor (red and yellow squiggly lines) and it the `Problems` tab in the vscode.
 
-![ansible-lint](../media/ansible-lint.gif)
+<!-- ![ansible-lint](../media/ansible-lint.gif) -->
 
 ## Using ansible-navigator to tun the playbook with the collection module
 
@@ -71,7 +71,7 @@ NOTE: for details regarding the module development, refer to the [ansible module
 
 - Select `Run playbook via ansible-navigator run` to execute the playbook in the terminal within VS Code.
 
-![ansible-navigator](../media/ansible-navigator-run.png)
+<!-- ![ansible-navigator](../media/ansible-navigator-run.png) -->
 
 ## Adapting to changes in the module code
 

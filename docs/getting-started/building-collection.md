@@ -14,7 +14,7 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 - Check system requirements and install ansible-creator if needed. Ensure all requirements in the `system requirements` box have green ticks.
 
-![ansible-creator-menu](../media/ansible-creator-menu-installed.png)
+<!-- ![ansible-creator-menu](../media/ansible-creator-menu-installed.png) -->
 
 - Click **Initialize a collection** to open the **Init** interface. Fill in the form with the collection name, initialization path, verbosity, and logging options.
 
@@ -22,7 +22,7 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 - Click the **Open collection** button to add the collection folder to the workspace.
 
-![scaffold-collection](../media/create-collection.gif)
+<!-- ![scaffold-collection](../media/create-collection.gif) -->
 
 NOTE: For a more detailed explanation about using Ansible Creator in the VS Code Ansible Extension, refer to [doc: ansible-creator].
 
@@ -44,7 +44,7 @@ $ ade install -e .
 $ ansible-galaxy collection list
 ```
 
-![ade](../media/ade-installation.gif)
+<!-- ![ade](../media/ade-installation.gif) -->
 
 ## Step 3: Add python code to bring the collection to life
 
@@ -64,7 +64,7 @@ NOTE: For more information about module development, refer to the [Developing mo
 
 - With its integration in the extension, ansible-lint can detect mistakes, such as incorrect option values and missing required options, along with other rules for ansible best practices by providing feedback in the editor (red and yellow squiggly lines) and it the `Problems` tab in the vscode.
 
-![ansible-lint](../media/ansible-lint.gif)
+<!-- ![ansible-lint](../media/ansible-lint.gif) -->
 
 ## Step 5: Using ansible-navigator to run the playbook with the collection module
 
@@ -74,7 +74,7 @@ NOTE: For more information about module development, refer to the [Developing mo
 
 - Select `Run playbook via ansible-navigator run` to execute the playbook in the terminal within VS Code.
 
-![ansible-navigator](../media/ansible-navigator-run.gif)
+<!-- ![ansible-navigator](../media/ansible-navigator-run.gif) -->
 
 ## Step 6: Adapting to changes in the module code
 
