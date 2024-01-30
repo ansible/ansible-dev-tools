@@ -37,7 +37,7 @@ The curated list of tools installed as part of the Ansible Development Tools inc
 
 ## Getting started
 
-To get started, follow the [installation](installation.md) steps to get ADT setup and jump into the [Getting Started](getting-started/index.md) guide for more details.
+To get started, follow the [installation](installation.md) steps to get ADT setup and check [User Guide](user-guide/index.md) for more details.
 
 ## Community
 

@@ -9,6 +9,7 @@ within ansible dev tools ecosystem.
 is a collection of projects or tools which lets you expand automation to
 varying set of use cases.
 
+- [Building a Collection](building-collection.md)
 - [Testing a role within a collection](testing.md)
 - [Ensure content best practices](content-best-practices.md)
 - [Content CI GitHub action setup](ci-setup.md)
