@@ -88,9 +88,13 @@ extra:
 nav:
   - Home: index.md
   - Installation: installation.md
+  - Getting Started:
+      - getting-started/index.md
+      - Building a Collection using Unified Tooling: getting-started/building-collection.md
   - User Guide:
       - user-guide/index.md
       - Testing: user-guide/testing.md
+      - Building a Collection: user-guide/building-collection.md
       - Content Best Practices: user-guide/content-best-practices.md
       - CI: user-guide/ci-setup.md
       - Release: user-guide/content-release.md

@@ -35,6 +35,10 @@ The curated list of tools installed as part of the Ansible Development Tools inc
 - [tox-ansible](https://github.com/ansible/tox-ansible): The tox-ansible plugin dynamically creates a full matrix of python interpreter and ansible-core version environments for running integration, sanity, and unit for an ansible collection both locally and in a Github action. tox virtual environments are leveraged for collection building, collection installation, dependency installation, and testing.
 - [ansible-dev-environment](https://github.com/ansible/ansible-dev-environment): A pip-like install for Ansible collections.
 
+## Getting started
+
+To get started, follow the [installation](installation.md) steps to get ADT setup and jump into the [Getting Started](getting-started/index.md) guide for more details.
+
 ## Community
 
 Questions, feedback, or contributions? Join the Ansible community on [Matrix](https://matrix.to/#/#devtools:ansible.com) or [open an issue](https://github.com/ansible/ansible-dev-tools/issues/new). We're dedicated to supporting your Ansible automation journey! For more details on how to interact with our community, please visit the [Ansible Communication](https://docs.ansible.com/ansible/latest/community/communication.html) page.
