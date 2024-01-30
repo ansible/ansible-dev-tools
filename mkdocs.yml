@@ -78,8 +78,8 @@ extra:
       linke: https://github.com/ansible/ansible-creator
     - name: ansible-compat
       link: https://github.com/ansible/ansible-compat
-    - name: ansible-development-environment
-      link: https://github.com/ansible/ansible-development-environment
+    - name: ansible-dev-environment
+      link: https://github.com/ansible/ansible-dev-environment
     - name: team-devtools
       link: https://github.com/ansible/team-devtools
     - name: mkdocs-ansible
@@ -96,6 +96,8 @@ nav:
       - Testing: user-guide/testing.md
       - Building a Collection: user-guide/building-collection.md
       - Content Best Practices: user-guide/content-best-practices.md
+      - CI: user-guide/ci-setup.md
+      - Release: user-guide/content-release.md
   - Contributor Guide: contributor-guide.md
 
 plugins:
@@ -120,6 +122,7 @@ plugins:
               domains: [py, std]
 
 markdown_extensions:
+  - attr_list
   - markdown_include.include:
       base_path: docs
   - admonition

@@ -39,7 +39,7 @@ repos:
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     # keep it before yamllint
-    rev: v4.0.0-alpha.4
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         always_run: true
@@ -49,7 +49,7 @@ repos:
           - prettier-plugin-sort-json
 
   - repo: https://github.com/psf/black
-    rev: 23.12.0
+    rev: 24.1.1
     hooks:
       - id: black
 
@@ -64,19 +64,19 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.7
+    rev: v0.1.14
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.1.1
+    rev: v8.3.0
     hooks:
       - id: cspell
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: 0.3.8
+    rev: 0.3.9
     hooks:
       - id: pydoclint
         args:
@@ -93,7 +93,7 @@ repos:
           - tox
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.7.1
+    rev: v1.8.0
     hooks:
       - id: mypy
         additional_dependencies:
@@ -115,12 +115,7 @@ repos:
         stages: [manual]
         entry: >
           sh -c "
-          pip-compile -q --upgrade --no-annotate --output-file=.config/lock-requirements.txt pyproject.toml --strip-extras &&
-          pip-compile -q --upgrade --no-annotate --all-extras --output-file=.config/requirements.txt pyproject.toml --strip-extras"
+          pip-compile --upgrade --no-annotate --strip-extras --output-file=.config/requirements-lock.txt pyproject.toml &&
+          pip-compile --upgrade --no-annotate --all-extras --strip-extras --output-file=.config/constraints.txt pyproject.toml"
         files: ^.config\/.*requirements.*$
-        language: python
         language_version: "3.10" # minimal we support officially
-        pass_filenames: false
-        # stages: [manual]
-        additional_dependencies:
-          - pip>=22.3.1

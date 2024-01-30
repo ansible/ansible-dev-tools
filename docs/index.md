@@ -33,7 +33,7 @@ The curated list of tools installed as part of the Ansible Development Tools inc
 - [molecule](https://github.com/ansible/molecule): Molecule aids in the development and testing of Ansible content: collections, playbooks and roles
 - [pytest-ansible](https://github.com/ansible/pytest-ansible): A pytest plugin that enables the use of ansible in tests, enables the use of pytest as a collection unit test runner, and exposes molecule scenarios using a pytest fixture.
 - [tox-ansible](https://github.com/ansible/tox-ansible): The tox-ansible plugin dynamically creates a full matrix of python interpreter and ansible-core version environments for running integration, sanity, and unit for an ansible collection both locally and in a Github action. tox virtual environments are leveraged for collection building, collection installation, dependency installation, and testing.
-- [ansible-development-environment](https://github.com/ansible/ansible-development-environment): A pip-like install for Ansible collections.
+- [ansible-dev-environment](https://github.com/ansible/ansible-dev-environment): A pip-like install for Ansible collections.
 
 ## Getting started
 

@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-  "setuptools >= 63.0.0", # required by pyproject+setuptools_scm integration
+  "setuptools >= 65.3.0", # required by pyproject+setuptools_scm integration and editable installs
   "setuptools_scm[toml] >= 7.0.5" # required for "no-local-version" scheme
 ]
 
@@ -237,7 +237,7 @@ builtins = ["__"]
 fix = true
 line-length = 100
 select = ["ALL"]
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.flake8-pytest-style]
 parametrize-values-type = "tuple"
@@ -257,16 +257,23 @@ convention = "pep257"
 
 [tool.setuptools.dynamic]
 dependencies = {file = [".config/requirements.in"]}
-# Dependabot recognize only filenames ending in requirements.txt and cannot
-# be configured with diferent pattern.
-optional-dependencies.docs = {file = [".config/docs-requirements.txt"]}
-optional-dependencies.lock = {file = [".config/lock-requirements.txt"]}
-optional-dependencies.test = {file = [".config/test-requirements.txt"]}
+optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
+optional-dependencies.test = {file = [".config/requirements-test.in"]}
 
 [tool.setuptools_scm]
+# To prevent accidental pick of mobile version tags such 'v6'
+git_describe_command = [
+  "git",
+  "describe",
+  "--dirty",
+  "--long",
+  "--tags",
+  "--match",
+  "v*.*"
+]
 local_scheme = "no-local-version"
+tag_regex = '^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$'
 write_to = "src/ansible_dev_tools/_version.py"
 
 [tool.tomlsort]
-all = true
 in_place = true

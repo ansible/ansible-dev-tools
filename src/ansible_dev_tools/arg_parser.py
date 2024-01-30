@@ -1,4 +1,5 @@
 """Parse the command line arguments."""
+
 import argparse
 
 from .version_builder import version_builder

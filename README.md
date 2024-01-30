@@ -22,7 +22,7 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 [tox-ansible](https://github.com/ansible/tox-ansible): The tox-ansible plugin dynamically creates a full matrix of python interpreter and ansible-core version environments for running integration, sanity, and unit for an ansible collection both locally and in a Github action. tox virtual environments are leveraged for collection building, collection installation, dependency installation, and testing.
 
-[ansible-development-environment](https://github.com/ansible/ansible-development-environment): A pip-like install for Ansible collections.
+[ansible-dev-environment](https://github.com/ansible/ansible-dev-environment): A pip-like install for Ansible collections.
 
 ## Installation
 
@@ -32,19 +32,24 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 In addition to installing each of the above tools, `ansible-dev-tools` provides an easy way to show the versions of the content creation tools that make up the current development environment.
 
+<!-- START -->
+
 ```
 $ adt --version
 ansible-builder                          3.0.0
-ansible-core                             2.16.0
-ansible-creator                          1.0.0
-ansible-dev-tools                        1.0.0
-ansible-lint                             6.22.0
-ansible-navigator                        3.5.0
+ansible-core                             2.16.2
+ansible-creator                          24.1.0
+ansible-dev-environment                  24.1.0
+ansible-dev-tools                        0.2.0a0
+ansible-lint                             6.22.2
+ansible-navigator                        3.6.0
 ansible-sign                             0.1.1
-molecule                                 6.0.2
-pytest-ansible                           4.1.1
-tox-ansible                              2.0.14
+molecule                                 6.0.3
+pytest-ansible                           24.1.2
+tox-ansible                              2.1.0
 ```
+
+<!-- END -->
 
 ## Documentation
 
