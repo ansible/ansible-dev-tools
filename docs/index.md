@@ -20,6 +20,10 @@ When it comes to creating automation content using Ansible, there are several pa
 
 For those looking for an IDE based experience, we also recommend you get familiar with the [Ansible extension for VSCode](https://marketplace.visualstudio.com/items?itemName=redhat.ansible).
 
+<video width="100%" controls autoplay loop>
+<source src="./media/ansible-lint.mp4" type="video/mp4">
+</video>
+
 ## Included Packages
 
 The curated list of tools installed as part of the Ansible Development Tools includes:

@@ -1,3 +1,4 @@
+autoplay
 devel
 libera
 testenv

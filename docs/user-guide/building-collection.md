@@ -60,7 +60,9 @@ NOTE: for details regarding the module development, refer to the [ansible module
 
 - With its integration in the extension, ansible-lint can detect mistakes, such as incorrect option values and missing required options, along with other rules for ansible best practices by providing feedback in the editor (red and yellow squiggly lines) and it the `Problems` tab in the vscode.
 
-<!-- ![ansible-lint](../media/ansible-lint.gif) -->
+<video width="100%" controls autoplay loop>
+<source src="../../media/ansible-lint.mp4" type="video/mp4">
+</video>
 
 ## Using ansible-navigator to tun the playbook with the collection module
 

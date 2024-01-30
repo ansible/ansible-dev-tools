@@ -4,6 +4,10 @@ hide:
   - toc
 ---
 
+<video width="100%" controls autoplay loop>
+<source src="../media/ansible-lint.mp4" type="video/mp4">
+</video>
+
 ## Requirements
 
 - Python 3.10: ADT requires Python 3.10 or later. Make sure you have Python 3.10 installed on your system before proceeding.
