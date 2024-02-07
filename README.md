@@ -38,10 +38,10 @@ In addition to installing each of the above tools, `ansible-dev-tools` provides 
 $ adt --version
 ansible-builder                          3.0.0
 ansible-core                             2.16.3
-ansible-creator                          24.1.0
+ansible-creator                          24.2.0
 ansible-dev-environment                  24.1.0
 ansible-dev-tools                        0.2.0a0
-ansible-lint                             6.22.2
+ansible-lint                             24.2.0
 ansible-navigator                        24.2.0
 ansible-sign                             0.1.1
 molecule                                 6.0.3
