@@ -102,6 +102,7 @@ jobs:
           delete-merged: true
 
       - name: Check codecov.io status
+        if: github.event_name == 'pull_request'
         uses: coactions/codecov-status@main
 
       - name: Decide whether the needed jobs succeeded or failed
