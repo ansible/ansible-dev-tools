@@ -44,7 +44,7 @@ ansible-dev-tools                        0.2.0a0
 ansible-lint                             24.2.0
 ansible-navigator                        24.2.0
 ansible-sign                             0.1.1
-molecule                                 6.0.3
+molecule                                 24.2.0
 pytest-ansible                           24.1.2
 tox-ansible                              24.2.0
 ```
