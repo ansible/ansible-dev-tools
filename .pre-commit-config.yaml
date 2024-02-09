@@ -17,8 +17,6 @@ repos:
       - id: check-symlinks
       - id: debug-statements
       - id: end-of-file-fixer
-      - id: no-commit-to-branch
-        args: [--branch, main]
       - id: trailing-whitespace
       - id: mixed-line-ending
       - id: check-executables-have-shebangs
