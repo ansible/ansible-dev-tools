@@ -46,7 +46,7 @@ ansible-navigator                        24.2.0
 ansible-sign                             0.1.1
 molecule                                 6.0.3
 pytest-ansible                           24.1.2
-tox-ansible                              2.1.0
+tox-ansible                              24.2.0
 ```
 
 <!-- END -->
