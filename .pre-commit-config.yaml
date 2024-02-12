@@ -74,7 +74,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: 0.3.10
+    rev: 0.4.0
     hooks:
       - id: pydoclint
         args:
