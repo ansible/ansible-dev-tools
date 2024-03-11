@@ -13,7 +13,7 @@ When it comes to creating automation content using Ansible, there are several pa
 
 ## Key Features
 
-- All-in-One Ansible Toolkit: ADT combines critical Ansible development packages into a unified Python package.
+- All-in-One Ansible Toolkit: ADT combines critical Ansible development packages into a unified Python package called [ansible-dev-tools](https://pypi.org/project/ansible-dev-tools/).
 
 - Simplified Ansible Automation: ADT focuses on crafting your automation scenarios and workflows with speed by reducing boilerplate code without
   dealing with the intricacies of managing and integrating different Ansible libraries.
