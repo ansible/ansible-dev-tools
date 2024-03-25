@@ -4,14 +4,14 @@
 #
 #    pip-compile --no-annotate --output-file=.config/requirements-lock.txt --strip-extras pyproject.toml
 #
-ansible-builder==3.0.0
+ansible-builder==3.0.1
 ansible-compat==4.1.11
-ansible-core==2.16.3
+ansible-core==2.16.4
 ansible-creator==24.2.0
 ansible-dev-environment==24.1.0
-ansible-lint==24.2.0
+ansible-lint==24.2.1
 ansible-navigator==24.2.0
-ansible-runner==2.3.4
+ansible-runner==2.3.6
 ansible-sign==0.1.1
 attrs==23.2.0
 bindep==2.11.0
