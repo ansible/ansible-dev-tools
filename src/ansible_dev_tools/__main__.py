@@ -1,7 +1,7 @@
 """A runpy entry point for ansible-dev-tools.
 
 This makes it possible to invoke CLI
-via :command:`python -m ansible_dev_tools`.
+via :command:`python3 -m ansible_dev_tools`.
 """
 
 from .cli import main
