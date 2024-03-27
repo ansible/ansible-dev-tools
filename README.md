@@ -26,7 +26,7 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 ## Installation
 
-`python -m pip install ansible-dev-tools`
+`python3 -m pip install ansible-dev-tools`
 
 ## Usage
 
