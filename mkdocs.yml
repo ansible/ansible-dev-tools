@@ -102,7 +102,8 @@ plugins:
   - markdown-exec
   - material/search:
       separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-  - material/social
+  # https://github.com/squidfunk/mkdocs-material/issues/6983
+  # - material/social
   - material/tags
   - mkdocstrings:
       handlers:
