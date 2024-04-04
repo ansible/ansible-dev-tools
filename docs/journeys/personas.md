@@ -44,10 +44,13 @@ In my role I do not create automation content directly but am responsible for pr
 - **Attitude:** Wants to see and diagnose issues as quickly as possible. Needs alerts when malfunctions occur, a flashing red light on the dashboard.
 - **Knowledge:** Deep understanding of Linux and open-source technologies. Proficient with monitoring and logging tools.
 
-# Developer
+# Ansible content developer
 
-I write automation content that users of a partner or vendor platform can consume.
+I write automation content that users of a partner or vendor platform can consume, with a focus on Ansible plugins and modules in Python or other programming languages.
+I might work with the community to maintain one or more collections as part of the Ansible package.
+In some cases, I create and distribute collections through other channels or mechanisms.
+In my role I might also be interested in community tooling such as Antsibull or other projects in the ecosystem.
 
-- **Needs:** Understand programmatic options and their expected behaviour.
-- **Attitude:** Technically curious and prefers verbosity.
+- **Needs:** Understand programmatic options and their expected behaviour. Guidance on lifecycles and maintenance best practices.
+- **Attitude:** Technically curious and prefers verbosity. Often busy with another more primary role.
 - **Knowledge:** Expert level programming ability.
