@@ -44,17 +44,6 @@ If you need to uninstall ADT, use the following pip command:
 
 In addition to installing each of the above tools, `ansible-dev-tools` provides an easy way to show the versions of the content creation tools that make up the current development environment.
 
-```
+```console exec="1" source="console" returncode="0"
 $ adt --version
-ansible-builder                          3.0.0
-ansible-core                             2.16.3
-ansible-creator                          24.2.0
-ansible-dev-environment                  24.1.0
-ansible-dev-tools                        0.2.0a0
-ansible-lint                             24.2.0
-ansible-navigator                        24.2.0
-ansible-sign                             0.1.1
-molecule                                 6.0.3
-pytest-ansible                           24.1.2
-tox-ansible                              24.2.0
 ```
