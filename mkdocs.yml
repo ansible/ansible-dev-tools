@@ -3,7 +3,7 @@ site_name: Ansible Development Tools Documentation
 site_url: https://ansible.readthedocs.io/projects/dev-tools/
 repo_url: https://github.com/ansible/ansible-dev-tools
 edit_uri: blob/main/docs/
-copyright: Copyright © 2024 Red Hat, Inc.
+copyright: Copyright © Red Hat, Inc.
 docs_dir: docs
 strict: true
 
