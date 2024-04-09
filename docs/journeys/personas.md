@@ -15,13 +15,13 @@ I have a single repeatable task that I perform as part of my job and I want to a
 - **Attitude:** Wants to understand things quickly and can find small obstacles frustrating.
 - **Knowledge:** Strong knowledge of fundamentals of computing. Uses an IDE as part of the daily workflow.
 
-# Software automation engineer
+# IT automation engineer
 
 I create automation content, composed of multiple tasks or playbooks, that runs against single platforms.
 I want to reuse automation content where possible and share automation content with others.
 I work independently or with a small team and have an innovative mindset with strong problem-solving ability.
 
-- **Needs:** Task-oriented content focused on building and testing automation content. Conceptual details related to organizing and structuring projects. Extensive reference content that explains “if you do x, then y is the expected behaviour”.
+- **Needs:** Task-oriented content focused on building and testing automation content. Conceptual details related to organizing and structuring projects. Extensive reference content that explains "if you do x, then y is the expected behaviour".
 - **Attitude:** Wants to understand how things work and what are the available options.
 - **Knowledge:** Strong knowledge of CI/CD platforms and tools. Expert with scripting languages.
 
