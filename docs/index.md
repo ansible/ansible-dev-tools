@@ -4,21 +4,25 @@ hide:
   - toc
 ---
 
+<!-- cspell:disable-next-line -->
+
 # Ansible Development Tools (ADT)
 
 ## Introduction
 
-Ansible Development Tools or ADT for short, aims to streamline the setup and usage of several tools needed in order to create [Ansible](https://www.ansible.com/) content.
-When it comes to creating automation content using Ansible, there are several packages available that can help users in different parts of the content creating journey. From bootstrapping new projects, all the way to ensuring content follows best practices and verifying it behaves as intended via well established test frameworks.
+<!-- cspell:disable-next-line -->
+
+Ansible Development Tools or ADT for short, aims to streamline the setup and usage of several tools needed to create [Ansible](https://www.ansible.com/) content.
+When it comes to creating automation content using Ansible, there are several packages available that can help users in different parts of the content-creating journey. From bootstrapping new projects, all the way to ensuring content follows best practices and verifying it behaves as intended via well-established test frameworks.
 
 ## Key Features
 
-- All-in-One Ansible Toolkit: ADT combines critical Ansible development packages into a unified Python package called [ansible-dev-tools](https://pypi.org/project/ansible-dev-tools/).
+- All-in-One Ansible Toolkit: ansible-dev-tools combines critical Ansible development packages into a unified Python package called [ansible-dev-tools](https://pypi.org/project/ansible-dev-tools/).
 
-- Simplified Ansible Automation: ADT focuses on crafting your automation scenarios and workflows with speed by reducing boilerplate code without
+- Simplified Ansible Automation: ansible-dev-tools focuses on crafting your automation scenarios and workflows with speed by reducing boilerplate code without
   dealing with the intricacies of managing and integrating different Ansible libraries.
 
-For those looking for an IDE based experience, we also recommend you get familiar with the [Ansible extension for VSCode](https://marketplace.visualstudio.com/items?itemName=redhat.ansible).
+For those looking for an IDE-based experience, we also recommend you get familiar with the [Ansible extension for VSCode](https://marketplace.visualstudio.com/items?itemName=redhat.ansible).
 
 ## Included Packages
 
@@ -37,7 +41,7 @@ The curated list of tools installed as part of the Ansible Development Tools inc
 
 ## Getting started
 
-To get started, follow the [installation](installation.md) steps to get ADT setup and check [User Guide](user-guide/index.md) for more details.
+To get started, follow the [installation](installation.md) steps to get ansible-dev-tools setup and check [User Guide](user-guide/index.md) for more details.
 
 ## Community
 

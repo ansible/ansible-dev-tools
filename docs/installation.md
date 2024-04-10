@@ -6,37 +6,37 @@ hide:
 
 ## Requirements
 
-- Python 3.10: ADT requires Python 3.10 or later. Make sure you have Python 3.10 installed on your system before proceeding.
+- Python 3.10: ansible-dev-tools requires Python 3.10 or later. Make sure you have Python 3.10 installed on your system before proceeding.
 
 ## Installation
 
 `pip install ansible-dev-tools`
 
-Once installation is completed, see the [User Guide](user-guide/index.md) for more details about ADT usage.
+Once installation is completed, see the [User Guide](user-guide/index.md) for more details about ansible-dev-tools usage.
 
 ### Latest Releases
 
 - GitHub
-  To view the latest releases, see the [ADT GitHub releases page](https://github.com/ansible/ansible-dev-tools/releases). Each release includes detailed release notes outlining new features, improvements, and bug fixes.
+  To view the latest releases, see the [ansible-dev-tools GitHub releases page](https://github.com/ansible/ansible-dev-tools/releases). Each release includes detailed release notes outlining new features, improvements, and bug fixes.
 
 - PyPI
-  The [PyPI page for ADT](https://pypi.org/project/ansible-dev-tools/) provides information on the latest stable release and allows you to download specific versions of the package.
+  The [PyPI page for ansible-dev-tools](https://pypi.org/project/ansible-dev-tools/) provides information on the latest stable release and allows you to download specific versions of the package.
 
 ## Upgrade
 
-To upgrade ADT to the latest version, use the following pip command:
+To upgrade ansible-dev-tools to the latest version, use the following pip command:
 
 `pip install --upgrade ansible-dev-tools`
 
 ## Downgrade
 
-If needed, you can downgrade ADT to a specific version using the following pip command:
+If needed, you can downgrade ansible-dev-tools to a specific version using the following pip command:
 
 `pip install ansible-dev-tools==desired-version`
 
 ## Uninstallation
 
-If you need to uninstall ADT, use the following pip command:
+If you need to uninstall ansible-dev-tools, use the following pip command:
 
 `pip uninstall ansible-dev-tools`
 
