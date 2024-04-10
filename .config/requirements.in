@@ -1,5 +1,5 @@
 ansible-builder
-ansible-creator
+ansible-creator>=24.4.1
 ansible-dev-environment
 ansible-lint
 ansible-navigator
