@@ -1,3 +1,5 @@
+<!-- cspell:disable-next-line -->
+
 # Ansible Development Tools (ADT)
 
 The `ansible-dev-tools` python package provides an easy way to install and discover the best tools available to create and test ansible content.
