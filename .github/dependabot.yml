@@ -18,6 +18,7 @@ updates:
         exclude-patterns:
           - ansible-creator
           - ansible-dev-tools
+          - ansible-dev-environment
           - ansible-lint
           - ansible-navigator
           - molecule
