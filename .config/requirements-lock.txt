@@ -9,7 +9,7 @@ ansible-compat==4.1.11
 ansible-core==2.16.5
 ansible-creator==24.4.1
 ansible-dev-environment==24.1.0
-ansible-lint==24.2.1
+ansible-lint==24.2.2
 ansible-navigator==24.2.0
 ansible-runner==2.3.6
 ansible-sign==0.1.1
