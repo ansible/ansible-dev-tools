@@ -34,24 +34,20 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 In addition to installing each of the above tools, `ansible-dev-tools` provides an easy way to show the versions of the content creation tools that make up the current development environment.
 
-<!-- START -->
-
 ```
 $ adt --version
-ansible-builder                          3.0.1
-ansible-core                             2.16.5
-ansible-creator                          24.4.1
-ansible-dev-environment                  24.1.0
-ansible-dev-tools                        24.2.0
-ansible-lint                             24.2.1
-ansible-navigator                        24.2.0
-ansible-sign                             0.1.1
-molecule                                 24.2.0
-pytest-ansible                           24.1.2
-tox-ansible                              24.2.0
+ansible-builder                          <version>
+ansible-core                             <version>
+ansible-creator                          <version>
+ansible-dev-environment                  <version>
+ansible-dev-tools                        <version>
+ansible-lint                             <version>
+ansible-navigator                        <version>
+ansible-sign                             <version>
+molecule                                 <version>
+pytest-ansible                           <version>
+tox-ansible                              <version>
 ```
-
-<!-- END -->
 
 ## Documentation
 
