@@ -9,7 +9,7 @@ ansible-compat==4.1.11
 ansible-core==2.16.6
 ansible-creator==24.4.1
 ansible-dev-environment==24.1.0
-ansible-lint==24.2.1
+ansible-lint==24.2.2
 ansible-navigator==24.2.0
 ansible-runner==2.3.6
 ansible-sign==0.1.1
@@ -75,7 +75,7 @@ mkdocs-minify-plugin==0.8.0
 mkdocs-monorepo-plugin==1.1.0
 mkdocstrings==0.24.3
 mkdocstrings-python==1.9.2
-molecule==24.2.0
+molecule==24.2.1
 mypy==1.9.0
 mypy-extensions==1.0.0
 nodeenv==1.8.0
