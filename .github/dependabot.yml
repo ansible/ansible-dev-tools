@@ -1,6 +1,7 @@
 ---
 version: 2
 updates:
+  # indirect dependencies that we do not want to mention in changelog
   - package-ecosystem: pip
     directory: /.config/
     schedule:
@@ -8,11 +9,20 @@ updates:
       interval: weekly
     labels:
       - dependabot-deps-updates
-      - skip-changelog
+      # We need to manually decide which ones are to be mentioned.
+      # - skip-changelog
     groups:
       dependencies:
         patterns:
           - "*"
+        exclude-patterns:
+          - ansible-creator
+          - ansible-dev-tools
+          - ansible-lint
+          - ansible-navigator
+          - molecule
+          - pytest-ansible
+          - tox-ansible
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
