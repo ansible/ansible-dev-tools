@@ -14,7 +14,7 @@ import pytest
 def dev_tools_server() -> Generator[str, None, None]:
     """Run the server."""
     bin_path = Path(sys.executable).parent / "adt"
-    with subprocess.Popen([bin_path, "server", "-p", "8000"]) as proc: # noqa: S603
+    with subprocess.Popen([bin_path, "server", "-p", "8000"]) as proc:  # noqa: S603
         time.sleep(1)  # allow the server to start
         yield "http://localhost:8000"
         proc.terminate()

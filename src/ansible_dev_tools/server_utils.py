@@ -1,4 +1,4 @@
-"""Utilty functions requireing server dependencies."""
+"""Utility functions requiring server dependencies."""
 
 from importlib import resources as importlib_resources
 

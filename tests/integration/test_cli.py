@@ -9,7 +9,8 @@ from ansible_dev_tools.version_builder import PKGS
 
 
 def test_version(
-    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     """Test collecting versions."""
     monkeypatch.setattr("sys.argv", ["adt", "--version"])
@@ -21,7 +22,8 @@ def test_version(
 
 
 def test_server_fail_no_deps(
-    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     """Test the server subcommand fails if server dependencies are missing."""
     monkeypatch.setattr("sys.argv", ["adt", "server"])
