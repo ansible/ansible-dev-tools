@@ -101,16 +101,18 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
+          - django-stubs[compatible-mypy]
+          - jinja2
           - pytest
           - tox
-          - types-setuptools
-          - jinja2
           - types-pyyaml
-          - django-stubs[compatible-mypy]
+          - types-requests
+          - types-setuptools
         args:
           - src
           - tests
         pass_filenames: false
+        language_version: "3.10"
 
   - repo: https://github.com/jazzband/pip-tools
     rev: 7.4.1

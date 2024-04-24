@@ -235,6 +235,9 @@ disable = [
   "unsubscriptable-object"
 ]
 
+[tool.pytest.ini_options]
+addopts = "-p no:pytest-ansible"
+
 [tool.ruff]
 builtins = ["__"]
 fix = true
