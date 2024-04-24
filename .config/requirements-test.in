@@ -7,3 +7,5 @@ pydoclint
 pytest
 ruff
 toml-sort
+types-pyyaml
+django-stubs[compatible-mypy]
