@@ -52,6 +52,7 @@ module = ["gunicorn.*", "openapi_core.*", "ansible_creator.*"]
 allow-init-docstring = true
 arg-type-hints-in-docstring = false
 check-return-types = false
+style = 'google'
 
 [tool.pylint]
 

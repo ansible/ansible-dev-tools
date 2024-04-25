@@ -21,10 +21,14 @@ class CreatorFrontendV1:
     """The creator frontend, handles requests from users."""
 
     def _response_from_tar(self: CreatorFrontendV1, tar_file: Path) -> FileResponse:
-        """Create a FileResponse from a tar file.
+        """
+        Create a FileResponse from a tar file.
 
-        :params tar_file: The tar file path
-        :returns: The file response
+        Args:
+            tar_file: The tar file path.
+
+        Returns:
+            The file response.
         """
         fs = FileSystemStorage(str(tar_file.parent))
         response = FileResponse(
@@ -39,10 +43,14 @@ class CreatorFrontendV1:
         self: CreatorFrontendV1,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
-        """Create a new playbook project.
+        """
+        Create a new playbook project.
 
-        :params request: HttpRequest object
-        :returns: File or error response
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
         """
         result = validate_request(request)
         if isinstance(result, HttpResponse):
@@ -63,10 +71,14 @@ class CreatorFrontendV1:
         self: CreatorFrontendV1,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
-        """Create a new collection project.
+        """
+        Create a new collection project.
 
-        :params request: HttpRequest object
-        :returns: File or error response
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
         """
         result = validate_request(request)
         if isinstance(result, HttpResponse):
@@ -88,11 +100,13 @@ class CreatorOutput(Output):  # type: ignore[misc]
     """The creator output."""
 
     def __init__(self: CreatorOutput, log_file: str) -> None:
-        """Initialize the creator output.
+        """
+        Initialize the creator output.
 
         Convenience class to consistently define output with a changing temporary directory.
 
-        :params log_file: The log file path
+        Args:
+            log_file: The log file path.
         """
         super().__init__(
             log_file=log_file,
@@ -107,18 +121,24 @@ class CreatorBackend:
     """The creator wrapper, handles interaction with the python creator project."""
 
     def __init__(self: CreatorBackend, tmp_dir: Path) -> None:
-        """Initialize the creator.
+        """
+        Initialize the creator.
 
-        :params tmp_dir: The temporary directory
+        Args:
+            tmp_dir: The temporary directory.
         """
         self.tmp_dir = tmp_dir
 
     def collection(self: CreatorBackend, collection: str, project: str) -> Path:
-        """Scaffold a collection.
+        """
+        Scaffold a collection.
 
-        :params collection: The collection name
-        :params project: The project type
-        :returns: The tar file path
+        Args:
+            collection: The collection name.
+            project: The project type.
+
+        Returns:
+            The tar file path.
         """
         init_path = self.tmp_dir / collection
         config = Config(
@@ -141,12 +161,16 @@ class CreatorBackend:
         scm_org: str,
         scm_project: str,
     ) -> Path:
-        """Scaffold a playbook project.
+        """
+        Scaffold a playbook project.
 
-        :params project: The project type
-        :params scm_org: The SCM organization
-        :params scm_project: The SCM project
-        :returns: The tar file path
+        Args:
+            project: The project type.
+            scm_org: The SCM organization.
+            scm_project: The SCM project.
+
+        Returns:
+            The tar file path.
         """
         init_path = self.tmp_dir / f"{scm_org}-{scm_project}"
         config = Config(

@@ -22,11 +22,14 @@ OPENAPI = OpenAPI.from_dict(
 
 
 def validate_request(request: HttpRequest) -> RequestUnmarshalResult | HttpResponse:
-    """Validate the request against the OpenAPI schema.
+    """
+    Validate the request against the OpenAPI schema.
 
-    :params request: HttpRequest object
-    :returns: The request body
-    :returns: The error response
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        The request body or the error HTTP response is validation fails.
     """
     try:
         openapi_request = DjangoOpenAPIRequest(request)
@@ -40,11 +43,15 @@ def validate_response(
     request: HttpRequest,
     response: FileResponse | HttpResponse,
 ) -> FileResponse | HttpResponse:
-    """Validate the response against the OpenAPI schema.
+    """
+    Validate the response against the OpenAPI schema.
 
-    :params request: HttpRequest object
-    :params response: HttpResponse object
-    :returns: The response object
+    Args:
+        request: HttpRequest object.
+        response: HttpResponse object.
+
+    Returns:
+        HttpResponse: The response object.
     """
     try:
         OPENAPI.validate_response(

@@ -1,1 +1,1 @@
-"""Top level package for ADT server."""
+"""Top level package for Ansible Devtools server."""

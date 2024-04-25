@@ -1,4 +1,4 @@
-"""Django server for the devtools API."""
+"""Django server for the Ansible Devtools API."""
 
 from __future__ import annotations
 
@@ -30,10 +30,12 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
 
     # pylint: disable=abstract-method
     def __init__(self: AdtServerApp, app: WSGIHandler, options: dict[str, str]) -> None:
-        """Initialize the application.
+        """
+        Initialize the application.
 
-        :param app: The application to run with gunicorn.
-        :param options: configuration options for gunicorn.
+        Args:
+            app: The application to run with gunicorn.
+            options: Configuration options for gunicorn.
         """
         self.options = options or {}
         self.application = app
@@ -58,10 +60,12 @@ class Server:
     """Ansible Devtools server implementation."""
 
     def __init__(self: Server, port: str, debug: bool) -> None:  # noqa: FBT001
-        """Initialize an AdtServer object.
+        """
+        Initialize an AdtServer object.
 
-        :param port: The port on which the server would run.
-        :param debug: Enable or disable debug logging.
+        Args:
+            port: The port on which the server would run.
+            debug: Enable or disable debug logging.
         """
         self.port: str = port
         self.debug: bool = debug
