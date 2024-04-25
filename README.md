@@ -49,6 +49,16 @@ pytest-ansible                           <version>
 tox-ansible                              <version>
 ```
 
+## Developer Notes
+
+The `ansible-dev-tools` package also offers an Ansible Devtools server which can be launched with `adt server`.
+Currently, this server only supports REST APIs for `ansible-creator`.
+
+Refer to the [server](https://github.com/ansible/ansible-dev-tools/blob/main/src/ansible_dev_tools/subcommands/server.py) code
+for available endpoints.
+
+**Note:** This is primarily for backend integrations and is not intended to be a user-facing functionality.
+
 ## Documentation
 
 For more information, please visit our [documentation](https://ansible.readthedocs.io/projects/dev-tools/) page.
