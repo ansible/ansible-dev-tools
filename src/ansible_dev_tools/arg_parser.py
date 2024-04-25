@@ -26,6 +26,7 @@ def parse() -> argparse.Namespace:
         help="The subcommand to invoke.",
         title="Commands",
         dest="subcommand",
+        required=True,
     )
 
     server_command_parser = subparsers.add_parser(

@@ -1,56 +1,30 @@
-"""Some utility functions."""
-
-from importlib import resources as importlib_resources
-
-import yaml
-
-from django.http import FileResponse, HttpRequest, HttpResponse
-from openapi_core import OpenAPI
-from openapi_core.contrib.django import DjangoOpenAPIRequest, DjangoOpenAPIResponse
-from openapi_core.exceptions import OpenAPIError
-from openapi_core.unmarshalling.request.datatypes import RequestUnmarshalResult
+"""Utility function not requiring server dependencies."""
 
 
-OPENAPI = OpenAPI.from_dict(
-    yaml.safe_load(
-        (
-            importlib_resources.files("ansible_dev_tools.resources.server.data")
-            / "openapi.yaml"
-        ).read_text(),
-    ),
-)
+class Colors:
+    """ANSI color codes."""
 
-
-def validate_request(request: HttpRequest) -> RequestUnmarshalResult | HttpResponse:
-    """Validate the request against the OpenAPI schema.
-
-    :params request: HttpRequest object
-    :returns: The request body
-    :returns: The error response
-    """
-    try:
-        openapi_request = DjangoOpenAPIRequest(request)
-        OPENAPI.validate_request(openapi_request)
-    except OpenAPIError as exc:
-        return HttpResponse(str(exc), status=400)
-    return OPENAPI.unmarshal_request(openapi_request)
-
-
-def validate_response(
-    request: HttpRequest,
-    response: FileResponse | HttpResponse,
-) -> FileResponse | HttpResponse:
-    """Validate the response against the OpenAPI schema.
-
-    :params request: HttpRequest object
-    :params response: HttpResponse object
-    :returns: The response object
-    """
-    try:
-        OPENAPI.validate_response(
-            request=DjangoOpenAPIRequest(request),
-            response=DjangoOpenAPIResponse(response),
-        )
-    except OpenAPIError as exc:
-        return HttpResponse(str(exc), status=400)
-    return response
+    BLACK = "\033[0;30m"
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    BROWN = "\033[0;33m"
+    BLUE = "\033[0;34m"
+    PURPLE = "\033[0;35m"
+    CYAN = "\033[0;36m"
+    LIGHT_GRAY = "\033[0;37m"
+    DARK_GRAY = "\033[1;30m"
+    LIGHT_RED = "\033[1;31m"
+    LIGHT_GREEN = "\033[1;32m"
+    YELLOW = "\033[1;33m"
+    LIGHT_BLUE = "\033[1;34m"
+    LIGHT_PURPLE = "\033[1;35m"
+    LIGHT_CYAN = "\033[1;36m"
+    LIGHT_WHITE = "\033[1;37m"
+    BOLD = "\033[1m"
+    FAINT = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
+    BLINK = "\033[5m"
+    NEGATIVE = "\033[7m"
+    CROSSED = "\033[9m"
+    END = "\033[0m"
