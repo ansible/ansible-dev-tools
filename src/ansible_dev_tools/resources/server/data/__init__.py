@@ -1,1 +1,1 @@
-"""Data package for ADT server."""
+"""Data package for Ansible Devtools server."""
