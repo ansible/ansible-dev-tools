@@ -55,7 +55,7 @@ The `ansible-dev-tools` package also offers an Ansible Devtools server which can
 
 Refer to the [server](https://github.com/ansible/ansible-dev-tools/blob/main/src/ansible_dev_tools/subcommands/server.py) code for available endpoints.
 
-**Note:** This is primarily for backend integrations and is not intended to be an user facing functionality.
+**Note:** This is primarily for backend integrations and is not intended to be an user-facing functionality.
 
 ## Documentation
 
