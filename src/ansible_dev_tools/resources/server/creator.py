@@ -96,8 +96,7 @@ class CreatorFrontendV1:
         )
 
 
-# TO-DO: remove type ignore after creator is released with py.typed
-class CreatorOutput(Output):  # type: ignore[misc]
+class CreatorOutput(Output):
     """The creator output."""
 
     def __init__(self: CreatorOutput, log_file: str) -> None:
