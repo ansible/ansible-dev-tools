@@ -29,7 +29,7 @@ I work independently or with a small team and have an innovative mindset with st
 
 I create end-to-end automation solutions across multiple services or applications.
 I also manage things like inventories and credentials and work with cross-functional teams to oversee testing, delivery, and validation of solutions.
-In my role I use CI/CD pipelines to provision cloud resources and integrate solutions on a continual basis. Creates separate stage and production environments.
+In my role I use CI/CD pipelines to provision cloud resources and integrate solutions on a continual basis. I create separate stage and production environments.
 
 - **Needs:** Opinionated task-oriented content at the solution level.
 - **Attitude:** Wants to know the "one right way" to perform a task in a repeatable, predictable way. Cares about visibility, governance, KPIs, and SLA requirements (99.999 24/7).
