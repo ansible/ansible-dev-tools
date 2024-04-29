@@ -104,6 +104,7 @@ repos:
           - django-stubs[compatible-mypy]
           - jinja2
           - pytest
+          - ansible-creator
           - tox
           - types-pyyaml
           - types-requests

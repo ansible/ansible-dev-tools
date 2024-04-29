@@ -71,7 +71,6 @@ class Server:
         self.debug: bool = debug
 
         settings.configure(
-            DEBUG=self.debug,
             SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(32)),
             ALLOWED_HOSTS=[
                 "*",
@@ -91,4 +90,8 @@ class Server:
         options = {
             "bind": f"0.0.0.0:{self.port}",
         }
+        if self.debug:
+            # set log level to debug and write access logs to stdout
+            options.update({"loglevel": "debug", "accesslog": "-"})
+
         AdtServerApp(self.application, options).run()
