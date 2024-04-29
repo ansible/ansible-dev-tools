@@ -22,7 +22,7 @@ I want to reuse automation content where possible and share automation content w
 I work independently or with a small team and have an innovative mindset with strong problem-solving ability.
 
 - **Needs:** Task-oriented content focused on building and testing automation content. Conceptual details related to organizing and structuring projects. Extensive reference content that explains "if you do x, then y is the expected behaviour".
-- **Attitude:** Wants to understand how things work and what are the available options.
+- **Attitude:** Wants to understand how things work and what the available options are.
 - **Knowledge:** Strong knowledge of CI/CD platforms and tools. Expert with scripting languages.
 
 # Process automation engineer
