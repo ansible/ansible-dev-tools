@@ -89,19 +89,31 @@ repos:
         additional_dependencies:
           - pytest
           - tox
+          - PyYAML
+          - ansible-creator
+          - django
+          - openapi_core
+          - pytest
+          - gunicorn
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
     rev: v1.9.0
     hooks:
       - id: mypy
         additional_dependencies:
+          - django-stubs[compatible-mypy]
+          - jinja2
           - pytest
+          - ansible-creator
           - tox
+          - types-pyyaml
+          - types-requests
           - types-setuptools
         args:
           - src
           - tests
         pass_filenames: false
+        language_version: "3.10"
 
   - repo: https://github.com/jazzband/pip-tools
     rev: 7.4.1

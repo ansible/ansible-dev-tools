@@ -44,6 +44,10 @@ repository = "https://github.com/ansible/ansible-dev-tools"
 files = ["src", "tests"]
 strict = true
 
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ["gunicorn.*", "openapi_core.*"]
+
 [tool.pydoclint]
 allow-init-docstring = true
 arg-type-hints-in-docstring = false
@@ -232,6 +236,9 @@ disable = [
   "unsubscriptable-object"
 ]
 
+[tool.pytest.ini_options]
+addopts = "-p no:pytest-ansible"
+
 [tool.ruff]
 builtins = ["__"]
 fix = true
@@ -259,6 +266,7 @@ convention = "pep257"
 dependencies = {file = [".config/requirements.in"]}
 optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
 optional-dependencies.test = {file = [".config/requirements-test.in"]}
+optional-dependencies.server = {file = [".config/requirements-server.in"]}
 
 [tool.setuptools_scm]
 # To prevent accidental pick of mobile version tags such 'v6'
