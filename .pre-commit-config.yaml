@@ -11,7 +11,7 @@ ci:
     - deps
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-merge-conflict
       - id: check-symlinks
@@ -47,7 +47,7 @@ repos:
           - prettier-plugin-sort-json
 
   - repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 24.4.2
     hooks:
       - id: black
 
@@ -62,13 +62,13 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.4
+    rev: v0.4.3
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.6.1
+    rev: v8.8.0
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -97,7 +97,7 @@ repos:
           - gunicorn
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: mypy
         additional_dependencies:
