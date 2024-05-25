@@ -58,8 +58,8 @@ def pytest_sessionstart(session: pytest.Session) -> None:
         return
 
     global PROC  # noqa: PLW0603
-    PROC = subprocess.Popen(
-        [bin_path, "server", "-p", "8000"], # noqa: S603
+    PROC = subprocess.Popen(  # pylint: disable=consider-using-with
+        [bin_path, "server", "-p", "8000"],  # noqa: S603
         env=os.environ,
     )
     tries = 0
