@@ -30,8 +30,7 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
 
     # pylint: disable=abstract-method
     def __init__(self: AdtServerApp, app: WSGIHandler, options: dict[str, str]) -> None:
-        """
-        Initialize the application.
+        """Initialize the application.
 
         Args:
             app: The application to run with gunicorn.
@@ -52,7 +51,11 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
             self.cfg.set(key.lower(), value)
 
     def load(self: AdtServerApp) -> WSGIHandler:
-        """Load application."""
+        """Load application.
+
+        Returns:
+            The application to run with gunicorn.
+        """
         return self.application
 
 
@@ -60,8 +63,7 @@ class Server:
     """Ansible Devtools server implementation."""
 
     def __init__(self: Server, port: str, debug: bool) -> None:  # noqa: FBT001
-        """
-        Initialize an AdtServer object.
+        """Initialize an AdtServer object.
 
         Args:
             port: The port on which the server would run.

@@ -21,8 +21,7 @@ class CreatorFrontendV1:
     """The creator frontend, handles requests from users."""
 
     def _response_from_tar(self: CreatorFrontendV1, tar_file: Path) -> FileResponse:
-        """
-        Create a FileResponse from a tar file.
+        """Create a FileResponse from a tar file.
 
         Args:
             tar_file: The tar file path.
@@ -43,8 +42,7 @@ class CreatorFrontendV1:
         self: CreatorFrontendV1,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
-        """
-        Create a new playbook project.
+        """Create a new playbook project.
 
         Args:
             request: HttpRequest object.
@@ -71,8 +69,7 @@ class CreatorFrontendV1:
         self: CreatorFrontendV1,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
-        """
-        Create a new collection project.
+        """Create a new collection project.
 
         Args:
             request: HttpRequest object.
@@ -100,8 +97,7 @@ class CreatorOutput(Output):
     """The creator output."""
 
     def __init__(self: CreatorOutput, log_file: str) -> None:
-        """
-        Initialize the creator output.
+        """Initialize the creator output.
 
         Convenience class to consistently define output with a changing temporary directory.
 
@@ -121,8 +117,7 @@ class CreatorBackend:
     """The creator wrapper, handles interaction with the python creator project."""
 
     def __init__(self: CreatorBackend, tmp_dir: Path) -> None:
-        """
-        Initialize the creator.
+        """Initialize the creator.
 
         Args:
             tmp_dir: The temporary directory.
@@ -130,8 +125,7 @@ class CreatorBackend:
         self.tmp_dir = tmp_dir
 
     def collection(self: CreatorBackend, collection: str, project: str) -> Path:
-        """
-        Scaffold a collection.
+        """Scaffold a collection.
 
         Args:
             collection: The collection name.
@@ -161,8 +155,7 @@ class CreatorBackend:
         scm_org: str,
         scm_project: str,
     ) -> Path:
-        """
-        Scaffold a playbook project.
+        """Scaffold a playbook project.
 
         Args:
             project: The project type.

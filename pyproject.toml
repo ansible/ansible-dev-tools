@@ -260,7 +260,7 @@ lines-between-types = 1 # Separate import/from with 1 line
 "tests/**" = ["S101", "S602", "T201"]
 
 [tool.ruff.pydocstyle]
-convention = "pep257"
+convention = "google"
 
 [tool.setuptools.dynamic]
 dependencies = {file = [".config/requirements.in"]}

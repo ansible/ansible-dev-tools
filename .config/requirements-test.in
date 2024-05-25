@@ -1,9 +1,10 @@
 black
 coverage
+flake8
 mypy
 pip-tools
 pre-commit
-pydoclint
+pydoclint[flake8]
 pytest
 requests
 ruff
