@@ -34,7 +34,8 @@ jobs:
 
   tox:
     name: ${{ matrix.name }} / python ${{ matrix.python_version }}
-    environment: test
+    permissions:
+      id-token: write
     runs-on: ubuntu-20.04
     needs: pre
     strategy:
@@ -75,9 +76,9 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           name: ${{ matrix.name }}
-          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
           fail_ci_if_error: true
+          use_oidc: true # cspell:ignore oidc
 
       - name: Report failure if git reports dirty status
         run: |
