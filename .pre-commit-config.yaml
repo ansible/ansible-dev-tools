@@ -73,12 +73,13 @@ repos:
       - id: cspell
         name: Spell check with cspell
 
-  - repo: https://github.com/jsh9/pydoclint
-    rev: 0.4.1
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
     hooks:
-      - id: pydoclint
-        args:
-          - "--config=pyproject.toml"
+      - id: flake8
+        name: flake8(pydoclint)
+        additional_dependencies:
+          - pydoclint[flake8]
 
   - repo: https://github.com/pycqa/pylint.git
     rev: v3.1.0

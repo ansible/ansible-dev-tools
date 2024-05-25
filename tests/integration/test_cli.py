@@ -12,7 +12,12 @@ def test_version(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Test collecting versions."""
+    """Test collecting versions.
+
+    Args:
+        monkeypatch: Pytest monkeypatch fixture.
+        capsys: Pytest capsys fixture.
+    """
     monkeypatch.setattr("sys.argv", ["adt", "--version"])
     with pytest.raises(SystemExit):
         main()
@@ -25,7 +30,12 @@ def test_server_fail_no_deps(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Test the server subcommand fails if server dependencies are missing."""
+    """Test the server subcommand fails if server dependencies are missing.
+
+    Args:
+        monkeypatch: Pytest monkeypatch fixture.
+        capsys: Pytest capsys fixture.
+    """
     monkeypatch.setattr("sys.argv", ["adt", "server"])
     monkeypatch.setitem(sys.modules, "django", None)
 

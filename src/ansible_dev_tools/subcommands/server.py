@@ -52,7 +52,11 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
             self.cfg.set(key.lower(), value)
 
     def load(self: AdtServerApp) -> WSGIHandler:
-        """Load application."""
+        """Load application.
+
+        Returns:
+            The application to run with gunicorn.
+        """
         return self.application
 
 
