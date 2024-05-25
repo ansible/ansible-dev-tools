@@ -22,8 +22,7 @@ OPENAPI = OpenAPI.from_dict(
 
 
 def validate_request(request: HttpRequest) -> RequestUnmarshalResult | HttpResponse:
-    """
-    Validate the request against the OpenAPI schema.
+    """Validate the request against the OpenAPI schema.
 
     Args:
         request: HttpRequest object.
@@ -43,8 +42,7 @@ def validate_response(
     request: HttpRequest,
     response: FileResponse | HttpResponse,
 ) -> FileResponse | HttpResponse:
-    """
-    Validate the response against the OpenAPI schema.
+    """Validate the response against the OpenAPI schema.
 
     Args:
         request: HttpRequest object.
