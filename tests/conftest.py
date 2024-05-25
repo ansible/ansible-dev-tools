@@ -56,8 +56,10 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     if os.environ.get("PYTEST_XDIST_WORKER"):
         return
 
-    global PROC # noqa: PLW0603
-    PROC = subprocess.Popen([bin_path, "server", "-p", "8000"], env=os.environ) # noqa: S603
+    global PROC  # noqa: PLW0603
+    PROC = subprocess.Popen(
+        [bin_path, "server", "-p", "8000"], env=os.environ,
+    )
     tries = 0
     max_tries = 10
     while tries < max_tries:
@@ -65,12 +67,13 @@ def pytest_sessionstart(session: pytest.Session) -> None:
             res = requests.get("http://localhost:8000", timeout=1)
             if res.status_code == requests.codes.get("not_found"):
                 return
-        except requests.exceptions.ConnectionError: # noqa: PERF203
+        except requests.exceptions.ConnectionError:  # noqa: PERF203
             tries += 1
             time.sleep(1)
 
     msg = "Could not start the server."
     raise RuntimeError(msg)
+
 
 def pytest_sessionfinish(session: pytest.Session) -> None:
     """Stop the server.
@@ -85,7 +88,7 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     if os.environ.get("PYTEST_XDIST_WORKER"):
         return
 
-    global PROC # noqa: PLW0603
+    global PROC  # noqa: PLW0603
     if PROC is None:
         msg = "The server is not running."
         raise RuntimeError(msg)

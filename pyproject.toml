@@ -56,7 +56,6 @@ source_pkgs = ["ansible_dev_tools"]
 parallel = true
 concurrency = ["multiprocessing", "thread"]
 
-
 [tool.mypy]
 files = ["src", "tests"]
 strict = true
