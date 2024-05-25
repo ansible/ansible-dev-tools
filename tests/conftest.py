@@ -1,3 +1,4 @@
+# cspell:ignore XDIST, sessionstart, sessionfinish
 """Global conftest.py for pytest.
 
 The root package import below happens before the pytest workers are forked, so it
@@ -58,7 +59,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
     global PROC  # noqa: PLW0603
     PROC = subprocess.Popen(
-        [bin_path, "server", "-p", "8000"], env=os.environ,
+        [bin_path, "server", "-p", "8000"], env=os.environ, # noqa: S603
     )
     tries = 0
     max_tries = 10
