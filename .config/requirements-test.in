@@ -1,3 +1,4 @@
+ansible-dev-tools[server]
 black
 coverage
 flake8
