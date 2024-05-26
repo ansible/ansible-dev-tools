@@ -106,9 +106,11 @@ repos:
           - django-stubs[compatible-mypy]
           - jinja2
           - openapi-core>=0.19.1
+          - pytest
           - types-PyYAML
           - types-requests
           - types-setuptools
+        # Override default pre-commit '--ignore-missing-imports'
         args: [--strict]
 
   - repo: https://github.com/jazzband/pip-tools
