@@ -90,9 +90,7 @@ repos:
           - gunicorn
           - openapi_core
           - pytest
-          - pytest
           - PyYAML
-          - tox
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
     rev: v1.10.0
