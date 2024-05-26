@@ -1,22 +1,25 @@
+---
 name: tox
 
-# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 on:
-  create: # is used for publishing to PyPI and TestPyPI
-    tags: # any tag regardless of its name, no branches
-      - "**"
   push: # only publishes pushes to the main branch to TestPyPI
     branches: # any integration branch but not tag
       - "main"
   pull_request:
+    branches:
+      - "main"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: 1 # tox, pytest, ansible-lint
+  PY_COLORS: 1
 
 jobs:
-  pre:
-    name: pre
+  prepare:
+    name: prepare
     runs-on: ubuntu-22.04
     outputs:
       matrix: ${{ steps.generate_matrix.outputs.matrix }}
@@ -27,58 +30,69 @@ jobs:
         with:
           min_python: "3.10"
           max_python: "3.12"
-          default_python: "3.10" # used by jobs in other_names
+          default_python: "3.11" # used by jobs in other_names
           other_names: |
             lint
             docs
+            pkg
+          platforms: linux,macos
 
-  tox:
-    name: ${{ matrix.name }} / python ${{ matrix.python_version }}
-    permissions:
-      id-token: write
-    runs-on: ubuntu-20.04
-    needs: pre
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os || 'ubuntu-22.04' }}
+    needs:
+      - prepare
+    defaults:
+      run:
+        shell: ${{ matrix.shell || 'bash'}}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.pre.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # needed by setuptools-scm
+          submodules: true
 
-      - name: Set up Python ${{ matrix.python_version }}
+      - name: Set pre-commit cache
+        uses: actions/cache@v4
+        if: ${{ matrix.passed_name == 'lint' }}
+        with:
+          path: |
+            ~/.cache/pre-commit
+          key: pre-commit-${{ matrix.name || matrix.passed_name }}-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Set up Python ${{ matrix.python_version || '3.10' }}
+        if: "!contains(matrix.shell, 'wsl')"
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python_version }}
+          cache: pip
+          python-version: ${{ matrix.python_version || '3.10' }}
 
       - name: Install tox
-        run: python3 -m pip install --upgrade "tox>=4.0.2"
-
-      - name: Log Python info (${{ matrix.python_version }})
         run: |
-          command -v python
-          python --version --version
-          python3 -m pip freeze --all
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --upgrade "tox>=4.0.0"
 
-      - name: "tox -e ${{ matrix.passed_name }}"
-        continue-on-error: ${{ matrix.devel || false }}
+      - name: Log installed dists
+        run: python3 -m pip freeze --all
+
+      - name: Initialize tox envs ${{ matrix.passed_name }}
+        run: python3 -m tox --notest --skip-missing-interpreters false -vv -e ${{ matrix.passed_name }}
+        timeout-minutes: 5 # average is under 1, but macos can be over 3
+
+      # sequential run improves browsing experience (almost no speed impact)
+      - name: tox -e ${{ matrix.passed_name }}
         run: python3 -m tox -e ${{ matrix.passed_name }}
 
-      - name: Archive logs
+      - name: Archive logs and coverage data
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ matrix.name }}.zip
-          path: .tox/**/log/
-
-      - name: Upload coverage data
-        if: ${{ startsWith(matrix.name, 'py') }}
-        uses: codecov/codecov-action@v4
-        with:
-          name: ${{ matrix.name }}
-          verbose: true
-          fail_ci_if_error: true
-          use_oidc: true # cspell:ignore oidc
+          path: |
+            .tox/**/log/
+            .tox/**/coverage.xml
 
       - name: Report failure if git reports dirty status
         run: |
@@ -89,18 +103,54 @@ jobs:
             exit 99
           fi
         # https://github.com/actions/toolkit/issues/193
-  tox_passed:
-    if: always()
 
-    needs: tox
+  check:
+    if: always()
+    permissions:
+      pull-requests: write # allow codenotify to comment on pull-request
+      id-token: write
+      checks: read
+
+    needs:
+      - build
     runs-on: ubuntu-latest
+
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip3 install 'coverage>=7.5.1'
+
       - name: Merge logs into a single archive
         uses: actions/upload-artifact/merge@v4
         with:
           name: logs.zip
-          pattern: logs*.zip
-          delete-merged: true
+          pattern: logs-*.zip
+          separate-directories: true
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: logs.zip
+
+      - name: Check for expected number of coverage.xml reports
+        run: |
+          JOBS_PRODUCING_COVERAGE=5
+          if [ "$(find . -name coverage.xml | wc -l | bc)" -ne "${JOBS_PRODUCING_COVERAGE}" ]; then
+            echo "::error::Number of coverage.xml files was not the expected one (${JOBS_PRODUCING_COVERAGE}): $(find . -name coverage.xml |xargs echo)"
+            exit 1
+          fi
+
+      - name: Upload coverage data
+        uses: codecov/codecov-action@v4
+        with:
+          name: ${{ matrix.passed_name }}
+          fail_ci_if_error: true
+          use_oidc: true
 
       - name: Check codecov.io status
         if: github.event_name == 'pull_request'
@@ -110,3 +160,15 @@ jobs:
         uses: re-actors/alls-green@release/v1
         with:
           jobs: ${{ toJSON(needs) }}
+
+      - name: Delete Merged Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          delete-merged: true
+
+      - name: Notify repository owners about changes affecting them
+        uses: sourcegraph/codenotify@v0.6.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # https://github.com/sourcegraph/codenotify/issues/19
+        continue-on-error: true
