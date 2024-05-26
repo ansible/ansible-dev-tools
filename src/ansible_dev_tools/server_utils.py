@@ -54,7 +54,7 @@ def validate_response(
     try:
         OPENAPI.validate_response(
             request=DjangoOpenAPIRequest(request),
-            response=DjangoOpenAPIResponse(response),
+            response=DjangoOpenAPIResponse(response),  # type: ignore[arg-type]
         )
     except OpenAPIError as exc:
         return HttpResponse(str(exc), status=400)
