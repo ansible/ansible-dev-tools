@@ -106,11 +106,10 @@ repos:
           - django-stubs[compatible-mypy]
           - jinja2
           - openapi-core>=0.19.1
-          - pytest
-          - tox
-          - types-pyyaml
+          - types-PyYAML
           - types-requests
           - types-setuptools
+        args: [--strict]
 
   - repo: https://github.com/jazzband/pip-tools
     rev: 7.4.1
