@@ -62,13 +62,13 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.3
+    rev: v0.4.5
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.8.0
+    rev: v8.8.2
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -82,7 +82,7 @@ repos:
           - pydoclint[flake8]
 
   - repo: https://github.com/pycqa/pylint.git
-    rev: v3.1.0
+    rev: v3.2.2
     hooks:
       - id: pylint
         args:
@@ -120,6 +120,14 @@ repos:
         name: deps
         alias: deps
         stages: [manual]
-        entry: pip-compile .config/requirements.in --upgrade --all-extras --no-annotate --strip-extras --output-file=.config/constraints.txt pyproject.toml
+        # The manual unsafe packages below are b/c of the test extras dep on the server extras
+        # which should not pull in the src pkg
+        entry: |
+          pip-compile .config/requirements.in --upgrade --all-extras --no-annotate --strip-extras
+          --unsafe-package ansible-dev-tools
+          --unsafe-package distribute
+          --unsafe-package pip
+          --unsafe-package setuptools
+          --output-file=.config/constraints.txt pyproject.toml
         files: ^.config\/.*requirements.*$
         language_version: "3.10" # minimal we support officially
