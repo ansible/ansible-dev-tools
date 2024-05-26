@@ -8,14 +8,23 @@ import requests
 
 
 def test_error(dev_tools_server: str) -> None:
-    """Test the error response."""
+    """Test the error response.
+
+    Args:
+        dev_tools_server: The server URL.
+    """
     response = requests.post(f"{dev_tools_server}/v1/creator/playbook", timeout=1)
     assert response.status_code == requests.codes.get("bad_request")
     assert response.text == "Missing required request body"
 
 
 def test_playbook_v1(dev_tools_server: str, tmp_path: Path) -> None:
-    """Test the playbook creation."""
+    """Test the playbook creation.
+
+    Args:
+        dev_tools_server: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
     response = requests.post(
         f"{dev_tools_server}/v1/creator/playbook",
         json={
@@ -42,7 +51,12 @@ def test_playbook_v1(dev_tools_server: str, tmp_path: Path) -> None:
 
 
 def test_collection_v1(dev_tools_server: str, tmp_path: Path) -> None:
-    """Test the collection creation."""
+    """Test the collection creation.
+
+    Args:
+        dev_tools_server: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
     response = requests.post(
         f"{dev_tools_server}/v1/creator/collection",
         json={

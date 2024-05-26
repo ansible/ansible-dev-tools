@@ -27,8 +27,7 @@ class Cli:
         self.args = vars(parse())
 
     def _run_subcommand(self: Cli, subcommand: str) -> None:
-        """
-        Run the subcommand.
+        """Run the subcommand.
 
         Args:
             subcommand: The subcommand to run.
