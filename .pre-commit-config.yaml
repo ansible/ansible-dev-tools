@@ -114,8 +114,9 @@ repos:
         args:
           - src
           - tests
+          - --python-version=3.12
+
         pass_filenames: false
-        language_version: "3.12"
 
   - repo: https://github.com/jazzband/pip-tools
     rev: 7.4.1
