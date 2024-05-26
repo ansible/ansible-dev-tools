@@ -102,19 +102,16 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
+          - ansible-creator
           - django-stubs[compatible-mypy]
           - jinja2
+          - openapi-core>=0.19.1
           - pytest
-          - ansible-creator
-          - tox
-          - types-pyyaml
+          - types-PyYAML
           - types-requests
           - types-setuptools
-        args:
-          - src
-          - tests
-        pass_filenames: false
-        language_version: "3.10"
+        # Override default pre-commit '--ignore-missing-imports'
+        args: [--strict]
 
   - repo: https://github.com/jazzband/pip-tools
     rev: 7.4.1
@@ -122,11 +119,7 @@ repos:
       - id: pip-compile
         name: deps
         alias: deps
-        always_run: true
         stages: [manual]
-        entry: >
-          sh -c "
-          pip-compile --upgrade --no-annotate --strip-extras --output-file=.config/requirements-lock.txt pyproject.toml &&
-          pip-compile --upgrade --no-annotate --all-extras --strip-extras --output-file=.config/constraints.txt pyproject.toml"
+        entry: pip-compile .config/requirements.in --upgrade --all-extras --no-annotate --strip-extras --output-file=.config/constraints.txt pyproject.toml
         files: ^.config\/.*requirements.*$
         language_version: "3.10" # minimal we support officially

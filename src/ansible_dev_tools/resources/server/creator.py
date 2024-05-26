@@ -56,7 +56,7 @@ class CreatorFrontendV1:
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
             tar_file = CreatorBackend(Path(tmp_dir)).playbook(
-                **result.body,
+                **result.body,  # type: ignore[arg-type]
             )
             response = self._response_from_tar(tar_file)
 
@@ -83,7 +83,7 @@ class CreatorFrontendV1:
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
             tar_file = CreatorBackend(Path(tmp_dir)).collection(
-                **result.body,
+                **result.body,  # type: ignore[arg-type]
             )
             response = self._response_from_tar(tar_file)
 
