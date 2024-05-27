@@ -298,7 +298,7 @@ disable = [
   "W3301", # nested-min-max / ruff PLW3301
   "duplicate-code",
   "too-few-public-methods",
-  "unsubscriptable-object"
+  "too-many-instance-attributes"
 ]
 
 [tool.pytest.ini_options]
