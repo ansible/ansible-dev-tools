@@ -8,7 +8,7 @@ requires = [
 [project]
 authors = [{"email" = "bthornto@redhat.com", "name" = "Bradley A. Thornton"}]
 classifiers = [
-  'Development Status :: 2 - Pre-Alpha',
+  'Development Status :: 5 - Production/Stable',
   'Intended Audience :: Developers',
   'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
   'Operating System :: OS Independent',
@@ -41,21 +41,19 @@ homepage = "https://github.com/ansible/ansible-dev-tools"
 repository = "https://github.com/ansible/ansible-dev-tools"
 
 [tool.coverage.report]
-ignore_errors = true
 exclude_lines = ["if TYPE_CHECKING:", "pragma: no cover"]
 fail_under = 91
+ignore_errors = true
 show_missing = true
 skip_covered = true
 skip_empty = true
 sort = "Cover"
 
 [tool.coverage.run]
-source_pkgs = ["ansible_dev_tools"]
-# Do not use branch until bug is fixes:
-# https://github.com/nedbat/coveragepy/issues/605
-# branch = true
-parallel = true
+branch = false # https://github.com/nedbat/coveragepy/issues/605
 concurrency = ["multiprocessing", "thread"]
+parallel = true
+source_pkgs = ["ansible_dev_tools"]
 
 [tool.mypy]
 files = ["src", "tests"]
@@ -324,13 +322,8 @@ lines-after-imports = 2 # Ensures consistency for cases when there's variable vs
 lines-between-types = 1 # Separate import/from with 1 line
 
 [tool.ruff.lint.per-file-ignores]
-# SLF001: Allow private member access in tests
-# S101 Allow assert in tests
-# S602 Allow shell in test
-# T201 Allow print in tests
-"tests/**" = ["SLF001", "S101", "S602", "T201"]
-# SIM108, file is generated
 "_version.py" = ["SIM108"]
+"tests/**" = ["SLF001", "S101", "S602", "T201"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -338,8 +331,8 @@ convention = "google"
 [tool.setuptools.dynamic]
 dependencies = {file = [".config/requirements.in"]}
 optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
-optional-dependencies.test = {file = [".config/requirements-test.in"]}
 optional-dependencies.server = {file = [".config/requirements-server.in"]}
+optional-dependencies.test = {file = [".config/requirements-test.in"]}
 
 [tool.setuptools_scm]
 # To prevent accidental pick of mobile version tags such 'v6'
@@ -353,8 +346,9 @@ git_describe_command = [
   "v*.*"
 ]
 local_scheme = "no-local-version"
-tag_regex = '^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$'
 write_to = "src/ansible_dev_tools/_version.py"
 
 [tool.tomlsort]
 in_place = true
+sort_inline_tables = true
+sort_table_keys = true
