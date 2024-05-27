@@ -7,8 +7,6 @@ ci:
     chore: auto fixes from pre-commit.com hooks
 
     for more information, see https://pre-commit.ci
-  skip:
-    - deps
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -90,7 +88,7 @@ repos:
           - gunicorn
           - openapi_core
           - pytest
-          - PyYAML
+          - pyyaml
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
     rev: v1.10.0
@@ -102,7 +100,7 @@ repos:
           - jinja2
           - openapi-core>=0.19.1
           - pytest
-          - types-PyYAML
+          - types-pyyaml
           - types-requests
           - types-setuptools
         # Override default pre-commit '--ignore-missing-imports'
