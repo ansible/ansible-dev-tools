@@ -6,6 +6,7 @@ mypy
 pip-tools
 pre-commit
 pydoclint[flake8]
+pylint
 pytest
 requests
 ruff
