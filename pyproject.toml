@@ -298,6 +298,12 @@ disable = [
   "too-few-public-methods",
   "too-many-instance-attributes"
 ]
+enable = [
+  "useless-suppression"
+]
+fail-on = [
+  "useless-suppression"
+]
 
 [tool.pytest.ini_options]
 addopts = "-ra --showlocals --durations=10 -p no:pytest-ansible"
