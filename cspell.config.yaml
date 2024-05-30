@@ -12,22 +12,12 @@ dictionaries:
   - "!cryptocurrencies"
   - "!cpp"
 ignorePaths:
-  # All dot files in the root
-  - \.*
-  # This file
-  - cspell.config.yaml
-  # The mypy configuration file
-  - mypy.ini
-  # The shared file for tool configuration
-  - pyproject.toml
-  # requirements files
   - .config/requirements*
-  - requirements.txt
-  # The tox configuration file
-  - tox.ini
-  # Sample tox configurations
-  - docs/*.ini
+  - \.*
+  - cspell.config.yaml
   - mkdocs.yml
+  - pyproject.toml
+  - tox.ini
 
 languageSettings:
   - languageId: python
