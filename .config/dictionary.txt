@@ -1,6 +1,6 @@
 accesslog
-ADT
-Ansibuddy
+adt
+ansibuddy
 antsibull
 arcname
 autoplay
@@ -10,7 +10,7 @@ gunicorn
 libera
 netcommon
 testenv
-Uninstallation
-Unmarshal
+uninstallation
+unmarshal
 unmarshalling
 urandom
