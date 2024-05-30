@@ -11,8 +11,6 @@ dictionaries:
   - "!backwards-compatibility"
   - "!cryptocurrencies"
   - "!cpp"
-flagWords:
-  - ADT
 ignorePaths:
   # All dot files in the root
   - \.*
