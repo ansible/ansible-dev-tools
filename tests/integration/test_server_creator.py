@@ -35,10 +35,7 @@ def test_playbook_v1(dev_tools_server: str, tmp_path: Path) -> None:
         timeout=1,
     )
     assert response.status_code == requests.codes.get("created")
-    assert (
-        response.headers["Content-Disposition"]
-        == 'attachment; filename="ansible-devops.tar.gz"'
-    )
+    assert response.headers["Content-Disposition"] == 'attachment; filename="ansible-devops.tar.gz"'
     assert response.headers["Content-Type"] == "application/tar+gzip"
     dest_file = tmp_path / "ansible-devops.tar.gz"
     with dest_file.open(mode="wb") as tar_file:
@@ -66,10 +63,7 @@ def test_collection_v1(dev_tools_server: str, tmp_path: Path) -> None:
         timeout=1,
     )
     assert response.status_code == requests.codes.get("created")
-    assert (
-        response.headers["Content-Disposition"]
-        == 'attachment; filename="namespace.name.tar.gz"'
-    )
+    assert response.headers["Content-Disposition"] == 'attachment; filename="namespace.name.tar.gz"'
     assert response.headers["Content-Type"] == "application/tar+gzip"
     dest_file = tmp_path / "namespace.name.tar.gz"
     with dest_file.open(mode="wb") as tar_file:

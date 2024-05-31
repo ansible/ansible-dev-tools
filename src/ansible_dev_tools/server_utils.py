@@ -14,8 +14,7 @@ from openapi_core.unmarshalling.request.datatypes import RequestUnmarshalResult
 OPENAPI = OpenAPI.from_dict(
     yaml.safe_load(
         (
-            importlib_resources.files("ansible_dev_tools.resources.server.data")
-            / "openapi.yaml"
+            importlib_resources.files("ansible_dev_tools.resources.server.data") / "openapi.yaml"
         ).read_text(),
     ),
 )
