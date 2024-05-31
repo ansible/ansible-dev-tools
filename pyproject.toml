@@ -40,6 +40,9 @@ documentation = "https://ansible.readthedocs.io/projects/dev-tools/"
 homepage = "https://github.com/ansible/ansible-dev-tools"
 repository = "https://github.com/ansible/ansible-dev-tools"
 
+[tool.black]
+line-length = 100
+
 [tool.coverage.report]
 exclude_lines = ["if TYPE_CHECKING:", "pragma: no cover"]
 fail_under = 91
