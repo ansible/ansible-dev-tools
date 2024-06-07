@@ -24,9 +24,10 @@ import time
 
 from pathlib import Path
 
-import ansible_dev_tools  # noqa: F401
 import pytest
 import requests
+
+import ansible_dev_tools  # noqa: F401
 
 
 PROC: None | subprocess.Popen[bytes] = None
