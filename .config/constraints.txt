@@ -5,7 +5,7 @@
 #    pip-compile --all-extras --no-annotate --output-file=.config/constraints.txt --strip-extras --unsafe-package=ansible-dev-tools --unsafe-package=distribute --unsafe-package=pip --unsafe-package=setuptools .config/requirements.in pyproject.toml
 #
 ansible-builder==3.0.1
-ansible-compat==24.6.0
+ansible-compat==24.6.1
 ansible-core==2.17.0
 ansible-creator==24.6.0
 ansible-dev-environment==24.4.3
@@ -34,14 +34,14 @@ click==8.1.7
 click-help-colors==0.9.4
 colorama==0.4.6
 coverage==7.5.3
-cryptography==42.0.7
+cryptography==42.0.8
 csscompressor==0.9.5
 cssselect2==0.7.0
 defusedxml==0.7.1
 dill==0.3.8
 distlib==0.3.8
 distro==1.9.0
-django==4.2.13
+django==5.0.6
 django-stubs==5.0.2
 django-stubs-ext==5.0.2
 dnspython==2.6.1
@@ -53,7 +53,7 @@ execnet==2.1.1
 filelock==3.14.0
 flake8==7.0.0
 ghp-import==2.1.0
-griffe==0.45.2
+griffe==0.45.3
 gunicorn==22.0.0
 htmlmin2==0.1.13
 identify==2.5.36
@@ -85,7 +85,7 @@ mkdocs-gen-files==0.5.0
 mkdocs-get-deps==0.2.0
 mkdocs-htmlproofer-plugin==1.2.1
 mkdocs-macros-plugin==1.0.5
-mkdocs-material==9.5.25
+mkdocs-material==9.5.26
 mkdocs-material-extensions==1.3.1
 mkdocs-minify-plugin==0.8.0
 mkdocs-monorepo-plugin==1.1.0
@@ -95,7 +95,7 @@ molecule==24.2.1
 more-itertools==10.2.0
 mypy==1.10.0
 mypy-extensions==1.0.0
-nodeenv==1.9.0
+nodeenv==1.9.1
 onigurumacffi==1.3.0
 openapi-core==0.19.1
 openapi-schema-validator==0.6.2
@@ -120,7 +120,7 @@ pycparser==2.22
 pydoclint==0.4.1
 pyflakes==3.2.0
 pygments==2.18.0
-pylint==3.2.2
+pylint==3.2.3
 pymdown-extensions==10.8.1
 pyproject-api==1.6.1
 pyproject-hooks==1.1.0
@@ -143,7 +143,7 @@ rich==13.7.1
 rpds-py==0.18.1
 ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.8
-ruff==0.4.7
+ruff==0.4.8
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.5.0
@@ -154,12 +154,12 @@ tinycss2==1.3.0
 toml-sort==0.23.1
 tomli==2.0.1
 tomlkit==0.12.5
-tox==4.15.0
+tox==4.15.1
 tox-ansible==24.6.0
 types-pyyaml==6.0.12.20240311
 types-requests==2.32.0.20240602
 types-setuptools==70.0.0.20240524
-typing-extensions==4.12.1
+typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.1
 virtualenv==20.26.2
@@ -169,7 +169,7 @@ webencodings==0.5.1
 werkzeug==3.0.3
 wheel==0.43.0
 yamllint==1.35.1
-zipp==3.19.1
+zipp==3.19.2
 
 # The following packages are considered to be unsafe in a requirements file:
 # ansible-dev-tools
