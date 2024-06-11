@@ -4,7 +4,8 @@ ci:
   autoupdate_commit_msg: "chore: pre-commit autoupdate"
   autoupdate_schedule: monthly
   autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
-
+  skip:
+    - lock
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -113,11 +114,23 @@ repos:
         # The manual unsafe packages below are b/c of the test extras dep on the server extras
         # which should not pull in the src pkg
         entry: |
-          pip-compile .config/requirements.in --upgrade --all-extras --no-annotate --strip-extras
+          pip-compile .config/requirements.in -q --upgrade --all-extras --no-annotate --strip-extras
           --unsafe-package ansible-dev-tools
           --unsafe-package distribute
           --unsafe-package pip
           --unsafe-package setuptools
           --output-file=.config/constraints.txt pyproject.toml
+        files: ^.config\/.*requirements.*$
+        language_version: "3.10" # minimal we support officially
+      - id: pip-compile
+        name: lock
+        alias: lock
+        entry: |
+          pip-compile .config/requirements.in -q --upgrade --extra server --no-annotate --strip-extras
+          --constraint=.config/constraints.txt
+          --unsafe-package distribute
+          --unsafe-package pip
+          --unsafe-package setuptools
+          --output-file=.config/requirements-lock.txt pyproject.toml
         files: ^.config\/.*requirements.*$
         language_version: "3.10" # minimal we support officially
