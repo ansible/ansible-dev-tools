@@ -1,6 +1,6 @@
 ansible-dev-tools[server]
 black
-coverage
+coverage[toml]
 flake8
 mypy
 pip-tools
@@ -8,9 +8,11 @@ pre-commit
 pydoclint[flake8]
 pylint
 pytest
+pytest-xdist
 requests
 ruff
 toml-sort
+tox
 types-pyyaml
 types-requests
 django-stubs[compatible-mypy]
