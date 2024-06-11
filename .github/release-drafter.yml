@@ -1,3 +1,22 @@
 ---
 # see https://github.com/ansible/team-devtools
 _extends: ansible/team-devtools
+autolabeler:
+  - label: "skip-changelog"
+    title:
+      - "/pre-commit autoupdate/"
+    body:
+      - "/type: chore/i"
+    branch:
+      - "/^chore/i"
+  - label: "minor"
+    branch:
+      - "/^fix/i"
+    body:
+      - "/type: fix/i"
+  - label: "minor"
+    title:
+      - "/^Bump (ansible-creator|ansible-dev-tools|ansible-dev-environment|ansible-lint|ansible-navigator|molecule|pytest-ansible|tox-ansible)/i"
+  - label: "skip-changelog"
+    title:
+      - "/^Bump the dependencies group in/i"
