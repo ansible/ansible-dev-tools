@@ -8,7 +8,10 @@ on:
   pull_request:
     branches:
       - "main"
+  schedule:
+    - cron: "0 0 * * *"
   workflow_call:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -17,3 +20,37 @@ concurrency:
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
+  build-image:
+    runs-on: ${{ matrix.builder }}
+    name: ${{ matrix.name }}
+    needs: tox
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - builder: devtools-multiarch-builder
+            platform: linux/amd64
+            name: amd64
+          - builder: devtools-arm64-runner
+            platform: linux/arm64
+            name: arm64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the container image for ${{ matrix.platform }} and test it
+        uses: ./.github/actions/build-test
