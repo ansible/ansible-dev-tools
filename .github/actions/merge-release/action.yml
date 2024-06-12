@@ -1,0 +1,54 @@
+---
+name: Merge & Release
+description: Create a final manifest from the multi-arch images and push it.
+
+inputs:
+  registry:
+    description: Target registry to push the final image.
+    default: "localhost:5000"
+  namespace:
+    description: Namespace of the container image.
+    default: ansible
+  final_image:
+    description: Name of the final image.
+    default: community-ansible-dev-tools
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Download digests
+      uses: actions/download-artifact@v4
+      with:
+        path: /tmp/digests
+        pattern: digests-*
+        merge-multiple: true
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          name=${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }}
+        tags: |
+          latest
+          type=schedule,pattern=latest
+          type=ref,event=tag
+
+    - name: Create manifest list and push
+      shell: bash
+      working-directory: /tmp/digests
+      run: |
+        docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          --annotation "manifest:org.opencontainers.image.description=A multi-arch community container image for Ansible Devtools." \
+          $(printf '${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }}@sha256:%s ' *) \
+
+    - name: Inspect image
+      shell: bash
+      run: |
+        docker buildx imagetools inspect ${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }}:latest
