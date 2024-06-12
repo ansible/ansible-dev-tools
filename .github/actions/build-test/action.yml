@@ -1,0 +1,136 @@
+---
+name: Build & Test
+description: Build the final container image and run tests on it
+
+inputs:
+  registry:
+    description: Target registry to push the final image.
+    default: "localhost:5000"
+  namespace:
+    description: Namespace of the container image.
+    default: ansible
+  final_image:
+    description: Name of the final image.
+    default: community-ansible-dev-tools
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Prepare
+      shell: bash
+      run: |
+        platform=${{ matrix.platform }}
+        echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        # network=host driver-opt needed to push to local registry
+        driver-opts: network=host
+
+    - name: Install ansible-builder
+      shell: bash
+      id: ansible-builder-install
+      run: |
+        python3 -m pip install ansible-builder
+
+    - name: Verify ansible-builder installed
+      shell: bash
+      id: ansible-builder-verify
+      run: |
+        ansible-builder --version
+
+    - name: Create a build context and Containerfile for base EE
+      shell: bash
+      run: |
+        ansible-builder create -f ${{ github.workspace }}/execution-environment.yml --output-filename Containerfile -v3
+
+    - name: Build base image for ${{ matrix.platform }}
+      uses: docker/build-push-action@v5
+      id: build-base
+      with:
+        context: context
+        provenance: false
+        file: context/Containerfile
+        platforms: ${{ matrix.platform }}
+        push: true
+        tags: localhost:5000/${{ inputs.final_image }}-base:latest
+        cache-from: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
+        cache-to: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
+
+    - name: Show available images & base image manifest
+      shell: bash
+      run: |
+        curl -X GET http://localhost:5000/v2/${{ inputs.final_image }}-base/tags/list
+        docker manifest inspect localhost:5000/${{ inputs.final_image }}-base --insecure -v
+
+    - name: Build final image for ${{ matrix.platform }}
+      id: build-final
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ github.workspace }}/final
+        provenance: false
+        file: ${{ github.workspace }}/final/Containerfile
+        load: true
+        tags: |
+          ${{ inputs.namespace }}/${{ inputs.final_image }}:test
+        build-contexts: |
+          ${{ inputs.final_image }}-base=docker-image://localhost:5000/${{ inputs.final_image }}-base:latest
+        platforms: ${{ matrix.platform }}
+        cache-from: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
+        cache-to: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
+
+    - name: Validate if the final image is a valid EE
+      shell: bash
+      run: |
+        python3 -m pip install --upgrade ansible-navigator
+        ansible-navigator --version
+        ansible-navigator run ${{ github.workspace }}/site.yml --ce docker --mode stdout --eei ${{ inputs.namespace }}/${{ inputs.final_image }}:test
+
+    - name: Run tests on the image before pushing with docker
+      shell: bash
+      id: run-tests-docker
+      run: |
+        docker run --rm -v ${{ github.workspace }}/tests:/home/podman/tests \
+          --security-opt seccomp=unconfined --security-opt label=disable --security-opt apparmor=unconfined \
+          --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
+          --device /dev/fuse ${{ inputs.namespace }}/${{ inputs.final_image }}:test \
+          -c "/home/podman/tests/test.sh"
+
+    - name: Push the built image to ${{ inputs.registry }} by digest for ${{ matrix.platform }}
+      id: push-final
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ github.workspace }}/final
+        provenance: false
+        file: ${{ github.workspace }}/final/Containerfile
+        build-contexts: |
+          ${{ inputs.final_image }}-base=docker-image://localhost:5000/${{ inputs.final_image }}-base:latest
+        platforms: ${{ matrix.platform }}
+        outputs: type=image,name=${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }},push-by-digest=true,name-canonical=true,push=true
+
+    - name: Export digest
+      shell: bash
+      run: |
+        rm -rf /tmp/digests
+        mkdir -p /tmp/digests
+        digest="${{ steps.push-final.outputs.digest }}"
+        touch "/tmp/digests/${digest#sha256:}"
+
+    - name: Upload digest
+      uses: actions/upload-artifact@v4
+      with:
+        name: digests-${{ env.PLATFORM_PAIR }}
+        path: /tmp/digests/*
+        if-no-files-found: error
+        retention-days: 1
+
+    # this step is ONLY needed for maintainence of self hosted runners
+    - name: Cleanup docker
+      shell: bash
+      if: always()
+      run: |
+        docker system prune -af --volumes
