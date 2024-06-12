@@ -4,8 +4,7 @@ ci:
   autoupdate_commit_msg: "chore: pre-commit autoupdate"
   autoupdate_schedule: monthly
   autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
-  skip:
-    - lock
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -125,6 +124,7 @@ repos:
       - id: pip-compile
         name: lock
         alias: lock
+        stages: [manual]
         entry: |
           pip-compile .config/requirements.in -q --upgrade --extra server --no-annotate --strip-extras
           --constraint=.config/constraints.txt
