@@ -3,7 +3,7 @@ ansible-navigator:
   logging:
     level: debug
     append: False
-    file: $PWD/.logs/ansible-navigator.log
+    file: .cache/.ansible-navigator/ansible-navigator.log
 
   execution-environment:
     enabled: true
@@ -13,4 +13,4 @@ ansible-navigator:
 
   playbook-artifact:
     enable: True
-    save-as: "$PWD/.logs/{playbook_name}-artifact-{time_stamp}.json"
+    save-as: ".cache/.ansible-navigator/{playbook_name}-artifact-{time_stamp}.json"
