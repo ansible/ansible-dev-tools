@@ -95,6 +95,7 @@ ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
 # In OpenShift, container will run as a random uid number and gid 0. Make sure things
 # are writeable by the root group.
 RUN for dir in \
+      /tmp/dist \
       /home/runner \
       /home/runner/.ansible \
       /home/runner/.ansible/tmp \
@@ -113,8 +114,8 @@ RUN for dir in \
 
 # base ansible-dev-tools setup
 
-COPY ./requirements.txt requirements.txt
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+COPY dist/*.whl /tmp/dist
+RUN sh -ec -o pipefail "ls -1 /tmp/dist/*.whl | xargs -I '{}' python3 -m pip install --no-cache-dir '{}[server,lock]' && rm -rf /tmp/dist"
 
 RUN \
 mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles && \

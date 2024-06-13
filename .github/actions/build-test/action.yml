@@ -35,13 +35,8 @@ runs:
       shell: bash
       id: ansible-builder-install
       run: |
-        python3 -m pip install ansible-builder
-
-    - name: Verify ansible-builder installed
-      shell: bash
-      id: ansible-builder-verify
-      run: |
-        ansible-builder --version
+        python3 -m pip install ansible-builder ansible-navigator build
+        python3 -m build --outdir final/dist/ --wheel
 
     - name: Create a build context and Containerfile for base EE
       shell: bash
@@ -86,8 +81,6 @@ runs:
     - name: Validate if the final image is a valid EE
       shell: bash
       run: |
-        python3 -m pip install --upgrade ansible-navigator
-        ansible-navigator --version
         ansible-navigator run ${{ github.workspace }}/site.yml --ce docker --mode stdout --eei ${{ inputs.namespace }}/${{ inputs.final_image }}:test
 
     - name: Run tests on the image before pushing with docker
