@@ -1,3 +1,6 @@
+Codespaces
+Containerfile
+PKGMGR
 accesslog
 adt
 ansibuddy
@@ -5,12 +8,20 @@ antsibull
 arcname
 autoplay
 capsys
+devcontainer
 devel
+endgroup
 gunicorn
 libera
+microdnf
 netcommon
+pylibssh
+seccomp
+signingkey
 testenv
 uninstallation
 unmarshal
 unmarshalling
 urandom
+userns
+workdir

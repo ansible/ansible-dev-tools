@@ -1,0 +1,158 @@
+# Builds community-ansible-dev-tools-container-base image which provides
+# container-in-container support and all installs all binary dependencies
+# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS
+FROM community-ansible-dev-tools-base:latest
+
+USER root
+
+# When building for multiple-architectures in parallel using emulation
+# it's really easy for one/more dnf processes to timeout or mis-count
+# the minimum download rates.  Bump both to be extremely forgiving of
+# an overworked host.
+RUN echo -e "\n\n# Added during image build" >> /etc/dnf/dnf.conf && \
+    echo -e "minrate=100\ntimeout=60\n" >> /etc/dnf/dnf.conf
+
+LABEL org.opencontainers.image.source https://github.com/ansible/ansible-dev-tools
+LABEL org.opencontainers.image.authors "Ansible DevTools"
+LABEL org.opencontainers.image.vendor "Red Hat"
+LABEL org.opencontainers.image.licenses "GPL-3.0"
+LABEL org.opencontainers.image.description "An execution environment targeted for Ansible content creators."
+
+
+RUN microdnf -y makecache && microdnf -y update
+RUN microdnf -y install shadow-utils
+RUN rpm --setcaps shadow-utils 2>/dev/null
+RUN \
+microdnf install -y \
+tar \
+echo \
+podman \
+fuse-overlayfs \
+openssh-clients \
+zsh \
+util-linux-user \
+which \
+git \
+dumb-init \
+# ansible-pylibssh needs:
+gcc \
+git-core \
+libssh-devel \
+python3-markupsafe \
+# ansible-navigator needs:
+ncurses \
+oniguruma-devel \
+python3-bcrypt \
+python3-cffi \
+python3-pip \
+python3-pyyaml \
+python3-ruamel-yaml \
+python3-wheel \
+--exclude container-selinux \
+    && microdnf clean all
+
+RUN useradd podman; \
+        echo -e "podman:1:999\npodman:1001:64535" > /etc/subuid; \
+        echo -e "podman:1:999\npodman:1001:64535" > /etc/subgid;
+
+ARG _REPO_URL="https://raw.githubusercontent.com/containers/image_build/main/podman"
+ADD $_REPO_URL/containers.conf /etc/containers/containers.conf
+ADD $_REPO_URL/podman-containers.conf /home/podman/.config/containers/containers.conf
+
+RUN mkdir -p /home/podman/.local/share/containers && \
+        chown podman:podman -R /home/podman && \
+        chmod 644 /etc/containers/containers.conf
+
+# this is done by ansible-builder when changing user and workdir
+RUN chgrp 0 /home/podman && chmod -R ug+rwx /home/podman
+
+# Copy & modify the defaults to provide reference if runtime changes needed.
+# Changes here are required for running with fuse-overlay storage inside container.
+RUN sed -e 's|^#mount_program|mount_program|g' \
+              -e '/additionalimage.*/a "/var/lib/shared",' \
+              -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' \
+              /usr/share/containers/storage.conf \
+              > /etc/containers/storage.conf
+
+# Note VOLUME options must always happen after the chown call above
+# RUN commands can not modify existing volumes
+VOLUME /var/lib/containers
+VOLUME /home/podman/.local/share/containers
+
+RUN mkdir -p /var/lib/shared/overlay-images \
+                /var/lib/shared/overlay-layers \
+                /var/lib/shared/vfs-images \
+                /var/lib/shared/vfs-layers && \
+        touch /var/lib/shared/overlay-images/images.lock && \
+        touch /var/lib/shared/overlay-layers/layers.lock && \
+        touch /var/lib/shared/vfs-images/images.lock && \
+        touch /var/lib/shared/vfs-layers/layers.lock
+
+ENV _CONTAINERS_USERNS_CONFIGURED=""
+ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
+
+
+# In OpenShift, container will run as a random uid number and gid 0. Make sure things
+# are writeable by the root group.
+RUN for dir in \
+      /home/runner \
+      /home/runner/.ansible \
+      /home/runner/.ansible/tmp \
+      /runner \
+      /home/runner \
+      /runner/env \
+      /runner/inventory \
+      /runner/project \
+      /runner/artifacts ; \
+    do mkdir -m 0775 -p $dir ; chmod -R g+rwx $dir ; chgrp -R root $dir ; done && \
+    for file in \
+      /home/runner/.ansible/galaxy_token \
+      /etc/passwd \
+      /etc/group ; \
+    do touch $file ; chmod g+rw $file ; chgrp root $file ; done
+
+# base ansible-dev-tools setup
+
+COPY ./requirements.txt requirements.txt
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
+
+RUN \
+mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles && \
+git config --system --add safe.directory /
+
+# The dev container for docker runs as podman
+RUN chsh -s $(which zsh) podman
+# The dev container for docker runs as root
+RUN chsh -s $(which zsh) root
+
+
+# Install oh-my-zsh for both users
+USER podman
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+USER root
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# add some helpful CLI commands to check we do not remove them inadvertently and output some helpful version information at build time.
+RUN set -ex \
+&& ansible --version \
+&& ansible-lint --version \
+&& ansible-runner --version \
+&& molecule --version \
+&& molecule drivers \
+&& podman --version \
+&& python3 --version \
+&& git --version \
+&& ansible-galaxy role list \
+&& ansible-galaxy collection list \
+&& rpm -qa \
+&& uname -a
+
+# Make a workdir usable by either the podman or root user
+RUN mkdir -p /workdir && chown podman:podman /workdir
+
+# Set the default user to podman, this will be overridden in the podman dev container
+USER podman
+WORKDIR /workdir
+ENTRYPOINT ["/opt/builder/bin/entrypoint", "dumb-init"]
+CMD ["zsh"]

@@ -1,0 +1,2 @@
+ansible-dev-tools[server]
+molecule-plugins[podman]==23.5.3

@@ -1,0 +1,11 @@
+- name: Demo playbook
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Print the facts
+      ansible.builtin.debug:
+        var: ansible_facts
+
+    - name: Print the hostname
+      ansible.builtin.debug:
+        var: ansible_facts.hostname
