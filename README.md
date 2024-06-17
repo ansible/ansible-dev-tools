@@ -30,6 +30,8 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 `python3 -m pip install ansible-dev-tools`
 
+A VsCode compatible devcontainer is also available which is a great way to develop ansible content. The image name is [community-ansible-dev-tools](https://ansible.readthedocs.io/projects/dev-tools/container/).
+
 ## Usage
 
 In addition to installing each of the above tools, `ansible-dev-tools` provides an easy way to show the versions of the content creation tools that make up the current development environment.
