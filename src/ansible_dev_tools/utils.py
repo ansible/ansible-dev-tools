@@ -1,7 +1,7 @@
 """Utility function not requiring server dependencies."""
 
 
-class Colors:
+class Colors:  # flake8: disable=DOC601
     """ANSI color codes."""
 
     BLACK = "\033[0;30m"
