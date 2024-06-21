@@ -1,6 +1,3 @@
-Codespaces
-Containerfile
-PKGMGR
 accesslog
 adt
 ansibuddy
@@ -8,6 +5,8 @@ antsibull
 arcname
 autoplay
 capsys
+codespaces
+containerfile
 devcontainer
 devel
 endgroup
@@ -15,6 +14,7 @@ gunicorn
 libera
 microdnf
 netcommon
+pkgmgr
 pylibssh
 seccomp
 signingkey
