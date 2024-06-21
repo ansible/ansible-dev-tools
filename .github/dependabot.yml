@@ -17,13 +17,16 @@ updates:
           - "*"
         exclude-patterns:
           - ansible-creator
-          - ansible-dev-tools
           - ansible-dev-environment
+          - ansible-dev-tools
           - ansible-lint
           - ansible-navigator
           - molecule
           - pytest-ansible
+          - referencing # https://github.com/p1c2u/jsonschema-path/issues/143
           - tox-ansible
+    ignore:
+      - dependency-name: referencing
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
