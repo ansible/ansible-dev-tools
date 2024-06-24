@@ -1,0 +1,98 @@
+# cspell: ignore devcontainer osbs cmds containerfile microdnf
+version: "3"
+
+output:
+  group:
+    error_only: true
+
+vars:
+  TASK_TEMP_DIR: ../.cache/.rpm_testing
+  ENGINE: podman
+  DOWNSTREAM_IMAGE: brew.registry.redhat.io/rh-osbs/ansible-automation-platform-25-ansible-dev-tools-rhel8:24.5.0-5
+  LOCAL_IMAGE: localhost/ansible-dev-tools:latest
+  REGISTRY: brew.registry.redhat.io
+
+includes:
+  test:
+    taskfile: ./Taskfile.test.yml
+
+tasks:
+  default:
+    desc: Build the image
+    summary: |
+      Build the image
+
+      The downstream image is `{{.DOWNSTREAM_IMAGE}}`
+      The local image is `{{.LOCAL_IMAGE}}`
+    cmds:
+      - task: pull
+      - task: container-file
+      - task: devcontainer
+      - task: build
+
+  login:
+    desc: Log into the registry
+    summary: |
+      Log into the registry
+
+      The downstream registry is `{{.REGISTRY}}`
+    interactive: true
+    cmds:
+      - "{{.ENGINE}} login {{.REGISTRY}}"
+
+  pull:
+    desc: Pull the downstream image
+    summary: |
+      Pull the downstream image
+
+      The downstream image is `{{.DOWNSTREAM_IMAGE}}`
+    cmds:
+      - "{{.ENGINE}} pull {{.DOWNSTREAM_IMAGE}}"
+    deps:
+      - login
+
+  container-file:
+    desc: Create a Containerfile to build the image
+    summary: |
+      Create a Containerfile to build the image
+
+      The location of the Containerfile is `{{.TASK_TEMP_DIR}}/Containerfile`
+    dir: "{{.TASK_TEMP_DIR}}"
+    cmds:
+      - |-
+        cat <<EOF > Containerfile
+        FROM {{.DOWNSTREAM_IMAGE}}
+        USER root
+        RUN <<EOR
+        microdnf install -y python3.12 wget yum
+        wget --no-check-certificate https://galaxy4.net/repo/RHEL/8/x86_64/tmux-3.4-1.el8.x86_64.rpm
+        yum install -y tmux-3.4-1.el8.x86_64.rpm
+        rm tmux-3.4-1.el8.x86_64.rpm
+        wget https://taskfile.dev/install.sh
+        chmod +x install.sh
+        ./install.sh -d -b /usr/local/bin
+        EOR
+        USER podman
+        EOF
+
+  build:
+    desc: Build the image
+    summary: |
+      Build the image
+
+      The image name is `{{.LOCAL_IMAGE}}`
+    dir: "{{.TASK_TEMP_DIR}}"
+    cmds:
+      - "{{.ENGINE}} build -t {{.LOCAL_IMAGE}} -f  Containerfile ."
+    deps:
+      - container-file
+
+  devcontainer:
+    desc: Create a devcontainer.json file
+    summary: |
+      Create a devcontainer.json file
+
+      The location of the devcontainer.json file is `../.devcontainer.json`
+    cmds:
+      - curl https://raw.githubusercontent.com/ansible/ansible-dev-tools/main/.devcontainer/podman/devcontainer.json  -o ../.devcontainer.json
+      - sed -i '' 's|ghcr.io/ansible\/community-ansible-dev-tools:latest|{{.LOCAL_IMAGE}}|' ../.devcontainer.json
