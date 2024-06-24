@@ -1,0 +1,276 @@
+# cspell: ignore cmds pytest osbs venv myorg myproject testenv devel
+version: "3"
+
+vars:
+  TASK_TEMP_DIR: ../.cache/.rpm_testing
+  REGISTRY: brew.registry.redhat.io
+  DOWNSTREAM_IMAGE: "{{.REGISTRY}}/rh-osbs/ansible-automation-platform-25-ansible-dev-tools-rhel8:24.5.0-5"
+
+tasks:
+  default:
+    desc: Test the image
+    summary: |
+      Test the image
+
+      A full test suite is run against the image.
+    cmds:
+      - rm -rf {{.TASK_TEMP_DIR}}
+      - task: login
+      - task: show_versions
+      - task: check-plugin-registration
+      - task: diff-upstream-downstream
+      - task: playbook:test-failure
+      - task: playbook:test-cli
+      - task: playbook:test-interactive
+      - task: collection:test
+      - echo "All tests passed"
+
+  login:
+    desc: Log into the registry
+    summary: |
+      Log into the registry
+
+      Log into the registry to pull the image.
+      brew.registry.redhat.io is the downstream devtools image registry
+      registry.redhat.io is the downstream ansible-automation-platform image registry
+    interactive: true
+    run: once
+    cmds:
+      - echo "Logging into brew.registry.redhat.io"
+      - podman login brew.registry.redhat.io
+      - echo "Logging into registry.redhat.io"
+      - podman login registry.redhat.io
+
+  show_versions:
+    desc: Show versions of installed tools
+    summary: |
+      Show versions of installed tools
+
+      Included are all the individual devtools that are part of ansible-dev-tools.
+    cmds:
+      - for:
+          - ade
+          - adt
+          - ansible-builder
+          - ansible-creator
+          - ansible-lint
+          - ansible-navigator
+          - ansible-sign
+          - molecule
+          - tox
+          - pytest-3.11
+        cmd: "{{ .ITEM }} --version"
+
+  check-versions:
+    dir: "{{.TASK_TEMP_DIR}}"
+    desc: Check versions of installed tools against the expected versions
+    summary: |
+      Check versions of installed tools against the expected versions
+
+      The versions of the tools are checked against the expected versions.
+    vars:
+      EXPECTED: |
+        ansible-builder 3.1.0
+        ansible-core 2.16.7.post0
+        ansible-creator 24.6.0
+        ansible-dev-environment 24.4.3
+        ansible-dev-tools 24.5.0
+        ansible-lint 24.6.0
+        ansible-navigator 24.3.2
+        ansible-sign 0.1.1
+        molecule 24.6.0
+        pytest-ansible 24.1.3
+        tox-ansible 24.6.14
+    cmds:
+      - echo "{{.EXPECTED}}" > expected_versions.txt
+      - adt --version | tr -s [:space:] > installed_versions.txt
+      - echo "" >> installed_versions.txt
+      - diff --color expected_versions.txt installed_versions.txt
+
+  test-server:
+    desc: Test the ADT server
+    summary: |
+      Test the ADT server
+
+      The ADT server is tested to ensure the deps are installed.
+    cmds:
+      - adt server
+    ignore_error: true
+
+  check-plugin-registration:
+    desc: Check plugin registration
+    summary: |
+      Check plugin registration
+
+      The plugins are checked to ensure they are registered with their parent tool.
+    cmds:
+      - tox --version | grep tox-ansible
+      - pytest-3.11 --version -VV | grep pytest-ansible
+
+  diff-upstream-downstream:
+    desc: Diff the upstream and downstream versions
+    summary: |
+      Diff the upstream and downstream versions
+
+      The versions of the tools are diffed to ensure they are the expected versions.
+    dir: /tmp
+    vars:
+      VENV_BIN: /tmp/venv/bin
+      VENV_PYTHON: /tmp/venv/bin/python3.11
+    cmds:
+      - python3.11 -m venv venv
+      - "{{.VENV_PYTHON}} -m pip install ansible-dev-tools --quiet"
+      - cmd: diff --color <(/usr/bin/adt --version) <(venv/bin/adt --version)
+        ignore_error: true
+      - rm -rf venv
+
+  playbook:build:
+    desc: Build the playbook project
+    summary: |
+      Build the playbook project
+
+      The playbook project is built and initialized using ansible-creator.
+    dir: "{{.TASK_TEMP_DIR}}"
+    cmds:
+      - rm -rf ./playbook-project
+      - ansible-creator init --project ansible-project --scm-org myorg --scm-project myproject --init-path ./playbook-project
+
+  playbook:update:
+    desc: Update the playbook project
+    summary: |
+      Update the playbook project
+
+      The playbook project is updated to ensure the latest changes are present.
+      This should be made to the ansible-creator project.
+    dir: "{{.TASK_TEMP_DIR}}/playbook-project"
+    cmds:
+      - "sed -i '' 's/localhost/localhost\\n  connection: local/' site.yml"
+    deps:
+      - playbook:build
+    run: once
+
+  playbook:test-cli:
+    desc: Test the playbook project
+    summary: |
+      Test the playbook project
+
+      The playbook project is tested using ansible-playbook ,ansible-navigator, and ansible-lint.
+    dir: "{{.TASK_TEMP_DIR}}/playbook-project"
+    cmds:
+      - ansible-playbook site.yml
+      - ansible-navigator collections --mode stdout --ee false | grep -e '^\s\sname:'
+      - ansible-navigator collections --mode stdout --eei {{.DOWNSTREAM_IMAGE}} | grep -e '^\s\sname:'
+      - ansible-navigator --diagnostics --eei {{.DOWNSTREAM_IMAGE}}
+      - ansible-galaxy collection install cisco.ios
+      - ansible-lint --project-dir ./
+    deps:
+      - login
+      - playbook:update
+
+  tmux-send-grep:
+    desc: Send a command to tmux and grep the output
+    summary: |
+      Send a command to tmux and grep the output
+
+      This task sends a command to tmux and greps the output for a specific string.
+    internal: true
+    cmds:
+      - tmux send-keys -t navigator "{{.TMUX_COMMAND}}" ENTER
+      - timeout 2m bash -c 'until tmux capture-pane -J -p -t navigator | grep {{.GREP}}; do sleep 1; done'
+
+  playbook:test-interactive:
+    desc: Test the playbook project interactively
+    summary: |
+      Test the playbook project interactively
+
+      The playbook project is tested interactively using ansible-navigator.
+      tmux is used to render the TUI and commands are sent and strings found.
+
+      This should indicate the TUI is usable and the commands are working.
+    dir: "{{.TASK_TEMP_DIR}}/playbook-project"
+    cmds:
+      - tmux new-session -d -x 100 -y 50 -s navigator
+      - task: tmux-send-grep
+        vars:
+          TMUX_COMMAND: "ansible-navigator run site.yml --eei {{.DOWNSTREAM_IMAGE}}"
+          GREP: Successful
+      - task: tmux-send-grep
+        vars:
+          TMUX_COMMAND: ":collections"
+          GREP: ansible.utils
+      - task: tmux-send-grep
+        vars:
+          TMUX_COMMAND: ":images"
+          GREP: ee-supported-rhel8
+      - tmux kill-session -t navigator
+    deps:
+      - login
+      - playbook:update
+      - playbook:test-failure
+
+  playbook:test-failure:
+    desc: Test the playbook project with a failure
+    summary: |
+      Test the playbook project with a failure
+
+      The playbook project is tested using ansible-playbook with a failure. This should be fixed, it may be related to the navigator version and the
+      change made for the `microsoft.ad` doc string collection.
+    dir: "{{.TASK_TEMP_DIR}}/playbook-project"
+    cmds:
+      - "! ansible-navigator collections --mode stdout --eei registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest"
+    deps:
+      - login
+      - playbook:update
+
+  collection:build:
+    desc: Build the collection project
+    summary: |
+      Build the collection project
+
+      The collection project is built and initialized using ansible-creator.
+    dir: "{{.TASK_TEMP_DIR}}"
+    cmds:
+      - rm -rf myorg.myproject
+      - ansible-creator init myorg.myproject --init-path ./myorg.myproject
+
+  collection:update:
+    desc: Update the collection project
+    summary: |
+      Update the collection project
+
+      The collection project is updated to ensure the latest changes are present.
+      This should be made to the ansible-creator project.
+
+      The latest version of ansible-creator does away with the need to git init the collection
+      to find the project root
+    dir: "{{.TASK_TEMP_DIR}}/myorg.myproject"
+    cmds:
+      - git init
+      - git add --all
+    deps:
+      - collection:build
+
+  collection:test:
+    desc: Test the collection project
+    summary: |
+      Test the collection project
+
+      The collection project is tested using tox and the tox-ansible plugin.
+      This also invoke molecule to test the collection.
+    dir: "{{.TASK_TEMP_DIR}}/myorg.myproject"
+    cmds:
+      - |
+        cat <<EOF >tox-ansible.ini
+        [testenv]
+        download = true
+
+        [ansible]
+        skip =
+            py3.9
+            py3.10
+            devel
+            milestone
+        EOF
+      - tox --parallel auto --quiet --ansible -c tox-ansible.ini
+    deps:
+      - collection:update
