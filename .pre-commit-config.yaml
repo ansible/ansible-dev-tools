@@ -28,6 +28,7 @@ repos:
     rev: v1.5.5
     hooks:
       - id: remove-tabs
+        exclude: .config/pydoclint-baseline.txt
 
   - repo: https://github.com/pycontribs/mirrors-prettier
     rev: v3.3.2
@@ -68,7 +69,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: 7.1.0
+    rev: 0.5.1
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
