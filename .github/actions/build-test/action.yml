@@ -12,7 +12,9 @@ inputs:
   final_image:
     description: Name of the final image.
     default: community-ansible-dev-tools
-
+  push:
+    description: If it should push the result of not. Accepts only true / false strings.
+    default: "false"
 runs:
   using: composite
   steps:
@@ -95,6 +97,7 @@ runs:
 
     - name: Push the built image to ${{ inputs.registry }} by digest for ${{ matrix.platform }}
       id: push-final
+      if: inputs.push == 'true'
       uses: docker/build-push-action@v5
       with:
         context: ${{ github.workspace }}/final
@@ -106,6 +109,7 @@ runs:
         outputs: type=image,name=${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }},push-by-digest=true,name-canonical=true,push=true
 
     - name: Export digest
+      if: inputs.push == 'true'
       shell: bash
       run: |
         rm -rf /tmp/digests
@@ -114,6 +118,7 @@ runs:
         touch "/tmp/digests/${digest#sha256:}"
 
     - name: Upload digest
+      if: inputs.push == 'true'
       uses: actions/upload-artifact@v4
       with:
         name: digests-${{ env.PLATFORM_PAIR }}
