@@ -77,7 +77,6 @@ python-gnupg==0.5.2
 pyyaml==6.0.1
 referencing==0.31.1
 requests==2.32.3
-requirements-parser==0.9.0
 resolvelib==1.0.1
 rfc3339-validator==0.1.4
 rich==13.7.1
@@ -90,7 +89,6 @@ subprocess-tee==0.4.2
 tomli==2.0.1
 tox==4.15.1
 tox-ansible==24.6.18
-types-setuptools==70.1.0.20240625
 typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2
