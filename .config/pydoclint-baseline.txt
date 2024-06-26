@@ -1,0 +1,28 @@
+src/ansible_dev_tools/arg_parser.py
+	DOC203: Function `parse` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['argparse.Namespace']; docstring return section types: ['']
+--------------------
+src/ansible_dev_tools/cli.py
+	DOC301: Class `Cli`: __init__() should not have a docstring; please combine it with the docstring of the class
+--------------------
+src/ansible_dev_tools/resources/server/creator.py
+	DOC203: Method `CreatorFrontendV1._response_from_tar` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['FileResponse']; docstring return section types: ['']
+	DOC203: Method `CreatorFrontendV1.playbook` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['FileResponse | HttpResponse']; docstring return section types: ['']
+	DOC203: Method `CreatorFrontendV1.collection` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['FileResponse | HttpResponse']; docstring return section types: ['']
+	DOC301: Class `CreatorOutput`: __init__() should not have a docstring; please combine it with the docstring of the class
+	DOC301: Class `CreatorBackend`: __init__() should not have a docstring; please combine it with the docstring of the class
+	DOC203: Method `CreatorBackend.collection` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['Path']; docstring return section types: ['']
+	DOC203: Method `CreatorBackend.playbook` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['Path']; docstring return section types: ['']
+--------------------
+src/ansible_dev_tools/server_utils.py
+	DOC203: Function `validate_request` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['RequestUnmarshalResult | HttpResponse']; docstring return section types: ['']
+	DOC203: Function `validate_response` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['FileResponse | HttpResponse']; docstring return section types: ['HttpResponse']
+--------------------
+src/ansible_dev_tools/subcommands/server.py
+	DOC301: Class `AdtServerApp`: __init__() should not have a docstring; please combine it with the docstring of the class
+	DOC203: Method `AdtServerApp.load` return type(s) in docstring not consistent with the return annotation. Return annotation types: ['WSGIHandler']; docstring return section types: ['']
+	DOC301: Class `Server`: __init__() should not have a docstring; please combine it with the docstring of the class
+--------------------
+src/ansible_dev_tools/utils.py
+	DOC601: Class `Colors`: Class docstring contains fewer class attributes than actual class attributes.  (Please read https://jsh9.github.io/pydoclint/checking_class_attributes.html on how to correctly document class attributes.)
+	DOC603: Class `Colors`: Class docstring attributes are different from actual class attributes. (Or could be other formatting issues: https://jsh9.github.io/pydoclint/violation_codes.html#notes-on-doc103 ). Attributes in the class definition but not in the docstring: [BLACK: , BLINK: , BLUE: , BOLD: , BROWN: , CROSSED: , CYAN: , DARK_GRAY: , END: , FAINT: , GREEN: , ITALIC: , LIGHT_BLUE: , LIGHT_CYAN: , LIGHT_GRAY: , LIGHT_GREEN: , LIGHT_PURPLE: , LIGHT_RED: , LIGHT_WHITE: , NEGATIVE: , PURPLE: , RED: , UNDERLINE: , YELLOW: ]. (Please read https://jsh9.github.io/pydoclint/checking_class_attributes.html on how to correctly document class attributes.)
+--------------------
