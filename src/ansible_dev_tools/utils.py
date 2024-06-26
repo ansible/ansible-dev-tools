@@ -2,7 +2,34 @@
 
 
 class Colors:
-    """ANSI color codes."""
+    """ANSI color codes.
+
+    Attributes:
+        BLACK: Black color.
+        RED: Red color.
+        GREEN: Green color.
+        BROWN: Brown color.
+        BLUE: Blue color.
+        PURPLE: Purple color.
+        CYAN: Cyan color.
+        LIGHT_GRAY: Light gray color.
+        DARK_GRAY: Dark gray color.
+        LIGHT_RED: Light red color.
+        LIGHT_GREEN: Light green color.
+        YELLOW: Yellow color.
+        LIGHT_BLUE: Light blue color.
+        LIGHT_PURPLE: Light purple color.
+        LIGHT_CYAN: Light cyan color.
+        LIGHT_WHITE: Light white color.
+        BOLD: Bold text.
+        FAINT: Faint text.
+        ITALIC: Italic text.
+        UNDERLINE: Underline text.
+        BLINK: Blink text.
+        NEGATIVE: Negative text.
+        CROSSED: Crossed text.
+        END: Reset color.
+    """
 
     BLACK = "\033[0;30m"
     RED = "\033[0;31m"

@@ -51,7 +51,6 @@ enrich==1.2.7
 exceptiongroup==1.2.1
 execnet==2.1.1
 filelock==3.15.4
-flake8==7.1.0
 ghp-import==2.1.0
 griffe==0.47.0
 gunicorn==22.0.0
@@ -115,10 +114,8 @@ platformdirs==4.2.2
 pluggy==1.5.0
 pre-commit==3.7.1
 ptyprocess==0.7.0
-pycodestyle==2.12.0
 pycparser==2.22
 pydoclint==0.5.1
-pyflakes==3.2.0
 pygments==2.18.0
 pylint==3.2.4
 pymdown-extensions==10.8.1
