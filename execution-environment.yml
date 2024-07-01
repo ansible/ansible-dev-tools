@@ -6,6 +6,7 @@ images:
     name: quay.io/fedora/fedora-minimal:39
 
 dependencies:
+  system: bindep.txt
   ansible_runner:
     package_pip: ansible-runner
 
