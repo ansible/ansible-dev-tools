@@ -4,6 +4,7 @@ ansibuddy
 antsibull
 arcname
 autoplay
+bindep
 capsys
 codespaces
 containerfile
