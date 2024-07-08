@@ -8,9 +8,9 @@ ansible-builder==3.1.0
 ansible-compat==24.6.1
 ansible-core==2.17.1
 ansible-creator==24.6.1
-ansible-dev-environment==24.4.3
+ansible-dev-environment==24.4.4
 ansible-lint==24.6.1
-ansible-navigator==24.6.0
+ansible-navigator==24.6.1
 ansible-runner==2.4.0
 ansible-sign==0.1.1
 asgiref==3.8.1
@@ -19,7 +19,7 @@ bindep==2.11.0
 black==24.4.2
 bracex==2.4
 cachetools==5.3.3
-certifi==2024.6.2
+certifi==2024.7.4
 cffi==1.16.0
 chardet==5.2.0
 charset-normalizer==3.3.2
@@ -49,7 +49,7 @@ lockfile==0.12.2
 markdown-it-py==3.0.0
 markupsafe==2.1.5
 mdurl==0.1.2
-molecule==24.6.0
+molecule==24.6.1
 more-itertools==10.3.0
 mypy-extensions==1.0.0
 onigurumacffi==1.3.0
@@ -70,7 +70,7 @@ pycparser==2.22
 pygments==2.18.0
 pyproject-api==1.7.1
 pytest==8.2.2
-pytest-ansible==24.1.3
+pytest-ansible==24.1.4
 pytest-xdist==3.6.1
 python-daemon==3.0.1
 python-gnupg==0.5.2
@@ -87,7 +87,7 @@ six==1.16.0
 sqlparse==0.5.0
 subprocess-tee==0.4.2
 tomli==2.0.1
-tox==4.15.1
+tox==4.16.0
 tox-ansible==24.6.18
 typing-extensions==4.12.2
 tzdata==2024.1
