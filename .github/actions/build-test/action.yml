@@ -83,7 +83,7 @@ runs:
     - name: Validate if the final image is a valid EE
       shell: bash
       run: |
-        ansible-navigator run ${{ github.workspace }}/site.yml --ce docker --mode stdout --eei ${{ inputs.namespace }}/${{ inputs.final_image }}:test
+        ansible-navigator run ${{ github.workspace }}/site.yml --ce docker --mode stdout --pull-policy never --eei ${{ inputs.namespace }}/${{ inputs.final_image }}:test
 
     - name: Run tests on the image before pushing with docker
       shell: bash
