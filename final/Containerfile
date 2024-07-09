@@ -33,6 +33,8 @@ zsh \
 util-linux-user \
 which \
 git \
+nano \
+vim \
 dumb-init \
 # ansible-pylibssh needs:
 gcc \
