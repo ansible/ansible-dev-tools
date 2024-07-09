@@ -33,11 +33,11 @@ runs:
         # network=host driver-opt needed to push to local registry
         driver-opts: network=host
 
-    - name: Install ansible-builder
+    - name: Install or upgrade tools needed for the build and test
       shell: bash
       id: ansible-builder-install
       run: |
-        python3 -m pip install ansible-builder ansible-navigator build
+        python3 -m pip install -U ansible-builder ansible-navigator build
         python3 -m build --outdir final/dist/ --wheel
 
     - name: Create a build context and Containerfile for base EE
