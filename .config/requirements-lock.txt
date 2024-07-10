@@ -5,11 +5,11 @@
 #    pip-compile --constraint=.config/constraints.txt --extra=server --no-annotate --output-file=.config/requirements-lock.txt --strip-extras --unsafe-package=distribute --unsafe-package=pip --unsafe-package=setuptools .config/requirements.in pyproject.toml
 #
 ansible-builder==3.1.0
-ansible-compat==24.6.1
+ansible-compat==24.7.0
 ansible-core==2.17.1
 ansible-creator==24.7.0
 ansible-dev-environment==24.4.4
-ansible-lint==24.6.1
+ansible-lint==24.7.0
 ansible-navigator==24.7.0
 ansible-runner==2.4.0
 ansible-sign==0.1.1
