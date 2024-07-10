@@ -152,7 +152,7 @@ toml-sort==0.23.1
 tomli==2.0.1
 tomlkit==0.13.0
 tox==4.16.0
-tox-ansible==24.6.18
+tox-ansible==24.7.0
 types-pyyaml==6.0.12.20240311
 types-requests==2.32.0.20240622
 types-setuptools==70.3.0.20240710
