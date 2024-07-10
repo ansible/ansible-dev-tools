@@ -84,11 +84,14 @@ class Infrastructure:
             raise ValueError(err)
 
         if self.only_container:
+            self.container = True
             self.server = False
-            self.container = True
         elif self.include_container:
-            self.server = True
             self.container = True
+            self.server = True
+        else:
+            self.container = False
+            self.server = True
 
 
 INFRASTRUCTURE: Infrastructure
