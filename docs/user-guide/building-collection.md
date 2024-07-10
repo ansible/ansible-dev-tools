@@ -8,7 +8,7 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 - [ansible-navigator](https://github.com/ansible/ansible-navigator)
 - [VS Code Ansible extension](https://github.com/ansible/vscode-ansible)
 
-## Scaffolding collection using ansible-creator
+## Scaffolding a collection using ansible-creator
 
 - Open VS Code and click the Ansible icon in the activity bar to access Ansible Creator section. Click on "Get Started" under that section to open the menu page of Ansible Creator in VS Code.
 
@@ -24,7 +24,7 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 NOTE: For a more detailed explanation about using Ansible Creator in the VS Code Ansible Extension, refer to [doc: ansible-creator].
 
-## Installing collection using ansible-dev-environment
+## Installing the collection using ansible-dev-environment
 
 - With the initial collection structure in place, use 'ansible-dev-environment' to install the newly created collection in editable mode, similar to Python modules.
 
