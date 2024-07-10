@@ -1,4 +1,6 @@
 accesslog
+addinivalue
+addoption
 adt
 ansibuddy
 antsibull
@@ -13,6 +15,7 @@ endgroup
 gunicorn
 libera
 microdnf
+modifyitems
 netcommon
 pkgmgr
 pylibssh
