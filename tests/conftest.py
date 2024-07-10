@@ -244,7 +244,11 @@ DOCKER_CMD = """{container_engine} run -d --rm
 
 
 def _start_container() -> None:
-    """Start the container."""
+    """Start the container.
+
+    Raises:
+        ValueError: If the container engine is not podman or docker.
+    """
     if "podman" in INFRASTRUCTURE.container_engine:
         cmd = PODMAN_CMD.format(
             container_engine=INFRASTRUCTURE.container_engine,
@@ -257,6 +261,9 @@ def _start_container() -> None:
             container_name=INFRASTRUCTURE.container_name,
             image_name=INFRASTRUCTURE.image_name,
         )
+    else:
+        err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
+        raise ValueError(err)
     cmd = cmd.replace("\n", " ")
     subprocess.run(cmd, check=True, capture_output=True, shell=True)
 
