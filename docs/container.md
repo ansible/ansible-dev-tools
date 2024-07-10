@@ -2,7 +2,9 @@
 
 A container image for Ansible Development Tools (ADT).
 
-This image is built on top of [Fedora 39 minimal](quay.io/fedora/fedora-minimal:39) and has container-in-container support with [`podman`](https://podman.io/docs).
+This image is built on top of [Fedora minimal](https://quay.io/repository/fedora/fedora-minimal?tab=info) and has container-in-container support with [`podman`](https://podman.io/docs).
+
+The current version in use can be found in the [`execution-environment.yml`](https://github.com/ansible/ansible-dev-tools/blob/main/execution-environment.yml) file used for the base layer.
 
 ## Installation
 
