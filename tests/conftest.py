@@ -213,20 +213,52 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
         _stop_server()
 
 
+PODMAN_CMD = """{container_engine} run -d --rm
+ --cap-add=SYS_ADMIN
+ --cap-add=SYS_RESOURCE
+ --device "/dev/fuse"
+ --hostname=ansible-dev-container
+ --name={container_name}
+ --security-opt "apparmor=unconfined"
+ --security-opt "label=disable"
+ --security-opt "seccomp=unconfined"
+ --user=root
+ --userns=host
+ -v $PWD:/workdir
+ {image_name}
+ sleep infinity"""
+
+DOCKER_CMD = """{container_engine} run -d --rm
+ --cap-add=SYS_ADMIN
+ --cap-add=SYS_RESOURCE
+ --device "/dev/fuse"
+ --hostname=ansible-dev-container
+ --name={container_name}
+ --security-opt "apparmor=unconfined"
+ --security-opt "label=disable"
+ --security-opt "seccomp=unconfined"
+ --user=podman
+ -v $PWD:/workdir
+ {image_name}
+ sleep infinity"""
+
+
 def _start_container() -> None:
     """Start the container."""
-    cmd = [
-        INFRASTRUCTURE.container_engine,
-        "run",
-        "-d",
-        "--rm",
-        "--name",
-        INFRASTRUCTURE.container_name,
-        INFRASTRUCTURE.image_name,
-        "sleep",
-        "infinity",
-    ]
-    subprocess.run(cmd, check=True, capture_output=True)  # noqa: S603
+    if "podman" in INFRASTRUCTURE.container_engine:
+        cmd = PODMAN_CMD.format(
+            container_engine=INFRASTRUCTURE.container_engine,
+            container_name=INFRASTRUCTURE.container_name,
+            image_name=INFRASTRUCTURE.image_name,
+        )
+    elif "docker" in INFRASTRUCTURE.container_engine:
+        cmd = DOCKER_CMD.format(
+            container_engine=INFRASTRUCTURE.container_engine,
+            container_name=INFRASTRUCTURE.container_name,
+            image_name=INFRASTRUCTURE.image_name,
+        )
+    cmd = cmd.replace("\n", " ")
+    subprocess.run(cmd, check=True, capture_output=True, shell=True)
 
 
 def _stop_container() -> None:
@@ -248,7 +280,7 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
-    cmd = f"{INFRASTRUCTURE.container_engine} exec -it {INFRASTRUCTURE.container_name} {command}"
+    cmd = f"{INFRASTRUCTURE.container_engine} exec -t {INFRASTRUCTURE.container_name} {command}"
     return subprocess.run(
         cmd,
         check=True,
