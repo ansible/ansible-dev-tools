@@ -5,12 +5,12 @@
 #    pip-compile --all-extras --no-annotate --output-file=.config/constraints.txt --strip-extras --unsafe-package=ansible-dev-tools --unsafe-package=distribute --unsafe-package=pip --unsafe-package=setuptools .config/requirements.in pyproject.toml
 #
 ansible-builder==3.1.0
-ansible-compat==24.6.1
+ansible-compat==24.7.0
 ansible-core==2.17.1
-ansible-creator==24.6.1
-ansible-dev-environment==24.4.4
-ansible-lint==24.6.1
-ansible-navigator==24.6.1
+ansible-creator==24.7.0
+ansible-dev-environment==24.7.0
+ansible-lint==24.7.0
+ansible-navigator==24.7.0
 ansible-runner==2.4.0
 ansible-sign==0.1.1
 asgiref==3.8.1
@@ -41,7 +41,7 @@ defusedxml==0.7.1
 dill==0.3.8
 distlib==0.3.8
 distro==1.9.0
-django==5.0.6
+django==5.0.7
 django-stubs==5.0.2
 django-stubs-ext==5.0.2
 dnspython==2.6.1
@@ -55,7 +55,7 @@ ghp-import==2.1.0
 griffe==0.47.0
 gunicorn==22.0.0
 htmlmin2==0.1.13
-identify==2.5.36
+identify==2.6.0
 idna==3.7
 importlib-metadata==8.0.0
 iniconfig==2.0.0
@@ -63,7 +63,7 @@ isodate==0.6.1
 isort==5.13.2
 jinja2==3.1.4
 jsmin==3.0.1
-jsonschema==4.22.0
+jsonschema==4.23.0
 jsonschema-path==0.3.3
 jsonschema-specifications==2023.12.1
 lazy-object-proxy==1.10.0
@@ -90,7 +90,7 @@ mkdocs-minify-plugin==0.8.0
 mkdocs-monorepo-plugin==1.1.0
 mkdocstrings==0.25.1
 mkdocstrings-python==1.10.5
-molecule==24.6.1
+molecule==24.7.0
 more-itertools==10.3.0
 mypy==1.10.1
 mypy-extensions==1.0.0
@@ -122,7 +122,7 @@ pymdown-extensions==10.8.1
 pyproject-api==1.7.1
 pyproject-hooks==1.1.0
 pytest==8.2.2
-pytest-ansible==24.1.4
+pytest-ansible==24.7.0
 pytest-xdist==3.6.1
 python-daemon==3.0.1
 python-dateutil==2.9.0.post0
@@ -137,7 +137,7 @@ requirements-parser==0.9.0
 resolvelib==1.0.1
 rfc3339-validator==0.1.4
 rich==13.7.1
-rpds-py==0.18.1
+rpds-py==0.19.0
 ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.8
 ruff==0.5.1
@@ -150,12 +150,12 @@ text-unidecode==1.3
 tinycss2==1.3.0
 toml-sort==0.23.1
 tomli==2.0.1
-tomlkit==0.12.5
+tomlkit==0.13.0
 tox==4.16.0
-tox-ansible==24.6.18
+tox-ansible==24.7.0
 types-pyyaml==6.0.12.20240311
 types-requests==2.32.0.20240622
-types-setuptools==70.2.0.20240704
+types-setuptools==70.3.0.20240710
 typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2

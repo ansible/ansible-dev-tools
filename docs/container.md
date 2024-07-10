@@ -44,7 +44,7 @@ The below example shows how to make a custom EE that adds the `amazon.aws` and `
 
 1. Create an `execution-environment.yml` file with the following content.
 
-   ```yaml title=execution-environment.yml
+   ```yaml title="execution-environment.yml"
    ---
    version: 3
 
@@ -58,11 +58,11 @@ The below example shows how to make a custom EE that adds the `amazon.aws` and `
 
 2. Populate `requirements.txt` and `requirements.yml` with the respective contents.
 
-   ```text title=requirements.txt
+   ```text title="requirements.txt"
    ansible-pylibssh==1.1.0
    ```
 
-   ```yaml title=requirements.yml
+   ```yaml title="requirements.yml"
    ---
    collections:
      - name: amazon.aws
@@ -117,14 +117,14 @@ If the `user.signingkey` in the `gitconfig` points directly public key on the fi
 
 If only one key is preset, the `ssh-add` command can be used for key retrieval in the user's `gitconfig`:
 
-```toml title=~/.gitconfig
+```toml title="~/.gitconfig"
 [gpg "ssh"]
     defaultKeyCommand = ssh-add -L
 ```
 
 Alternatively, the public key can added in-line in the `gitconfig`
 
-```toml title=~/.gitconfig
+```toml title="~/.gitconfig"
 [user]
   email = johnd@acme.com
   name = John Doe
