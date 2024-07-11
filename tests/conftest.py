@@ -30,7 +30,12 @@ from pathlib import Path
 import pytest
 import requests
 
+from ansible_navigator.utils.packaged_data import ImageEntry
+
 import ansible_dev_tools  # noqa: F401
+
+
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
 @dataclass
@@ -217,6 +222,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
+ -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
  --security-opt "apparmor=unconfined"
@@ -225,6 +231,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --user=root
  --userns=host
  -v $PWD:/workdir
+ -v ansible-dev-tools-container-test-storage:/var/lib/containers \
  {image_name}
  sleep infinity"""
 
@@ -232,6 +239,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
+ -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
  --security-opt "apparmor=unconfined"
@@ -245,6 +253,8 @@ DOCKER_CMD = """{container_engine} run -d --rm
 
 def _start_container() -> None:
     """Start the container.
+
+    The default image for navigator is pulled ahead of time.
 
     Raises:
         ValueError: If the container engine is not podman or docker.
@@ -267,6 +277,9 @@ def _start_container() -> None:
     cmd = cmd.replace("\n", " ")
     subprocess.run(cmd, check=True, capture_output=True, shell=True)
 
+    nav_ee = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator")
+    _proc = _exec_container(command=f"podman pull {nav_ee}")
+
 
 def _stop_container() -> None:
     """Stop the container."""
@@ -287,10 +300,10 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
-    cmd = f"{INFRASTRUCTURE.container_engine} exec -t {INFRASTRUCTURE.container_name} {command}"
+    cmd = f"{INFRASTRUCTURE.container_engine} exec -t {INFRASTRUCTURE.container_name} bash -c '{command}'"
     return subprocess.run(
         cmd,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
         shell=True,
@@ -345,3 +358,41 @@ def _stop_server() -> None:
     INFRASTRUCTURE.proc.terminate()
     INFRASTRUCTURE.proc.wait()
     INFRASTRUCTURE.proc = None
+
+
+@pytest.fixture()
+def test_fixture_dir(request: pytest.FixtureRequest) -> Path:
+    """Provide the fixture directory for a given test.
+
+    Args:
+        request: The pytest fixture request.
+
+    Returns:
+        Path: The test fixture directory.
+    """
+    return FIXTURES_DIR / request.path.relative_to(Path(__file__).parent).with_suffix("")
+
+
+@pytest.fixture()
+def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
+    """Provide the fixture directory for a given test within the container.
+
+    Args:
+        request: The pytest fixture request.
+
+    Returns:
+        Path: The test fixture directory within the container.
+    """
+    return Path("/workdir/tests/fixtures") / request.path.relative_to(
+        Path(__file__).parent,
+    ).with_suffix("")
+
+
+@pytest.fixture()
+def infrastructure() -> Infrastructure:
+    """Provide the infrastructure.
+
+    Returns:
+        Infrastructure: The infrastructure.
+    """
+    return INFRASTRUCTURE
