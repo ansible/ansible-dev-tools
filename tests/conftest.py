@@ -275,7 +275,19 @@ def _start_container() -> None:
         err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
         raise ValueError(err)
     cmd = cmd.replace("\n", " ")
-    subprocess.run(cmd, check=True, capture_output=True, shell=True)
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        err = (
+            f"Failed to start container:\n"
+            f"cmd: {cmd}\n"
+            f"stdout: {exc.stdout}\n"
+            f"stderr: {exc.stderr}"
+        )
+        pytest.fail(err)
+        print(exc.stdout)
+        print(exc.stderr)
+        raise
 
     nav_ee = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator")
     _proc = _exec_container(command=f"podman pull {nav_ee}")
