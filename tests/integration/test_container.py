@@ -74,6 +74,7 @@ def test_navigator_simple(
     cmd = (
         f" ansible-navigator run {playbook}"
         f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log"
+        f" --ce {infrastructure.container_engine}"
         f" --eei {infrastructure.image_name}"
     )
     result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
