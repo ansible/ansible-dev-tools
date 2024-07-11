@@ -26,7 +26,7 @@ import subprocess
 import sys
 import time
 
-from collections.abc import Callable, Generator
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -483,7 +483,7 @@ def _cmd_in_tty(  # noqa: C901
 
 
 @pytest.fixture()
-def cmd_in_tty() -> Generator[Callable[..., tuple[str, str, int]], None, None]:
+def cmd_in_tty() -> Callable[..., tuple[str, str, int]]:
     """Provide the cmd in tty function as a fixture.
 
     Returns:
