@@ -300,7 +300,10 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
-    cmd = f"{INFRASTRUCTURE.container_engine} exec -t {INFRASTRUCTURE.container_name} bash -c '{command}'"
+    cmd = (
+        f"{INFRASTRUCTURE.container_engine} exec -t"
+        f" {INFRASTRUCTURE.container_name} bash -c '{command}'"
+    )
     return subprocess.run(
         cmd,
         check=False,
