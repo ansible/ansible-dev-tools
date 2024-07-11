@@ -59,6 +59,7 @@ def test_navigator_simple_c_in_c(
 
 @pytest.mark.container()
 def test_navigator_simple(
+    cmd_in_tty: Callable[[str], tuple[str, str, int]],
     infrastructure: Infrastructure,
     test_fixture_dir: Path,
     tmp_path: Path,
@@ -69,6 +70,7 @@ def test_navigator_simple(
     but pass only the executable name to the --ce option.
 
     Args:
+        cmd_in_tty: The command in tty executor.
         infrastructure: The testing infrastructure
         test_fixture_dir: The test fixture directory.
         tmp_path: The temporary directory.
@@ -80,6 +82,8 @@ def test_navigator_simple(
         f" --ce {infrastructure.container_engine.split('/')[-1]}"
         f" --eei {infrastructure.image_name}"
     )
-    result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
-    assert "Success" in result.stdout
-    assert "ok=1" in result.stdout
+    stdout, stderr, return_code = cmd_in_tty(cmd)
+    assert not stderr
+    assert return_code == 0
+    assert "Success" in stdout
+    assert "ok=1" in stdout
