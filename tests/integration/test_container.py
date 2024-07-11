@@ -50,7 +50,7 @@ def test_navigator_simple_c_in_c(
     """
     playbook = test_fixture_dir_container / "site.yml"
     result = exec_container(
-        f" ansible-navigator run {playbook}"
+        f"ansible-navigator run {playbook}"
         f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log",
     )
     assert "Success" in result.stdout
@@ -65,6 +65,9 @@ def test_navigator_simple(
 ) -> None:
     """Test ansible-navigator run using the container as an ee.
 
+    Use the container engine specified in the infrastructure fixture
+    but pass only the executable name to the --ce option.
+
     Args:
         infrastructure: The testing infrastructure
         test_fixture_dir: The test fixture directory.
@@ -74,7 +77,7 @@ def test_navigator_simple(
     cmd = (
         f" ansible-navigator run {playbook}"
         f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log"
-        f" --ce {infrastructure.container_engine}"
+        f" --ce {infrastructure.container_engine.split('/')[-1]}"
         f" --eei {infrastructure.image_name}"
     )
     result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)

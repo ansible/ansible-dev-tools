@@ -218,7 +218,7 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
         _stop_server()
 
 
-PODMAN_CMD = """{container_engine} run -d --rm
+PODMAN_CMD = """{container_engine} run -dt --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
@@ -235,7 +235,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  {image_name}
  sleep infinity"""
 
-DOCKER_CMD = """{container_engine} run -d --rm
+DOCKER_CMD = """{container_engine} run -dt --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
