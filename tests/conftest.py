@@ -129,7 +129,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--image-name",
         action="store",
-        default=os.environ.get("ADT_IMAGE_NAME", ""),
+        default=os.environ.get("ADT_IMAGE_NAME", "ghcr.io/ansible/community-ansible-dev-tools"),
         help="Container name to use. (default=ADT_IMAGE_NAME)",
     )
     parser.addoption(
@@ -234,7 +234,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --user=root
  --userns=host
  -v $PWD:/workdir
- -v ansible-dev-tools-container-test-storage:/var/lib/containers \
+ -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers \
  {image_name}
  sleep infinity"""
 
@@ -250,7 +250,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  --security-opt "seccomp=unconfined"
  --user=podman
  -v $PWD:/workdir
- -v ansible-dev-tools-container-test-storage:/var/lib/docker \
+ -v ansible-dev-tools-container-test-storage-docker:/var/lib/containers \
  {image_name}
  sleep infinity"""
 
