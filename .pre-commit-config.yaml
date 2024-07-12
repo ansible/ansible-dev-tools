@@ -87,6 +87,7 @@ repos:
           - --output-format=colorized
         additional_dependencies:
           - ansible-creator
+          - ansible-navigator
           - django
           - gunicorn
           - openapi_core
@@ -99,6 +100,7 @@ repos:
       - id: mypy
         additional_dependencies:
           - ansible-creator
+          - ansible-navigator
           - django-stubs[compatible-mypy]
           - jinja2
           - openapi-core>=0.19.1

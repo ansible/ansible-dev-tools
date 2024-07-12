@@ -32,6 +32,34 @@ Prerequisites:
 Feel free to raise issues in the repo if you feel unable to contribute a code
 fix.
 
+## Container testing
+
+`pytest` has been extended to facilitate testing a container.
+
+```shell
+Custom options:
+  --container-engine=CONTAINER_ENGINE
+                        Container engine to use. (default=ADT_CONTAINER_ENGINE, podman, docker, '')
+  --container-name=CONTAINER_NAME
+                        Container name to use for the running container. (default=ADT_CONTAINER_NAME)
+  --image-name=IMAGE_NAME
+                        Container name to use. (default=ADT_IMAGE_NAME)
+  --only-container      Only run container tests
+  --include-container   Include container tests
+```
+
+Container tests can be run with either of the following commands:
+
+```shell
+# Run the tests against the default container engine
+pytest --only-container
+pytest --only-container --container-engine=<ce> --image-name <image>
+tox -e test-image
+tox -e test-image -- --container-engine=<ce> --image-name <image>
+```
+
+See the `tests/integration/test_container.py` for examples.
+
 ## Talk to us
 
 Use Github [discussions] forum or for a live chat experience try

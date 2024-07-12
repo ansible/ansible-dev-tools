@@ -37,7 +37,7 @@ runs:
       shell: bash
       id: ansible-builder-install
       run: |
-        python3 -m pip install -U ansible-builder ansible-navigator build
+        python3 -m pip install -U ansible-builder build
         python3 -m build --outdir final/dist/ --wheel
 
     - name: Create a build context and Containerfile for base EE
@@ -80,20 +80,12 @@ runs:
         cache-from: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
         cache-to: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
 
-    - name: Validate if the final image is a valid EE
+    - name: Run tests against the container
       shell: bash
       run: |
-        ansible-navigator run ${{ github.workspace }}/site.yml --ce docker --mode stdout --pull-policy never --eei ${{ inputs.namespace }}/${{ inputs.final_image }}:test
-
-    - name: Run tests on the image before pushing with docker
-      shell: bash
-      id: run-tests-docker
-      run: |
-        docker run --rm -v ${{ github.workspace }}/tests:/home/podman/tests \
-          --security-opt seccomp=unconfined --security-opt label=disable --security-opt apparmor=unconfined \
-          --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
-          --device /dev/fuse ${{ inputs.namespace }}/${{ inputs.final_image }}:test \
-          -c "/home/podman/tests/test.sh"
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade "tox>=4.0.0"
+        tox -e test-image -- --container-engine docker --image-name ${{ inputs.namespace }}/${{ inputs.final_image }}:test
 
     - name: Push the built image to ${{ inputs.registry }} by digest for ${{ matrix.platform }}
       id: push-final

@@ -1,0 +1,8 @@
+---
+- name: Test playbook
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Print the facts
+      ansible.builtin.debug:
+        msg: Success

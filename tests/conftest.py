@@ -17,7 +17,10 @@ Imported source package '<package>' as '/**/src/<package>/__init__.py'
 Tracing '/**/src/<package>/__init__.py'
 """
 
+import errno
 import os
+import pty
+import select
 import shutil
 import subprocess
 import sys
@@ -30,7 +33,12 @@ from pathlib import Path
 import pytest
 import requests
 
+from ansible_navigator.utils.packaged_data import ImageEntry
+
 import ansible_dev_tools  # noqa: F401
+
+
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
 @dataclass
@@ -121,7 +129,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--image-name",
         action="store",
-        default=os.environ.get("ADT_IMAGE_NAME", ""),
+        default=os.environ.get("ADT_IMAGE_NAME", "ghcr.io/ansible/community-ansible-dev-tools"),
         help="Container name to use. (default=ADT_IMAGE_NAME)",
     )
     parser.addoption(
@@ -217,6 +225,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
+ -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
  --security-opt "apparmor=unconfined"
@@ -225,6 +234,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --user=root
  --userns=host
  -v $PWD:/workdir
+ -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers \
  {image_name}
  sleep infinity"""
 
@@ -232,6 +242,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
+ -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
  --security-opt "apparmor=unconfined"
@@ -239,12 +250,15 @@ DOCKER_CMD = """{container_engine} run -d --rm
  --security-opt "seccomp=unconfined"
  --user=podman
  -v $PWD:/workdir
+ -v ansible-dev-tools-container-test-storage-docker:/var/lib/containers \
  {image_name}
  sleep infinity"""
 
 
 def _start_container() -> None:
     """Start the container.
+
+    The default image for navigator is pulled ahead of time.
 
     Raises:
         ValueError: If the container engine is not podman or docker.
@@ -265,7 +279,19 @@ def _start_container() -> None:
         err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
         raise ValueError(err)
     cmd = cmd.replace("\n", " ")
-    subprocess.run(cmd, check=True, capture_output=True, shell=True)
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        err = (
+            f"Failed to start container:\n"
+            f"cmd: {cmd}\n"
+            f"stdout: {exc.stdout}\n"
+            f"stderr: {exc.stderr}"
+        )
+        pytest.fail(err)
+
+    nav_ee = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator")
+    _proc = _exec_container(command=f"podman pull {nav_ee}")
 
 
 def _stop_container() -> None:
@@ -287,10 +313,13 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
-    cmd = f"{INFRASTRUCTURE.container_engine} exec -t {INFRASTRUCTURE.container_name} {command}"
+    cmd = (
+        f"{INFRASTRUCTURE.container_engine} exec -t"
+        f" {INFRASTRUCTURE.container_name} bash -c '{command}'"
+    )
     return subprocess.run(
         cmd,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
         shell=True,
@@ -345,3 +374,119 @@ def _stop_server() -> None:
     INFRASTRUCTURE.proc.terminate()
     INFRASTRUCTURE.proc.wait()
     INFRASTRUCTURE.proc = None
+
+
+@pytest.fixture()
+def test_fixture_dir(request: pytest.FixtureRequest) -> Path:
+    """Provide the fixture directory for a given test.
+
+    Args:
+        request: The pytest fixture request.
+
+    Returns:
+        Path: The test fixture directory.
+    """
+    return FIXTURES_DIR / request.path.relative_to(Path(__file__).parent).with_suffix("")
+
+
+@pytest.fixture()
+def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
+    """Provide the fixture directory for a given test within the container.
+
+    Args:
+        request: The pytest fixture request.
+
+    Returns:
+        Path: The test fixture directory within the container.
+    """
+    return Path("/workdir/tests/fixtures") / request.path.relative_to(
+        Path(__file__).parent,
+    ).with_suffix("")
+
+
+@pytest.fixture()
+def infrastructure() -> Infrastructure:
+    """Provide the infrastructure.
+
+    Returns:
+        Infrastructure: The infrastructure.
+    """
+    return INFRASTRUCTURE
+
+
+def _cmd_in_tty(  # noqa: C901
+    cmd: str,
+    bytes_input: bytes | None = None,
+    cwd: Path | None = None,
+) -> tuple[str, str, int]:
+    """Capture the output of cmd using a tty.
+
+    Based on Andy Hayden's gist:
+    https://gist.github.com/hayd/4f46a68fc697ba8888a7b517a414583e
+
+    Args:
+        cmd: The command to run
+        bytes_input: Some bytes to input
+        cwd: The working directory
+
+    Raises:
+        OSError: If the command fails
+    Returns:
+        stdout, stderr, and the exit code
+    """
+    m_stdout, s_stdout = pty.openpty()  # provide tty to enable line-buffering
+    m_stderr, s_stderr = pty.openpty()
+    m_stdin, s_stdin = pty.openpty()
+
+    with subprocess.Popen(
+        cmd,
+        bufsize=1,
+        cwd=cwd,
+        shell=True,
+        stdin=s_stdin,
+        stdout=s_stdout,
+        stderr=s_stderr,
+        close_fds=True,
+    ) as proc:
+        for file_d in [s_stdout, s_stderr, s_stdin]:
+            os.close(file_d)
+        if bytes_input:
+            os.write(m_stdin, bytes_input)
+
+        timeout = 0.04
+        readable = [m_stdout, m_stderr]
+        result = {m_stdout: b"", m_stderr: b""}
+        try:
+            while readable:
+                ready, _, _ = select.select(readable, [], [], timeout)
+                for file_d in ready:
+                    try:
+                        data = os.read(file_d, 512)
+                    except OSError as exc:  # noqa: PERF203
+                        if exc.errno != errno.EIO:
+                            raise
+                        # EIO means EOF on some systems
+                        readable.remove(file_d)
+                    else:
+                        if not data:  # EOF
+                            readable.remove(file_d)
+                        result[file_d] += data
+
+        finally:
+            for file_d in [m_stdout, m_stderr, m_stdin]:
+                os.close(file_d)
+            if proc.poll() is None:
+                proc.kill()
+            proc.wait()
+
+    return result[m_stdout].decode("utf-8"), result[m_stderr].decode("utf-8"), proc.returncode
+
+
+@pytest.fixture()
+def cmd_in_tty() -> Callable[..., tuple[str, str, int]]:
+    """Provide the cmd in tty function as a fixture.
+
+    Returns:
+        The cmd in tty function
+    """
+    return _cmd_in_tty
