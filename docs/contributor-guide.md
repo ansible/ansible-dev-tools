@@ -34,7 +34,7 @@ fix.
 
 ## Container testing
 
-`pytest` has been extended facilitate testing a container.
+`pytest` has been extended to facilitate testing a container.
 
 ```shell
 Custom options:
