@@ -10,6 +10,7 @@ import pytest
 from ansible_dev_tools.version_builder import PKGS
 
 from ..conftest import Infrastructure  # noqa: TID252
+from .test_server_creator import test_collection_v1, test_error, test_playbook_v1
 
 
 @pytest.mark.container()
@@ -87,3 +88,35 @@ def test_navigator_simple(
     assert return_code == 0
     assert "Success" in stdout
     assert "ok=1" in stdout
+
+
+@pytest.mark.container()
+def test_error_container(dev_tools_server: str) -> None:
+    """Test the error response.
+
+    Args:
+        dev_tools_server: The dev tools server.
+    """
+    test_error(dev_tools_server=dev_tools_server)
+
+
+@pytest.mark.container()
+def test_collection_v1_container(dev_tools_server: str, tmp_path: Path) -> None:
+    """Test the collection creation.
+
+    Args:
+        dev_tools_server: The dev tools server.
+        tmp_path: The temporary directory.
+    """
+    test_collection_v1(dev_tools_server=dev_tools_server, tmp_path=tmp_path)
+
+
+@pytest.mark.container()
+def test_playbook_v1_container(dev_tools_server: str, tmp_path: Path) -> None:
+    """Test the playbook creation.
+
+    Args:
+        dev_tools_server: The dev tools server.
+        tmp_path: The temporary directory.
+    """
+    test_playbook_v1(dev_tools_server=dev_tools_server, tmp_path=tmp_path)

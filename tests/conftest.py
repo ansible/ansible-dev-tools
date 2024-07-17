@@ -228,6 +228,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
+ -p 8000:8000
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
@@ -236,7 +237,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  -v $PWD:/workdir
  -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers \
  {image_name}
- sleep infinity"""
+ adt server"""
 
 DOCKER_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
@@ -245,6 +246,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
+ -p 8000:8000
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
@@ -252,7 +254,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  -v $PWD:/workdir
  -v ansible-dev-tools-container-test-storage-docker:/var/lib/containers \
  {image_name}
- sleep infinity"""
+ adt server"""
 
 
 def _start_container() -> None:
