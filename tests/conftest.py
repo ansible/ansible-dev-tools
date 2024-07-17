@@ -130,7 +130,8 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         "--image-name",
         action="store",
         default=os.environ.get(
-            "ADT_IMAGE_NAME", "ghcr.io/ansible/community-ansible-dev-tools:latest"
+            "ADT_IMAGE_NAME",
+            "ghcr.io/ansible/community-ansible-dev-tools:latest",
         ),
         help="Container name to use. (default=ADT_IMAGE_NAME)",
     )
