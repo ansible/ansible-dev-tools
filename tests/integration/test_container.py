@@ -93,32 +93,32 @@ def test_navigator_simple(
 
 
 @pytest.mark.container()
-def test_error_container(dev_tools_server_in_container: str) -> None:
+def test_error_container(server_in_container_url: str) -> None:
     """Test the error response.
 
     Args:
-        dev_tools_server_in_container: The dev tools server.
+        server_in_container_url: The dev tools server.
     """
-    tst_error(dev_tools_server=dev_tools_server_in_container)
+    tst_error(server_url=server_in_container_url)
 
 
 @pytest.mark.container()
-def test_collection_v1_container(dev_tools_server_in_container: str, tmp_path: Path) -> None:
+def test_collection_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
     """Test the collection creation.
 
     Args:
-        dev_tools_server_in_container: The dev tools server.
+        server_in_container_url: The dev tools server.
         tmp_path: The temporary directory.
     """
-    tst_collection_v1(dev_tools_server=dev_tools_server_in_container, tmp_path=tmp_path)
+    tst_collection_v1(server_url=server_in_container_url, tmp_path=tmp_path)
 
 
 @pytest.mark.container()
-def test_playbook_v1_container(dev_tools_server_in_container: str, tmp_path: Path) -> None:
+def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
     """Test the playbook creation.
 
     Args:
-        dev_tools_server_in_container: The dev tools server.
+        server_in_container_url: The dev tools server.
         tmp_path: The temporary directory.
     """
-    tst_playbook_v1(dev_tools_server=dev_tools_server_in_container, tmp_path=tmp_path)
+    tst_playbook_v1(server_url=server_in_container_url, tmp_path=tmp_path)

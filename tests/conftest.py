@@ -178,7 +178,7 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 
 
 @pytest.fixture(scope="session")
-def dev_tools_server() -> str:
+def server_url() -> str:
     """Run the server.
 
     Returns:
@@ -188,7 +188,7 @@ def dev_tools_server() -> str:
 
 
 @pytest.fixture(scope="session")
-def dev_tools_server_in_container() -> str:
+def server_in_container_url() -> str:
     """Run the server.
 
     Returns:
