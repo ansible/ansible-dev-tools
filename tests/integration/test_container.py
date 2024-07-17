@@ -54,7 +54,7 @@ def test_navigator_simple_c_in_c(
     playbook = test_fixture_dir_container / "site.yml"
     result = exec_container(
         f"ansible-navigator run {playbook}"
-        f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log",
+        f" --mode stdout --pae false --lf {tmp_path}/navigator.log",
     )
     assert "Success" in result.stdout
     assert "ok=1" in result.stdout
