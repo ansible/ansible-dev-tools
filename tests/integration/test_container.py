@@ -10,7 +10,9 @@ import pytest
 from ansible_dev_tools.version_builder import PKGS
 
 from ..conftest import Infrastructure  # noqa: TID252
-from .test_server_creator import test_collection_v1, test_error, test_playbook_v1
+from .test_server_creator import test_collection_v1 as tst_collection_v1
+from .test_server_creator import test_error as tst_error
+from .test_server_creator import test_playbook_v1 as tst_playbook_v1
 
 
 @pytest.mark.container()
@@ -91,32 +93,32 @@ def test_navigator_simple(
 
 
 @pytest.mark.container()
-def test_error_container(dev_tools_server: str) -> None:
+def test_error_container(dev_tools_server_in_container: str) -> None:
     """Test the error response.
 
     Args:
-        dev_tools_server: The dev tools server.
+        dev_tools_server_in_container: The dev tools server.
     """
-    test_error(dev_tools_server=dev_tools_server)
+    tst_error(dev_tools_server=dev_tools_server_in_container)
 
 
 @pytest.mark.container()
-def test_collection_v1_container(dev_tools_server: str, tmp_path: Path) -> None:
+def test_collection_v1_container(dev_tools_server_in_container: str, tmp_path: Path) -> None:
     """Test the collection creation.
 
     Args:
-        dev_tools_server: The dev tools server.
+        dev_tools_server_in_container: The dev tools server.
         tmp_path: The temporary directory.
     """
-    test_collection_v1(dev_tools_server=dev_tools_server, tmp_path=tmp_path)
+    tst_collection_v1(dev_tools_server=dev_tools_server_in_container, tmp_path=tmp_path)
 
 
 @pytest.mark.container()
-def test_playbook_v1_container(dev_tools_server: str, tmp_path: Path) -> None:
+def test_playbook_v1_container(dev_tools_server_in_container: str, tmp_path: Path) -> None:
     """Test the playbook creation.
 
     Args:
-        dev_tools_server: The dev tools server.
+        dev_tools_server_in_container: The dev tools server.
         tmp_path: The temporary directory.
     """
-    test_playbook_v1(dev_tools_server=dev_tools_server, tmp_path=tmp_path)
+    tst_playbook_v1(dev_tools_server=dev_tools_server_in_container, tmp_path=tmp_path)

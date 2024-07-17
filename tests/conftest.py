@@ -129,7 +129,9 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--image-name",
         action="store",
-        default=os.environ.get("ADT_IMAGE_NAME", "ghcr.io/ansible/community-ansible-dev-tools"),
+        default=os.environ.get(
+            "ADT_IMAGE_NAME", "ghcr.io/ansible/community-ansible-dev-tools:latest"
+        ),
         help="Container name to use. (default=ADT_IMAGE_NAME)",
     )
     parser.addoption(
@@ -184,13 +186,24 @@ def dev_tools_server() -> str:
     return "http://localhost:8000"
 
 
+@pytest.fixture(scope="session")
+def dev_tools_server_in_container() -> str:
+    """Run the server.
+
+    Returns:
+        str: The server URL.
+    """
+    return "http://localhost:8001"
+
+
 def pytest_sessionstart(session: pytest.Session) -> None:
     """Start the server.
 
     Args:
         session: The pytest session.
     """
-    assert session
+    if session.config.option.collectonly:
+        return
 
     if os.environ.get("PYTEST_XDIST_WORKER"):
         return
@@ -211,7 +224,8 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     Args:
         session: The pytest session.
     """
-    assert session
+    if session.config.option.collectonly:
+        return
     if os.environ.get("PYTEST_XDIST_WORKER"):
         return
 
@@ -228,7 +242,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
- -p 8000:8000
+ -p 8001:8001
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
@@ -237,7 +251,7 @@ PODMAN_CMD = """{container_engine} run -d --rm
  -v $PWD:/workdir
  -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers \
  {image_name}
- adt server"""
+ adt server --port 8001 &"""
 
 DOCKER_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
@@ -246,7 +260,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
- -p 8000:8000
+ -p 8001:8001
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
@@ -254,7 +268,7 @@ DOCKER_CMD = """{container_engine} run -d --rm
  -v $PWD:/workdir
  -v ansible-dev-tools-container-test-storage-docker:/var/lib/containers \
  {image_name}
- adt server"""
+ adt server --port 8001"""
 
 
 def _start_container() -> None:
