@@ -26,7 +26,10 @@ def version_builder() -> str:
     """
     lines = []
     for pkg in sorted(PKGS):
-        version = importlib.metadata.version(pkg)
+        try:
+            version = importlib.metadata.version(pkg)
+        except importlib.metadata.PackageNotFoundError:
+            version = "not installed"
         lines.append(f"{pkg: <40} {version}")
 
     return "\n".join(lines)
