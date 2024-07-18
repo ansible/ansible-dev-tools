@@ -6,7 +6,7 @@
 #
 ansible-builder==3.1.0
 ansible-compat==24.7.0
-ansible-core==2.17.1
+ansible-core==2.17.2
 ansible-creator==24.7.1
 ansible-dev-environment==24.7.0
 ansible-lint==24.7.0
@@ -18,7 +18,7 @@ attrs==23.2.0
 bindep==2.11.0
 black==24.4.2
 bracex==2.4
-cachetools==5.3.3
+cachetools==5.4.0
 certifi==2024.7.4
 cffi==1.16.0
 chardet==5.2.0
@@ -84,7 +84,7 @@ rpds-py==0.19.0
 ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.8
 six==1.16.0
-sqlparse==0.5.0
+sqlparse==0.5.1
 subprocess-tee==0.4.2
 tomli==2.0.1
 tox==4.16.0
