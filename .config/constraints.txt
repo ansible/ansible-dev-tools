@@ -6,7 +6,7 @@
 #
 ansible-builder==3.1.0
 ansible-compat==24.7.0
-ansible-core==2.17.1
+ansible-core==2.17.2
 ansible-creator==24.7.1
 ansible-dev-environment==24.7.0
 ansible-lint==24.7.0
@@ -22,7 +22,7 @@ bindep==2.11.0
 black==24.4.2
 bracex==2.4
 build==1.2.1
-cachetools==5.3.3
+cachetools==5.4.0
 cairocffi==1.7.1
 cairosvg==2.7.1
 certifi==2024.7.4
@@ -52,7 +52,7 @@ exceptiongroup==1.2.2
 execnet==2.1.1
 filelock==3.15.4
 ghp-import==2.1.0
-griffe==0.47.0
+griffe==0.48.0
 gunicorn==22.0.0
 htmlmin2==0.1.13
 identify==2.6.0
@@ -115,7 +115,7 @@ pluggy==1.5.0
 pre-commit==3.7.1
 ptyprocess==0.7.0
 pycparser==2.22
-pydoclint==0.5.4
+pydoclint==0.5.6
 pygments==2.18.0
 pylint==3.2.5
 pymdown-extensions==10.8.1
@@ -143,7 +143,7 @@ ruamel-yaml-clib==0.2.8
 ruff==0.5.2
 six==1.16.0
 soupsieve==2.5
-sqlparse==0.5.0
+sqlparse==0.5.1
 subprocess-tee==0.4.2
 termcolor==2.4.0
 text-unidecode==1.3
