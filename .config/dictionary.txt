@@ -8,6 +8,7 @@ arcname
 autoplay
 capsys
 codespaces
+collectonly
 containerfile
 devcontainer
 devel

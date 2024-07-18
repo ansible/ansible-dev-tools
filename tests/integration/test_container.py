@@ -10,6 +10,9 @@ import pytest
 from ansible_dev_tools.version_builder import PKGS
 
 from ..conftest import Infrastructure  # noqa: TID252
+from .test_server_creator import test_collection_v1 as tst_collection_v1
+from .test_server_creator import test_error as tst_error
+from .test_server_creator import test_playbook_v1 as tst_playbook_v1
 
 
 @pytest.mark.container()
@@ -51,7 +54,7 @@ def test_navigator_simple_c_in_c(
     playbook = test_fixture_dir_container / "site.yml"
     result = exec_container(
         f"ansible-navigator run {playbook}"
-        f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log",
+        f" --mode stdout --pae false --lf {tmp_path}/navigator.log",
     )
     assert "Success" in result.stdout
     assert "ok=1" in result.stdout
@@ -87,3 +90,35 @@ def test_navigator_simple(
     assert return_code == 0
     assert "Success" in stdout
     assert "ok=1" in stdout
+
+
+@pytest.mark.container()
+def test_error_container(server_in_container_url: str) -> None:
+    """Test the error response.
+
+    Args:
+        server_in_container_url: The dev tools server.
+    """
+    tst_error(server_url=server_in_container_url)
+
+
+@pytest.mark.container()
+def test_collection_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
+    """Test the collection creation.
+
+    Args:
+        server_in_container_url: The dev tools server.
+        tmp_path: The temporary directory.
+    """
+    tst_collection_v1(server_url=server_in_container_url, tmp_path=tmp_path)
+
+
+@pytest.mark.container()
+def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
+    """Test the playbook creation.
+
+    Args:
+        server_in_container_url: The dev tools server.
+        tmp_path: The temporary directory.
+    """
+    tst_playbook_v1(server_url=server_in_container_url, tmp_path=tmp_path)
