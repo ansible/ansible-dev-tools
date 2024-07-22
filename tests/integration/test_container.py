@@ -158,6 +158,7 @@ def test_nav_images(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     assert any(nav_default in line for line in stdout)
 
 
+@pytest.mark.container()
 def test_nav_playbook(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     """Test ansible-navigator run using a creator created playbook.
 
@@ -174,6 +175,7 @@ def test_nav_playbook(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     assert stdout[-1].endswith("Successful")
 
 
+@pytest.mark.container()
 def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     """Test ansible-navigator run using a creator created collection.
 
