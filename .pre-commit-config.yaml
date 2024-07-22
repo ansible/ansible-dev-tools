@@ -90,6 +90,7 @@ repos:
           - ansible-navigator
           - django
           - gunicorn
+          - libtmux
           - openapi_core
           - pytest
           - pyyaml
