@@ -276,6 +276,12 @@ def _start_container() -> None:
     Raises:
         ValueError: If the container engine is not podman or docker.
     """
+    cmd = (
+        f"{INFRASTRUCTURE.container_engine} kill {INFRASTRUCTURE.container_name};"
+        f"{INFRASTRUCTURE.container_engine} rm {INFRASTRUCTURE.container_name}"
+    )
+    subprocess.run(cmd, check=False, capture_output=True, shell=True, text=True)
+
     auth_file = "$XDG_RUNTIME_DIR/containers/auth.json"
     auth_mount = ""
     if "XDG_RUNTIME_DIR" in os.environ and Path(os.path.expandvars(auth_file)).exists():
