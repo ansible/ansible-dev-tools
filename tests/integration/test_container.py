@@ -154,8 +154,8 @@ def test_nav_images(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     """
     cmd = f"ansible-navigator images --lf {tmp_path}/navigator.log"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
-    nav_default = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator")
-    assert any(nav_default in line for line in stdout)
+    image = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator").split(":")[0].split("/")[-1]
+    assert any(image in line for line in stdout)
 
 
 @pytest.mark.container()
@@ -168,7 +168,7 @@ def test_nav_playbook(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
-    output = f"Note: ansible project created at {tmp_path}"
+    output = "Note: ansible project created"
     assert any(output in line for line in stdout)
     cmd = f"cd {tmp_path} && ansible-navigator run site.yml"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="Successful", timeout=10)

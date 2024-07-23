@@ -19,7 +19,7 @@ def session_params() -> dict[str, int]:
         dict: The tmux session parameters.
     """
     return {
-        "x": 1000,
+        "x": 80,
         "y": 24,
     }
 
