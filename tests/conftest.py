@@ -25,6 +25,7 @@ import shutil
 import subprocess
 import sys
 import time
+import warnings
 
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -282,8 +283,6 @@ def _start_container() -> None:
 
     if "podman" in INFRASTRUCTURE.container_engine:
         cmd = BASE_CMD + PODMAN_CMD + auth_mount + END
-        import warnings
-
         warnings.warn("Podman auth mount added: " + auth_mount, stacklevel=0)
     elif "docker" in INFRASTRUCTURE.container_engine:
         cmd = BASE_CMD + DOCKER_CMD + END
