@@ -307,15 +307,18 @@ def _start_container() -> None:
         )
         pytest.fail(err)
 
+    # image is local, can't be pulled, use default
     if INFRASTRUCTURE.image_name.startswith("localhost"):
         nav_ee = get_nav_default_ee_in_container()
         warning = f"localhost in image name, pulling default {nav_ee} for navigator"
-    elif "/" in INFRASTRUCTURE.image_name:
+    # dots and slashes in image name, use it
+    elif "/" in INFRASTRUCTURE.image_name and "." in INFRASTRUCTURE.image_name:
         nav_ee = INFRASTRUCTURE.image_name
-        warning = f"/ in image name, pulling {INFRASTRUCTURE.image_name} for navigator"
+        warning = f"/ and . in image name, pulling {nav_ee} for navigator"
+    # otherwise, use default
     else:
         nav_ee = get_nav_default_ee_in_container()
-        warning = f"neither localhost nor / in image name, pulling default {nav_ee} for navigator"
+        warning = f"localhost / . not in image name, pulling default {nav_ee} for navigator"
     warnings.warn(warning, stacklevel=0)
     INFRASTRUCTURE.navigator_ee = nav_ee
     _proc = _exec_container(command=f"podman pull {nav_ee}")

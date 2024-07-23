@@ -113,7 +113,7 @@ def test_navigator_simple(
         f" ansible-navigator run {playbook}"
         f" --mode stdout --pae false --lf {tmp_path}/navigator.log"
         f" --ce {infrastructure.container_engine.split('/')[-1]}"
-        f" --pp never --eei {infrastructure.navigator_ee}"
+        f" --pp never --eei {infrastructure.image_name}"
     )
     stdout, stderr, return_code = cmd_in_tty(cmd)
     assert not stderr
