@@ -20,7 +20,6 @@ Tracing '/**/src/<package>/__init__.py'
 import errno
 import os
 import pty
-import re
 import select
 import shutil
 import subprocess
@@ -54,6 +53,7 @@ class Infrastructure:
         only_container: Only container tests
         proc: The server process
         server: Server required
+        navigator_ee: The image to use with ansible navigator
     """
 
     session: pytest.Session
@@ -65,6 +65,7 @@ class Infrastructure:
     only_container: bool = False
     proc: None | subprocess.Popen[bytes] = None
     server: bool = False
+    navigator_ee: str = ""
 
     def __post_init__(self) -> None:
         """Initialize the infrastructure.
@@ -235,7 +236,7 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
         _stop_server()
 
 
-PODMAN_CMD = """{container_engine} run -d --rm
+BASE_CMD = """{container_engine} run -d --rm
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
@@ -246,55 +247,55 @@ PODMAN_CMD = """{container_engine} run -d --rm
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
- --user=root
- --userns=host
  -v $PWD:/workdir
- -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers \
- {image_name}
- adt server --port 8001 &"""
+ -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers
+"""
 
-DOCKER_CMD = """{container_engine} run -d --rm
- --cap-add=SYS_ADMIN
- --cap-add=SYS_RESOURCE
- --device "/dev/fuse"
- -e NO_COLOR=1
- --hostname=ansible-dev-container
- --name={container_name}
- -p 8001:8001
- --security-opt "apparmor=unconfined"
- --security-opt "label=disable"
- --security-opt "seccomp=unconfined"
- --user=podman
- -v $PWD:/workdir
- -v ansible-dev-tools-container-test-storage-docker:/var/lib/containers \
- {image_name}
- adt server --port 8001"""
+PODMAN_CMD = """ --user=root
+ --userns=host
+"""
+
+DOCKER_CMD = """ --user=podman"
+"""
+
+END = """ {image_name}
+ adt server --port 8001
+ """
 
 
 def _start_container() -> None:
     """Start the container.
 
     The default image for navigator is pulled ahead of time.
+    It is determined by the container image name. If the image name
+    starts with localhost, the default ee for navigator is pulled.
+    If the image name contains a /, that is used, otherwise the default
+    ee for navigator is pulled.
 
     Raises:
         ValueError: If the container engine is not podman or docker.
     """
+    auth_file = "$XDG_RUNTIME_DIR/containers/auth.json"
+    auth_mount = ""
+    if "XDG_RUNTIME_DIR" in os.environ and Path(os.path.expandvars(auth_file)).exists():
+        auth_mount = f" -v {auth_file}:/run/containers/0/auth.json"
+
     if "podman" in INFRASTRUCTURE.container_engine:
-        cmd = PODMAN_CMD.format(
-            container_engine=INFRASTRUCTURE.container_engine,
-            container_name=INFRASTRUCTURE.container_name,
-            image_name=INFRASTRUCTURE.image_name,
-        )
+        cmd = BASE_CMD + PODMAN_CMD + auth_mount + END
+        import warnings
+
+        warnings.warn("Podman auth mount added: " + auth_mount, stacklevel=0)
     elif "docker" in INFRASTRUCTURE.container_engine:
-        cmd = DOCKER_CMD.format(
-            container_engine=INFRASTRUCTURE.container_engine,
-            container_name=INFRASTRUCTURE.container_name,
-            image_name=INFRASTRUCTURE.image_name,
-        )
+        cmd = BASE_CMD + DOCKER_CMD + END
     else:
         err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
         raise ValueError(err)
-    cmd = cmd.replace("\n", " ")
+
+    cmd = cmd.replace("\n", " ").format(
+        container_engine=INFRASTRUCTURE.container_engine,
+        container_name=INFRASTRUCTURE.container_name,
+        image_name=INFRASTRUCTURE.image_name,
+    )
     try:
         subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
     except subprocess.CalledProcessError as exc:
@@ -306,7 +307,17 @@ def _start_container() -> None:
         )
         pytest.fail(err)
 
-    nav_ee = get_nav_default_ee_in_container()
+    if INFRASTRUCTURE.image_name.startswith("localhost"):
+        nav_ee = get_nav_default_ee_in_container()
+        warning = f"localhost in image name, pulling default {nav_ee} for navigator"
+    elif "/" in INFRASTRUCTURE.image_name:
+        nav_ee = INFRASTRUCTURE.image_name
+        warning = f"/ in image name, pulling {INFRASTRUCTURE.image_name} for navigator"
+    else:
+        nav_ee = get_nav_default_ee_in_container()
+        warning = f"neither localhost nor / in image name, pulling default {nav_ee} for navigator"
+    warnings.warn(warning, stacklevel=0)
+    INFRASTRUCTURE.navigator_ee = nav_ee
     _proc = _exec_container(command=f"podman pull {nav_ee}")
 
 
@@ -316,18 +327,13 @@ def get_nav_default_ee_in_container() -> str:
     Returns:
         str: The default ee for navigator in the container.
     """
-    proc = _exec_container(
-        command="""
-        python -c "from ansible_navigator.utils.packaged_data import ImageEntry;
-        print(ImageEntry.DEFAULT_EE.get(app_name='ansible_navigator'"))
-    """,
+    cmd = (
+        'python -c "from ansible_navigator.utils.packaged_data import ImageEntry;'
+        'print(ImageEntry.DEFAULT_EE.get(app_name=\\"ansible_navigator\\"))"'
     )
-    ee_line = [line for line in proc.stdout.splitlines() if "--eei" in line]
-    match = re.match(r"^.*?\(default:\s(?P<image>.*)\).*$", ee_line[0])
-    if match:
-        group_dict = match.groupdict()
-        return group_dict["image"]
-    pytest.fail("Failed to get the default ee for navigator in the container.")
+
+    proc = _exec_container(cmd)
+    return proc.stdout.strip()
 
 
 @pytest.fixture(name="nav_default_ee")

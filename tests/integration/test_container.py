@@ -7,8 +7,6 @@ from pathlib import Path
 
 import pytest
 
-from ansible_navigator.utils.packaged_data import ImageEntry
-
 from ansible_dev_tools.version_builder import PKGS
 
 from ..conftest import Infrastructure  # noqa: TID252
@@ -42,10 +40,37 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
 
 
 @pytest.mark.container()
+@pytest.mark.parametrize("app", ("nano", "tar", "vim"))
+def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
+    """Test the presence of an app in the container.
+
+    Args:
+        exec_container: The container executor.
+        app: The app to test.
+    """
+    result = exec_container(f"{app} --version")
+    assert result.returncode == 0, f"{app} command failed"
+
+
+@pytest.mark.container()
+def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[str]]) -> None:
+    """Test the user shell.
+
+    Args:
+        exec_container: The container executor.
+    """
+    result = exec_container("cat /etc/passwd | grep root | grep zsh")
+    assert result.returncode == 0, "zsh not found in /etc/passwd"
+    result = exec_container("cat /etc/passwd | grep podman | grep zsh")
+    assert result.returncode == 0, "zsh not found in /etc/passwd"
+
+
+@pytest.mark.container()
 def test_navigator_simple_c_in_c(
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
     test_fixture_dir_container: Path,
     tmp_path: Path,
+    infrastructure: Infrastructure,
 ) -> None:
     """Test ansible-navigator run against a simple playbook within the container.
 
@@ -53,11 +78,13 @@ def test_navigator_simple_c_in_c(
         exec_container: The container executor.
         test_fixture_dir_container: The test fixture directory.
         tmp_path: The temporary directory.
+        infrastructure: The testing infrastructure.
     """
     playbook = test_fixture_dir_container / "site.yml"
     result = exec_container(
         f"ansible-navigator run {playbook}"
-        f" --mode stdout --pae false --lf {tmp_path}/navigator.log",
+        f" --mode stdout --pae false --lf {tmp_path}/navigator.log"
+        f" --eei {infrastructure.navigator_ee} --pp never",
     )
     assert "Success" in result.stdout
     assert "ok=1" in result.stdout
@@ -84,9 +111,9 @@ def test_navigator_simple(
     playbook = test_fixture_dir / "site.yml"
     cmd = (
         f" ansible-navigator run {playbook}"
-        f" --mode stdout --pp never --pae false --lf {tmp_path}/navigator.log"
+        f" --mode stdout --pae false --lf {tmp_path}/navigator.log"
         f" --ce {infrastructure.container_engine.split('/')[-1]}"
-        f" --eei {infrastructure.image_name}"
+        f" --pp never --eei {infrastructure.navigator_ee}"
     )
     stdout, stderr, return_code = cmd_in_tty(cmd)
     assert not stderr
@@ -128,14 +155,22 @@ def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> 
 
 
 @pytest.mark.container()
-def test_nav_collections(container_tmux: ContainerTmux, tmp_path: Path) -> None:
+def test_nav_collections(
+    container_tmux: ContainerTmux,
+    tmp_path: Path,
+    infrastructure: Infrastructure,
+) -> None:
     """Test ansible-navigator collections.
 
     Args:
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
+        infrastructure: The testing infrastructure
     """
-    cmd = f"ansible-navigator collections --lf {tmp_path}/navigator.log"
+    cmd = (
+        f"ansible-navigator collections --lf {tmp_path}/navigator.log"
+        f" --pp never --eei {infrastructure.navigator_ee}"
+    )
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
     assert any("ansible.builtin" in line for line in stdout)
     assert any("ansible.posix" in line for line in stdout)
@@ -145,32 +180,49 @@ def test_nav_collections(container_tmux: ContainerTmux, tmp_path: Path) -> None:
 
 
 @pytest.mark.container()
-def test_nav_images(container_tmux: ContainerTmux, tmp_path: Path) -> None:
+def test_nav_images(
+    container_tmux: ContainerTmux,
+    tmp_path: Path,
+    infrastructure: Infrastructure,
+) -> None:
     """Test ansible-navigator images.
 
     Args:
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
+        infrastructure: The testing infrastructure
     """
-    cmd = f"ansible-navigator images --lf {tmp_path}/navigator.log"
+    cmd = (
+        f"ansible-navigator images --lf {tmp_path}/nav.log"
+        f" --pp never --eei {infrastructure.navigator_ee}"
+    )
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
-    image = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator").split(":")[0].split("/")[-1]
+    image = infrastructure.navigator_ee.split(":")[0].split("/")[-1]
     assert any(image in line for line in stdout)
 
 
 @pytest.mark.container()
-def test_nav_playbook(container_tmux: ContainerTmux, tmp_path: Path) -> None:
+def test_nav_playbook(
+    container_tmux: ContainerTmux,
+    tmp_path: Path,
+    infrastructure: Infrastructure,
+) -> None:
     """Test ansible-navigator run using a creator created playbook.
 
     Args:
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
+        infrastructure: The testing infrastructure
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
     output = "Note: ansible project created"
     assert any(output in line for line in stdout)
-    cmd = f"cd {tmp_path} && ansible-navigator run site.yml"
+    cmd = (
+        f"cd {tmp_path} &&"
+        f" ansible-navigator run site.yml"
+        f" --pp never --eei {infrastructure.navigator_ee}"
+    )
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="Successful", timeout=10)
     assert stdout[-1].endswith("Successful")
 
