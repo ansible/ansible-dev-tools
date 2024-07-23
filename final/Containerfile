@@ -51,7 +51,8 @@ python3-pyyaml \
 python3-ruamel-yaml \
 python3-wheel \
 --exclude container-selinux \
-    && microdnf clean all
+    && microdnf clean all \
+    && ln -s /usr/bin/vim /usr/bin/vi
 
 RUN useradd podman; \
         echo -e "podman:1:999\npodman:1001:64535" > /etc/subuid; \

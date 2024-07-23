@@ -40,7 +40,7 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
 
 
 @pytest.mark.container()
-@pytest.mark.parametrize("app", ("nano", "tar", "vim"))
+@pytest.mark.parametrize("app", ("nano", "tar", "vi"))
 def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
     """Test the presence of an app in the container.
 
