@@ -20,6 +20,7 @@ Tracing '/**/src/<package>/__init__.py'
 import errno
 import os
 import pty
+import re
 import select
 import shutil
 import subprocess
@@ -32,8 +33,6 @@ from pathlib import Path
 
 import pytest
 import requests
-
-from ansible_navigator.utils.packaged_data import ImageEntry
 
 import ansible_dev_tools  # noqa: F401
 
@@ -307,8 +306,38 @@ def _start_container() -> None:
         )
         pytest.fail(err)
 
-    nav_ee = ImageEntry.DEFAULT_EE.get(app_name="ansible_navigator")
+    nav_ee = get_nav_default_ee_in_container()
     _proc = _exec_container(command=f"podman pull {nav_ee}")
+
+
+def get_nav_default_ee_in_container() -> str:
+    """Get the default ee for navigator in the container.
+
+    Returns:
+        str: The default ee for navigator in the container.
+    """
+    proc = _exec_container(
+        command="""
+        python -c "from ansible_navigator.utils.packaged_data import ImageEntry;
+        print(ImageEntry.DEFAULT_EE.get(app_name='ansible_navigator'"))
+    """,
+    )
+    ee_line = [line for line in proc.stdout.splitlines() if "--eei" in line]
+    match = re.match(r"^.*?\(default:\s(?P<image>.*)\).*$", ee_line[0])
+    if match:
+        group_dict = match.groupdict()
+        return group_dict["image"]
+    pytest.fail("Failed to get the default ee for navigator in the container.")
+
+
+@pytest.fixture(name="nav_default_ee")
+def nav_default_ee() -> str:
+    """Get the default ee for navigator in the container.
+
+    Returns:
+        str: The default ee for navigator in the container.
+    """
+    return get_nav_default_ee_in_container()
 
 
 def _stop_container() -> None:
