@@ -118,3 +118,17 @@ jobs:
         if: >- # "create" workflows run separately from "push" & "pull_request"
           github.event_name == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1
+  
+  forum_post:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    needs:
+      - pypi
+      - publish-image
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Retreive the forum post script from team-devtools
+        run: curl -O https://raw.githubusercontent.com/ansible/team-devtools/main/.github/workflows/forum_post.py
+
+      - name: Run the forum post script
+        run: python3 forum_post.py ${{ github.event.repository.full_name }} ${{ github.event.release.tag_name }} ${{ secrets.FORUM_KEY }} ${{ secrets.FORUM_USER }}
