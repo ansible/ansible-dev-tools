@@ -1,6 +1,7 @@
 ansible-dev-tools[server]
 black
 coverage[toml]
+libtmux
 mypy
 pip-tools
 pre-commit
