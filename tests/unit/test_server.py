@@ -7,11 +7,12 @@ import pytest
 from ansible_dev_tools.subcommands.server import Server
 
 
-def test_server_debug_options(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_server_debug_options(monkeypatch: pytest.MonkeyPatch, adt_server: Server) -> None:
     """Test the server class with debug options.
 
     Args:
         monkeypatch: pytest fixture for patching.
+        adt_server: The server instance.
     """
     called = False
     options = {}
@@ -36,7 +37,6 @@ def test_server_debug_options(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr("ansible_dev_tools.subcommands.server.AdtServerApp", MockAdtServerApp)
 
-    server = Server(port="8080", debug=True)
-    server.run()
+    adt_server.run()
     assert options["loglevel"] == "debug"
     assert called

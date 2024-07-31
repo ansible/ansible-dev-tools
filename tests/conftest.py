@@ -36,6 +36,8 @@ import requests
 
 import ansible_dev_tools  # noqa: F401
 
+from ansible_dev_tools.subcommands.server import Server
+
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
@@ -550,3 +552,15 @@ def cmd_in_tty() -> Callable[..., tuple[str, str, int]]:
         The cmd in tty function
     """
     return _cmd_in_tty
+
+
+@pytest.fixture(scope="session")
+def adt_server() -> Server:
+    """Configure the server and it's settings.
+
+    This prevents the django settings from getting initialized multiple times.
+
+    Returns:
+        Server: The server instance
+    """
+    return Server(port="8000", debug=True)

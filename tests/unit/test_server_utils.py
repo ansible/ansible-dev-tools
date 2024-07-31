@@ -11,13 +11,6 @@ from django.test.client import RequestFactory
 from openapi_core.unmarshalling.request.datatypes import RequestUnmarshalResult
 
 from ansible_dev_tools.server_utils import validate_request, validate_response
-from ansible_dev_tools.subcommands.server import Server
-
-
-@pytest.fixture(name="server")
-def _fixture_server() -> None:
-    """Initialize a Server object."""
-    Server(port="8000", debug=True)
 
 
 @pytest.fixture(name="collection_request")
@@ -36,7 +29,7 @@ def fixture_collection_request() -> HttpRequest:
     )
 
 
-@pytest.mark.usefixtures("server")
+@pytest.mark.use_fixtures("adt_server")
 def test_validate_request_pass(collection_request: HttpRequest) -> None:
     """Test the validate_request function for success.
 
@@ -51,7 +44,7 @@ def test_validate_request_pass(collection_request: HttpRequest) -> None:
     assert result.body == json.loads(collection_request.body)
 
 
-@pytest.mark.usefixtures("server")
+@pytest.mark.use_fixtures("adt_server")
 def test_validate_request_fail() -> None:
     """Test the validate_request function for failure."""
     rf = RequestFactory()
@@ -61,7 +54,7 @@ def test_validate_request_fail() -> None:
     assert result.status_code == HTTPStatus.BAD_REQUEST
 
 
-@pytest.mark.usefixtures("server")
+@pytest.mark.use_fixtures("adt_server")
 def test_validate_response_pass(collection_request: HttpRequest) -> None:
     """Test the validate_response function for success.
 
@@ -76,7 +69,7 @@ def test_validate_response_pass(collection_request: HttpRequest) -> None:
     assert result.status_code == HTTPStatus.CREATED
 
 
-@pytest.mark.usefixtures("server")
+@pytest.mark.use_fixtures("adt_server")
 def test_validate_response_fail(collection_request: HttpRequest) -> None:
     """Test the validate_response function for failure.
 
