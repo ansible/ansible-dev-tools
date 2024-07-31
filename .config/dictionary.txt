@@ -6,9 +6,11 @@ ansibuddy
 antsibull
 arcname
 autoplay
+autouse
 capsys
 codespaces
 collectonly
+confest
 containerfile
 devcontainer
 devel
@@ -27,5 +29,6 @@ uninstallation
 unmarshal
 unmarshalling
 urandom
+usefixtures
 userns
 workdir

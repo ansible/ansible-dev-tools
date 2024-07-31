@@ -89,11 +89,9 @@ class Server:
 
     def run(self: Server) -> None:
         """Start the server."""
-        options = {
-            "bind": f"0.0.0.0:{self.port}",
-        }
+        options = {"bind": f"0.0.0.0:{self.port}"}
         if self.debug:
             # set log level to debug and write access logs to stdout
             options.update({"loglevel": "debug", "accesslog": "-"})
 
-        AdtServerApp(self.application, options).run()
+        AdtServerApp(app=self.application, options=options).run()
