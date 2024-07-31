@@ -4,16 +4,19 @@ import tarfile
 
 from pathlib import Path
 
+import pytest
 import requests
 
 
-def test_error(server_url: str) -> None:
+@pytest.mark.parametrize("resource", ("playbook", "collection"))
+def test_error(server_url: str, resource: str) -> None:
     """Test the error response.
 
     Args:
         server_url: The server URL.
+        resource: The resource to test.
     """
-    response = requests.post(f"{server_url}/v1/creator/playbook", timeout=1)
+    response = requests.post(f"{server_url}/v1/creator/{resource}", timeout=1)
     assert response.status_code == requests.codes.get("bad_request")
     assert response.text == "Missing required request body"
 

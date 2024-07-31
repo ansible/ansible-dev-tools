@@ -1,6 +1,6 @@
 """Some tests for the CLI module."""
 
-import sys
+from typing import Any
 
 import pytest
 
@@ -37,7 +37,21 @@ def test_server_fail_no_deps(
         capsys: Pytest capsys fixture.
     """
     monkeypatch.setattr("sys.argv", ["adt", "server"])
-    monkeypatch.setitem(sys.modules, "django", None)
+
+    class MockServer:
+        def __init__(self, *_args: Any, **_kwargs: Any) -> None:  # noqa: ANN401
+            """Initialize the MockServer.
+
+            Args:
+                *_args: Positional arguments.
+                **_kwargs: Keyword arguments.
+
+            Raises:
+                ImportError: Always raises ImportError.
+            """
+            raise ImportError
+
+    monkeypatch.setattr("ansible_dev_tools.subcommands.server.Server", MockServer)
 
     with pytest.raises(SystemExit):
         main()

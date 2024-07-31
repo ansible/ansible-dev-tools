@@ -123,13 +123,15 @@ def test_navigator_simple(
 
 
 @pytest.mark.container()
-def test_error_container(server_in_container_url: str) -> None:
+@pytest.mark.parametrize("resource", ("playbook", "collection"))
+def test_error_container(server_in_container_url: str, resource: str) -> None:
     """Test the error response.
 
     Args:
         server_in_container_url: The dev tools server.
+        resource: The resource to test.
     """
-    tst_error(server_url=server_in_container_url)
+    tst_error(server_url=server_in_container_url, resource=resource)
 
 
 @pytest.mark.container()
