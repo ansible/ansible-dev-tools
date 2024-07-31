@@ -27,5 +27,6 @@ uninstallation
 unmarshal
 unmarshalling
 urandom
+usefixtures
 userns
 workdir
