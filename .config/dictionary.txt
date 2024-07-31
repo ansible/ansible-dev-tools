@@ -6,9 +6,11 @@ ansibuddy
 antsibull
 arcname
 autoplay
+autouse
 capsys
 codespaces
 collectonly
+confest
 containerfile
 devcontainer
 devel

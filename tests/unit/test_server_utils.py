@@ -1,4 +1,9 @@
-"""Test the server utilities."""
+"""Test the server utilities.
+
+Of interest for these tests may be the autouse fixture in the root
+confest.py file. This fixture initializes and optionally returns
+the Server instance configured with the Django settings.
+"""
 
 import json
 
@@ -29,7 +34,6 @@ def fixture_collection_request() -> HttpRequest:
     )
 
 
-@pytest.mark.use_fixtures("adt_server")
 def test_validate_request_pass(collection_request: HttpRequest) -> None:
     """Test the validate_request function for success.
 
@@ -44,7 +48,6 @@ def test_validate_request_pass(collection_request: HttpRequest) -> None:
     assert result.body == json.loads(collection_request.body)
 
 
-@pytest.mark.use_fixtures("adt_server")
 def test_validate_request_fail() -> None:
     """Test the validate_request function for failure."""
     rf = RequestFactory()
@@ -54,7 +57,6 @@ def test_validate_request_fail() -> None:
     assert result.status_code == HTTPStatus.BAD_REQUEST
 
 
-@pytest.mark.use_fixtures("adt_server")
 def test_validate_response_pass(collection_request: HttpRequest) -> None:
     """Test the validate_response function for success.
 
@@ -69,7 +71,6 @@ def test_validate_response_pass(collection_request: HttpRequest) -> None:
     assert result.status_code == HTTPStatus.CREATED
 
 
-@pytest.mark.use_fixtures("adt_server")
 def test_validate_response_fail(collection_request: HttpRequest) -> None:
     """Test the validate_response function for failure.
 

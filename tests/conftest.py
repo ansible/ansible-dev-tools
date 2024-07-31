@@ -554,7 +554,7 @@ def cmd_in_tty() -> Callable[..., tuple[str, str, int]]:
     return _cmd_in_tty
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def adt_server() -> Server:
     """Configure the server and it's settings.
 
