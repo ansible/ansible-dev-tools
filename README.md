@@ -57,6 +57,18 @@ The `ansible-dev-tools` package also offers an Ansible Devtools server which can
 
 Refer to the [server](https://github.com/ansible/ansible-dev-tools/blob/main/src/ansible_dev_tools/subcommands/server.py) code for available endpoints.
 
+To run this server from the community dev-tools container, use the following command:
+
+```
+$ podman run -d -p 8000:8000 --name=ansible-devtools-server ghcr.io/ansible/community-ansible-dev-tools:latest adt server
+778d0423863c5c161b4bdcb6177d169f0897c597ff084c7a0d3401814d78174f
+$ podman logs -f ansible-devtools-server
+[2024-04-25 17:28:02 +0000] [10] [INFO] Starting gunicorn 22.0.0
+[2024-04-25 17:28:02 +0000] [10] [INFO] Listening at: http://0.0.0.0:8000 (10)
+[2024-04-25 17:28:02 +0000] [10] [INFO] Using worker: sync
+[2024-04-25 17:28:02 +0000] [11] [INFO] Booting worker with pid: 11
+```
+
 **Note:** This is primarily for backend integrations and is not intended to be an user-facing functionality.
 
 ## Documentation
