@@ -42,7 +42,7 @@ defusedxml==0.7.1
 dill==0.3.8
 distlib==0.3.8
 distro==1.9.0
-django==5.0.7
+django==5.0.8
 django-stubs==5.0.4
 django-stubs-ext==5.0.4
 dnspython==2.6.1
