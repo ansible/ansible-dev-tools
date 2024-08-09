@@ -1,11 +1,16 @@
 """Tests for the version builder."""
+
 from __future__ import annotations
 
 import re
 
-import pytest
+from typing import TYPE_CHECKING
 
 from ansible_dev_tools.version_builder import PKGS, version_builder
+
+
+if TYPE_CHECKING:
+    import pytest
 
 
 def test_version_builder_success() -> None:

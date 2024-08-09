@@ -1,12 +1,17 @@
 """Test the dev tools server for creator."""
+
 from __future__ import annotations
 
 import tarfile
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 import requests
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @pytest.mark.parametrize("resource", ("playbook", "collection"))

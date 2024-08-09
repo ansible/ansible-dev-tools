@@ -1,15 +1,20 @@
 """Fixtures for integration tests."""
+
 from __future__ import annotations
 
 import time
 
-from collections.abc import Generator
+from typing import TYPE_CHECKING
 
 import pytest
 
-from libtmux import Pane, Session
 
-from ..conftest import Infrastructure  # noqa: TID252
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from libtmux import Pane, Session
+
+    from tests.conftest import Infrastructure
 
 
 @pytest.fixture()

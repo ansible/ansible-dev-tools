@@ -1,7 +1,9 @@
 """Utility functions requiring server dependencies."""
+
 from __future__ import annotations
 
 from importlib import resources as importlib_resources
+from typing import TYPE_CHECKING
 
 import yaml
 
@@ -9,7 +11,10 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from openapi_core import OpenAPI
 from openapi_core.contrib.django import DjangoOpenAPIRequest, DjangoOpenAPIResponse
 from openapi_core.exceptions import OpenAPIError
-from openapi_core.unmarshalling.request.datatypes import RequestUnmarshalResult
+
+
+if TYPE_CHECKING:
+    from openapi_core.unmarshalling.request.datatypes import RequestUnmarshalResult
 
 
 OPENAPI = OpenAPI.from_dict(

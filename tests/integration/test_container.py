@@ -1,20 +1,27 @@
 """Run tests against the container."""
+
 from __future__ import annotations
 
-import subprocess
-
-from collections.abc import Callable
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
 from ansible_dev_tools.version_builder import PKGS
 
-from ..conftest import Infrastructure  # noqa: TID252
-from .conftest import ContainerTmux
 from .test_server_creator import test_collection_v1 as tst_collection_v1
 from .test_server_creator import test_error as tst_error
 from .test_server_creator import test_playbook_v1 as tst_playbook_v1
+
+
+if TYPE_CHECKING:
+    import subprocess
+
+    from collections.abc import Callable
+    from pathlib import Path
+
+    from tests.conftest import Infrastructure
+
+    from .conftest import ContainerTmux
 
 
 @pytest.mark.container()
