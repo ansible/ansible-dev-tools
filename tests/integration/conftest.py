@@ -1,5 +1,4 @@
 """Fixtures for integration tests."""
-from __future__ import annotations
 
 from __future__ import annotations
 

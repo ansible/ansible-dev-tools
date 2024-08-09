@@ -1,5 +1,4 @@
 """Test the dev tools server for creator."""
-from __future__ import annotations
 
 from __future__ import annotations
 

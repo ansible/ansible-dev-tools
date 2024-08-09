@@ -1,5 +1,4 @@
 """Run tests against the container."""
-from __future__ import annotations
 
 from __future__ import annotations
 
