@@ -28,9 +28,9 @@ import sys
 import time
 import warnings
 
-from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 import requests
@@ -38,6 +38,10 @@ import requests
 import ansible_dev_tools  # noqa: F401
 
 from ansible_dev_tools.subcommands.server import Server
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"

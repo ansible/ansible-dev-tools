@@ -1,6 +1,8 @@
 """Utility function not requiring server dependencies."""
 from __future__ import annotations
 
+from __future__ import annotations
+
 
 class Colors:
     """ANSI color codes.

@@ -1,11 +1,15 @@
 """Test for the server module."""
 from __future__ import annotations
 
-from typing import Any
+from __future__ import annotations
 
-import pytest
+from typing import TYPE_CHECKING, Any
 
-from ansible_dev_tools.subcommands.server import Server
+
+if TYPE_CHECKING:
+    import pytest
+
+    from ansible_dev_tools.subcommands.server import Server
 
 
 def test_server_debug_options(monkeypatch: pytest.MonkeyPatch, adt_server: Server) -> None:
