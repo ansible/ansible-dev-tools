@@ -16,6 +16,7 @@ Imported source package '<package>' as '/**/src/<package>/__init__.py'
 <...>
 Tracing '/**/src/<package>/__init__.py'
 """
+from __future__ import annotations
 
 import errno
 import os
