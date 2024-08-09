@@ -1,4 +1,5 @@
 """Test the dev tools server for creator."""
+from __future__ import annotations
 
 import tarfile
 

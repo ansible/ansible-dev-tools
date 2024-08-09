@@ -1,4 +1,5 @@
 """Tests for the version builder."""
+from __future__ import annotations
 
 import re
 

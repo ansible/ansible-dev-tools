@@ -1,4 +1,5 @@
 """Utility functions requiring server dependencies."""
+from __future__ import annotations
 
 from importlib import resources as importlib_resources
 
