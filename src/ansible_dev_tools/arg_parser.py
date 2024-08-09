@@ -1,5 +1,7 @@
 """Parse the command line arguments."""
 
+from __future__ import annotations
+
 import argparse
 
 from .version_builder import version_builder

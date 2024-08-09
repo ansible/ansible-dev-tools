@@ -1,5 +1,7 @@
 """Some tests for the CLI module."""
 
+from __future__ import annotations
+
 from typing import Any
 
 import pytest

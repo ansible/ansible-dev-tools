@@ -1,5 +1,7 @@
 """Some basic tests."""
 
+from __future__ import annotations
+
 import runpy
 
 import pytest

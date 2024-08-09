@@ -5,6 +5,8 @@ confest.py file. This fixture initializes and optionally returns
 the Server instance configured with the Django settings.
 """
 
+from __future__ import annotations
+
 import json
 
 from http import HTTPStatus
