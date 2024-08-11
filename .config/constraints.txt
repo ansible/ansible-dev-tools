@@ -14,9 +14,9 @@ ansible-navigator==24.7.0
 ansible-runner==2.4.0
 ansible-sign==0.1.1
 asgiref==3.8.1
-astroid==3.2.4
-attrs==24.1.0
-babel==2.15.0
+astroid==3.3.2
+attrs==24.2.0
+babel==2.16.0
 backports-strenum==1.3.1
 beautifulsoup4==4.12.3
 bindep==2.11.0
@@ -27,7 +27,7 @@ cachetools==5.4.0
 cairocffi==1.7.1
 cairosvg==2.7.1
 certifi==2024.7.4
-cffi==1.16.0
+cffi==1.17.0
 cfgv==3.4.0
 chardet==5.2.0
 charset-normalizer==3.3.2
@@ -42,7 +42,7 @@ defusedxml==0.7.1
 dill==0.3.8
 distlib==0.3.8
 distro==1.9.0
-django==5.0.7
+django==5.1
 django-stubs==5.0.4
 django-stubs-ext==5.0.4
 dnspython==2.6.1
@@ -54,7 +54,7 @@ execnet==2.1.1
 filelock==3.15.4
 ghp-import==2.1.0
 griffe==0.48.0
-gunicorn==22.0.0
+gunicorn==23.0.0
 htmlmin2==0.1.13
 identify==2.6.0
 idna==3.7
@@ -93,7 +93,7 @@ mkdocs-monorepo-plugin==1.1.0
 mkdocstrings==0.25.2
 mkdocstrings-python==1.10.7
 molecule==24.7.0
-more-itertools==10.3.0
+more-itertools==10.4.0
 mypy==1.11.1
 mypy-extensions==1.0.0
 nodeenv==1.9.1
@@ -130,7 +130,7 @@ python-daemon==3.0.1
 python-dateutil==2.9.0.post0
 python-gnupg==0.5.2
 python-slugify==8.0.4
-pyyaml==6.0.1
+pyyaml==6.0.2
 pyyaml-env-tag==0.1
 referencing==0.31.1
 regex==2024.7.24
@@ -138,10 +138,10 @@ requests==2.32.3
 resolvelib==1.0.1
 rfc3339-validator==0.1.4
 rich==13.7.1
-rpds-py==0.19.1
+rpds-py==0.20.0
 ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.8
-ruff==0.5.6
+ruff==0.5.7
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.5.1
@@ -152,21 +152,21 @@ tinycss2==1.3.0
 toml-sort==0.23.1
 tomli==2.0.1
 tomlkit==0.13.0
-tox==4.16.0
+tox==4.17.1
 tox-ansible==24.7.0
-types-pyyaml==6.0.12.20240724
+types-pyyaml==6.0.12.20240808
 types-requests==2.32.0.20240712
 typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2
 virtualenv==20.26.3
-watchdog==4.0.1
+watchdog==4.0.2
 wcmatch==9.0
 webencodings==0.5.1
 werkzeug==3.0.3
 wheel==0.44.0
 yamllint==1.35.1
-zipp==3.19.2
+zipp==3.20.0
 
 # The following packages are considered to be unsafe in a requirements file:
 # ansible-dev-tools
