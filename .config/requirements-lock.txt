@@ -18,7 +18,7 @@ attrs==24.2.0
 bindep==2.11.0
 black==24.8.0
 bracex==2.5
-cachetools==5.4.0
+cachetools==5.5.0
 certifi==2024.7.4
 cffi==1.17.0
 chardet==5.2.0
