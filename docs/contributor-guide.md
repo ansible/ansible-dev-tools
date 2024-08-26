@@ -62,17 +62,18 @@ See the `tests/integration/test_container.py` for examples.
 
 ## Talk to us
 
-* Join the Ansible forum:
-    * [Get Help](https://forum.ansible.com/c/help/6): get help or help others. Please add appropriate tags if you start new discussions, for example the `devtools` tag.
-    * [Posts tagged with 'devtools'](https://forum.ansible.com/tag/devtools): subscribe to participate in project-related conversations.
-    * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
-    * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
+- Join the Ansible forum:
 
-* The Ansible [Bullhorn newsletter]: used to announce releases and important changes.
+  - [Get Help](https://forum.ansible.com/c/help/6): get help or help others. Please add appropriate tags if you start new discussions, for example the `devtools` tag.
+  - [Posts tagged with 'devtools'](https://forum.ansible.com/tag/devtools): subscribe to participate in project-related conversations.
+  - [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+  - [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
 
-* We are also available on the following chat platforms:
-    * Matrix: in the [#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com) room.
-    * Libera.Chat: in the `#ansible-devtools` Libera.Chat IRC channel.
+- The Ansible [Bullhorn newsletter]: used to announce releases and important changes.
+
+- We are also available on the following chat platforms:
+  - Matrix: in the [#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com) room.
+  - Libera.Chat: in the `#ansible-devtools` Libera.Chat IRC channel.
 
 Possible security bugs should be reported via email to
 <mailto:security@ansible.com>.
