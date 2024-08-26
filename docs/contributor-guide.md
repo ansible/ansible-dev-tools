@@ -62,23 +62,28 @@ See the `tests/integration/test_container.py` for examples.
 
 ## Talk to us
 
-Use Github [discussions] forum or for a live chat experience try
-`#ansible-devtools` IRC channel on libera.chat or Matrix room
-[#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com).
+* Join the Ansible forum:
+    * [Get Help](https://forum.ansible.com/c/help/6): get help or help others. Please add appropriate tags if you start new discussions, for example the `devtools` tag.
+    * [Posts tagged with 'devtools'](https://forum.ansible.com/tag/devtools): subscribe to participate in project-related conversations.
+    * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+    * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
 
-For the full list of Ansible IRC and Mailing list, please see the [Ansible
-Communication] page. Release announcements will be made to the [Ansible
-Announce] list.
+* The Ansible [Bullhorn newsletter]: used to announce releases and important changes.
+
+* We are also available on the following chat platforms:
+    * Matrix: in the [#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com) room.
+    * Libera.Chat: in the `#ansible-devtools` Libera.Chat IRC channel.
 
 Possible security bugs should be reported via email to
 <mailto:security@ansible.com>.
+
+For more information about communication, see the [Ansible communication guide].
 
 ## Code of Conduct
 
 Please see the official [Ansible Community Code of Conduct].
 
-[discussions]: https://github.com/ansible/ansible-dev-tools/discussions
-[ansible communication]: https://docs.ansible.com/ansible/latest/community/communication.html
-[ansible announce]: https://groups.google.com/forum/#!forum/ansible-announce
+[Ansible communication guide]: https://docs.ansible.com/ansible/devel/community/communication.html
 [Ansible Community Code of Conduct]: https://docs.ansible.com/ansible/latest/community/code_of_conduct.html
 [creating your fork on github]: https://docs.github.com/en/get-started/quickstart/contributing-to-projects
+[Bullhorn newsletter]: https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn
