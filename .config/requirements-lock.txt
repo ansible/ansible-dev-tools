@@ -5,7 +5,7 @@
 #    pip-compile --constraint=.config/constraints.txt --extra=server --no-annotate --output-file=.config/requirements-lock.txt --strip-extras --unsafe-package=distribute --unsafe-package=pip --unsafe-package=setuptools .config/requirements.in pyproject.toml
 #
 ansible-builder==3.1.0
-ansible-compat==24.7.0
+ansible-compat==24.8.0
 ansible-core==2.17.3
 ansible-creator==24.8.0
 ansible-dev-environment==24.7.0
@@ -18,7 +18,7 @@ attrs==24.2.0
 bindep==2.11.0
 black==24.8.0
 bracex==2.5
-cachetools==5.4.0
+cachetools==5.5.0
 certifi==2024.7.4
 cffi==1.17.0
 chardet==5.2.0
@@ -36,8 +36,8 @@ exceptiongroup==1.2.2
 execnet==2.1.1
 filelock==3.15.4
 gunicorn==23.0.0
-idna==3.7
-importlib-metadata==8.2.0
+idna==3.8
+importlib-metadata==8.4.0
 iniconfig==2.0.0
 isodate==0.6.1
 jinja2==3.1.4
@@ -94,7 +94,7 @@ tzdata==2024.1
 urllib3==2.2.2
 virtualenv==20.26.3
 wcmatch==9.0
-werkzeug==3.0.3
+werkzeug==3.0.4
 yamllint==1.35.1
 zipp==3.20.0
 
