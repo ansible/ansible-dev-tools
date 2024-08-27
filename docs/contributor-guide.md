@@ -70,7 +70,6 @@ See the `tests/integration/test_container.py` for examples.
   - [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
   - [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn): used to announce releases and important changes.
 
-- The Ansible [Bullhorn newsletter]: used to announce releases and important changes.
 
 - We are also available on the following chat platforms:
   - Matrix: in the [#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com) room.
