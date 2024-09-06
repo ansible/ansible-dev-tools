@@ -26,6 +26,10 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 [ansible-dev-environment](https://github.com/ansible/ansible-dev-environment): A pip-like install for Ansible collections.
 
+## Communication
+
+Refer to our [Communication guide](https://ansible.readthedocs.io/projects/dev-tools/contributor-guide/#talk-to-us) for details.
+
 ## Installation
 
 `python3 -m pip install ansible-dev-tools`
