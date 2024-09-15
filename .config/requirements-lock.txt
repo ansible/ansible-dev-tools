@@ -88,7 +88,7 @@ sqlparse==0.5.1
 subprocess-tee==0.4.2
 tomli==2.0.1
 tox==4.18.1
-tox-ansible==24.8.0
+tox-ansible==24.9.0
 typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.2
