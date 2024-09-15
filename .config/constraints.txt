@@ -10,7 +10,7 @@ ansible-core==2.17.3
 ansible-creator==24.8.0
 ansible-dev-environment==24.7.0
 ansible-lint==24.7.0
-ansible-navigator==24.8.0
+ansible-navigator==24.9.0
 ansible-runner==2.4.0
 ansible-sign==0.1.1
 asgiref==3.8.1
