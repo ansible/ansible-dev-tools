@@ -70,7 +70,7 @@ pycparser==2.22
 pygments==2.18.0
 pyproject-api==1.7.1
 pytest==8.3.2
-pytest-ansible==24.8.0
+pytest-ansible==24.9.0
 pytest-xdist==3.6.1
 python-daemon==3.0.1
 python-gnupg==0.5.2
