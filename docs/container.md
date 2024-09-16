@@ -96,7 +96,6 @@ podman run  -it --rm \
  --user=root \
  --userns=host \
  -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
- -v ansible-dev-tools-container-storage:/var/lib/containers \
  -v $HOME/.gitconfig:/root/.gitconfig \
  -v $PWD:/workdir \
  -v $SSH_AUTH_SOCK:$SSH_AUTH_SOCK \
@@ -111,7 +110,6 @@ Note:
 - This command will mount the current directory to `/workdir` in the container
 - The SSH agent socket is also mounted to the container to allow for SSH key forwarding.
 - The user's `.gitconfig` is mounted to the container to allow for git operations.
-- The `ansible-dev-tools-container-storage` volume is mounted to the container to store the nested container images on the host.
 
 ### Signing git commits (SSH)
 

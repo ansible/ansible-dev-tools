@@ -263,7 +263,7 @@ PODMAN_CMD = """ --user=root
  --userns=host
 """
 
-DOCKER_CMD = """ --user=podman
+DOCKER_CMD = """ --user=root
 """
 
 END = """ {image_name}

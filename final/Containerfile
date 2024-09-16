@@ -160,8 +160,6 @@ RUN set -ex \
 # Make a workdir usable by either the podman or root user
 RUN mkdir -p /workdir && chown podman:podman /workdir
 
-# Set the default user to podman, this will be overridden in the podman dev container
-USER podman
 WORKDIR /workdir
 ENTRYPOINT ["/opt/builder/bin/entrypoint", "dumb-init"]
 CMD ["zsh"]
