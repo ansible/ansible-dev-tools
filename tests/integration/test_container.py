@@ -46,6 +46,22 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
     result = exec_container("podman run hello")
     assert result.returncode == 0, "podman command failed"
 
+@pytest.mark.container()
+def test_container_in_container(exec_container: Callable[[str], subprocess.CompletedProcess[str]]) -> None:
+    """Test podman container-in-container functionality for plugin copy.
+
+    Args:
+        exec_container: The container executor.
+    """
+    podman_image_pull = exec_container(f"podman image inspect ghcr.io/ansible/community-ansible-dev-tools:latest")
+    assert podman_image_pull.stdout == ""
+    assert podman_image_pull.stderr == ""
+    
+    podman_run_container = exec_container(f"podman run -i --rm -d  -e ANSIBLE_DEV_TOOLS_CONTAINER=1  -e ANSIBLE_FORCE_COLOR=0 --name ghcr_io_ansible_community_ansible_dev_tools_latest ghcr.io/ansible/community-ansible-dev-tools:latest bash")
+    assert podman_run_container.stdout == ""
+    assert podman_run_container.stderr == ""
+    
+
 
 @pytest.mark.container()
 @pytest.mark.parametrize("app", ("nano", "tar", "vi"))
