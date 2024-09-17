@@ -57,7 +57,7 @@ def test_container_in_container(
         exec_container: The container executor.
     """
     podman_run_container = exec_container(
-        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1"
+        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1 --user=root"
         " -e ANSIBLE_FORCE_COLOR=0 --name ghcr_io_ansible_community_ansible_dev_tools_latest"
         " ghcr.io/ansible/community-ansible-dev-tools:latest bash",
     )
@@ -92,8 +92,6 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
         exec_container: The container executor.
     """
     result = exec_container("cat /etc/passwd | grep root | grep zsh")
-    assert result.returncode == 0, "zsh not found in /etc/passwd"
-    result = exec_container("cat /etc/passwd | grep podman | grep zsh")
     assert result.returncode == 0, "zsh not found in /etc/passwd"
 
 

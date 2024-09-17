@@ -256,7 +256,6 @@ BASE_CMD = """{container_engine} run -d --rm
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
  -v $PWD:/workdir
- -v ansible-dev-tools-container-test-storage-podman:/var/lib/containers
 """
 
 PODMAN_CMD = """ --user=root
