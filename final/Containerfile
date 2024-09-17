@@ -54,20 +54,10 @@ python3-wheel \
     && microdnf clean all \
     && ln -s /usr/bin/vim /usr/bin/vi
 
-RUN useradd podman; \
-        echo -e "podman:1:999\npodman:1001:64535" > /etc/subuid; \
-        echo -e "podman:1:999\npodman:1001:64535" > /etc/subgid;
-
 ARG _REPO_URL="https://raw.githubusercontent.com/containers/image_build/main/podman"
 ADD $_REPO_URL/containers.conf /etc/containers/containers.conf
-ADD $_REPO_URL/podman-containers.conf /home/podman/.config/containers/containers.conf
 
-RUN mkdir -p /home/podman/.local/share/containers && \
-        chown podman:podman -R /home/podman && \
-        chmod 644 /etc/containers/containers.conf
-
-# this is done by ansible-builder when changing user and workdir
-RUN chgrp 0 /home/podman && chmod -R ug+rwx /home/podman
+RUN chmod 644 /etc/containers/containers.conf
 
 # Copy & modify the defaults to provide reference if runtime changes needed.
 # Changes here are required for running with fuse-overlay storage inside container.
@@ -80,7 +70,6 @@ RUN sed -e 's|^#mount_program|mount_program|g' \
 # Note VOLUME options must always happen after the chown call above
 # RUN commands can not modify existing volumes
 VOLUME /var/lib/containers
-VOLUME /home/podman/.local/share/containers
 
 RUN mkdir -p /var/lib/shared/overlay-images \
                 /var/lib/shared/overlay-layers \
@@ -125,8 +114,6 @@ RUN \
 mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles && \
 git config --system --add safe.directory /
 
-# The dev container for docker runs as podman
-RUN chsh -s $(which zsh) podman
 # The dev container for docker runs as root
 RUN chsh -s $(which zsh) root
 
@@ -136,10 +123,7 @@ python3 -m pip install argcomplete
 activate-global-python-argcomplete
 EOF
 
-# Install oh-my-zsh for both users
-USER podman
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
+# Install oh-my-zsh
 USER root
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
@@ -158,11 +142,9 @@ RUN set -ex \
 && rpm -qa \
 && uname -a
 
-# Make a workdir usable by either the podman or root user
-RUN mkdir -p /workdir && chown podman:podman /workdir
+# Make a workdir usable by the root user
+RUN mkdir -p /workdir
 
-# Set the default user to podman, this will be overridden in the podman dev container
-USER podman
 WORKDIR /workdir
 ENTRYPOINT ["/opt/builder/bin/entrypoint", "dumb-init"]
 CMD ["zsh"]

@@ -1,7 +1,7 @@
 {
   "name": "ansible-dev-container-codespaces",
   "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
-  "containerUser": "podman",
+  "containerUser": "root",
   "runArgs": [
     "--security-opt",
     "seccomp=unconfined",
