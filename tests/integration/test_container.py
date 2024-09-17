@@ -48,6 +48,30 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
 
 
 @pytest.mark.container()
+def test_container_in_container(
+    exec_container: Callable[[str], subprocess.CompletedProcess[str]],
+) -> None:
+    """Test podman container-in-container functionality for plugin copy.
+
+    Args:
+        exec_container: The container executor.
+    """
+    podman_run_container = exec_container(
+        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1"
+        " -e ANSIBLE_FORCE_COLOR=0 --name ghcr_io_ansible_community_ansible_dev_tools_latest"
+        " ghcr.io/ansible/community-ansible-dev-tools:latest bash",
+    )
+    assert podman_run_container.returncode == 0
+
+    test_path_access = exec_container(
+        "podman exec ghcr_io_ansible_community_ansible_dev_tools_latest"
+        " ls /usr/local/lib/python3.12/site-packages/ansible/plugins/",
+    )
+    assert "OCI permission denied" not in test_path_access.stdout
+    assert test_path_access.returncode == 0
+
+
+@pytest.mark.container()
 @pytest.mark.parametrize("app", ("nano", "tar", "vi"))
 def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
     """Test the presence of an app in the container.
