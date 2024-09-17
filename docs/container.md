@@ -33,7 +33,7 @@ To use this image with [Github Codespaces](https://docs.github.com/en/codespaces
 
 ### Using this image as an EE
 
-This image can also be used as an Ansible Execution Environment (EE). If you're not familiar with what an EE is, checkout the documentation in [Getting started with EE](https://ansible.readthedocs.io/en/latest/getting_started_ee/index.html). It is shipped with the following Ansible collections:
+This image can also be used as an Ansible Execution Environment (EE). If you're not familiar with what an EE is, checkout the documentation in [Getting started with EE](https://docs.ansible.com/ansible/devel/getting_started_ee/index.html). It is shipped with the following Ansible collections:
 
 - ansible.netcommon
 - ansible.posix
