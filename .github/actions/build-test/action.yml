@@ -85,14 +85,13 @@ runs:
     - name: Squash image layers to save disk space
       shell: bash
       run: |
-        python3 -m pipx install docker-squash
+        python3 -m pipx install --force docker-squash
         docker-squash ${{ inputs.namespace }}/${{ inputs.final_image }}:test
 
     - name: Run tests against the container
       shell: bash
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install --upgrade "tox>=4.0.0"
+        python3 -m pipx install --force "tox>=4.0.0"
         tox -e test-image -- --container-engine docker --image-name ${{ inputs.namespace }}/${{ inputs.final_image }}:test
 
     - name: Push the built image to ${{ inputs.registry }} by digest for ${{ matrix.platform }}
