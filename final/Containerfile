@@ -12,11 +12,11 @@ USER root
 RUN echo -e "\n\n# Added during image build" >> /etc/dnf/dnf.conf && \
     echo -e "minrate=100\ntimeout=60\n" >> /etc/dnf/dnf.conf
 
-LABEL org.opencontainers.image.source https://github.com/ansible/ansible-dev-tools
-LABEL org.opencontainers.image.authors "Ansible DevTools"
-LABEL org.opencontainers.image.vendor "Red Hat"
-LABEL org.opencontainers.image.licenses "GPL-3.0"
-LABEL org.opencontainers.image.description "An execution environment targeted for Ansible content creators."
+LABEL org.opencontainers.image.source=https://github.com/ansible/ansible-dev-tools
+LABEL org.opencontainers.image.authors="Ansible DevTools"
+LABEL org.opencontainers.image.vendor="Red Hat"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
+LABEL org.opencontainers.image.description="An execution environment targeted for Ansible content creators."
 
 
 RUN microdnf -y makecache && microdnf -y update
@@ -82,6 +82,7 @@ RUN mkdir -p /var/lib/shared/overlay-images \
 
 ENV _CONTAINERS_USERNS_CONFIGURED=""
 ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
+ENV PIP_ROOT_USER_ACTION=ignore
 
 
 # In OpenShift, container will run as a random uid number and gid 0. Make sure things
