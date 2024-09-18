@@ -255,15 +255,16 @@ BASE_CMD = """{container_engine} run -d --rm
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
- --security-opt=unmask=/sys/fs/cgroup,
  -v $PWD:/workdir
 """
 
 PODMAN_CMD = """ --user=root
  --userns=host
+ --security-opt=unmask=/sys/fs/cgroup
 """
 
 DOCKER_CMD = """ --user=root
+ --cgroupns host
 """
 
 END = """ {image_name}
