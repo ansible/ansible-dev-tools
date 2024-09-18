@@ -202,7 +202,7 @@ def server_in_container_url() -> str:
     Returns:
         str: The server URL.
     """
-    return "http://localhost:8001"
+    return "http://0.0.0.0:8001"
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
@@ -307,6 +307,7 @@ def _start_container() -> None:
         container_name=INFRASTRUCTURE.container_name,
         image_name=INFRASTRUCTURE.image_name,
     )
+    warnings.warn("Running: " + cmd, stacklevel=0)
     try:
         subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
     except subprocess.CalledProcessError as exc:
