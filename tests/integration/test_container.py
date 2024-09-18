@@ -57,7 +57,7 @@ def test_container_in_container(
         exec_container: The container executor.
     """
     podman_run_container = exec_container(
-        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1 --user=root"
+        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1"
         " -e ANSIBLE_FORCE_COLOR=0 --name ghcr_io_ansible_community_ansible_dev_tools_latest"
         " ghcr.io/ansible/community-ansible-dev-tools:latest bash",
     )
