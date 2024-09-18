@@ -261,6 +261,7 @@ BASE_CMD = """{container_engine} run -d --rm
 PODMAN_CMD = """ --user=root
  --userns=host
  --security-opt=unmask=/sys/fs/cgroup
+ --cap-add=mknod
 """
 
 DOCKER_CMD = """ --user=root
