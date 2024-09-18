@@ -9,7 +9,7 @@
     "label=disable",
     "--cap-add=SYS_ADMIN",
     "--cap-add=SYS_RESOURCE",
-    "--cgroupns host",
+    "--cgroupns=host",
     "--device",
     "/dev/fuse",
     "--security-opt",
