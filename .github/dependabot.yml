@@ -34,3 +34,21 @@ updates:
     labels:
       - "dependencies"
       - "skip-changelog"
+  # github-actions with directory: "/" only monitors .github/workflows
+  # https://github.com/dependabot/dependabot-core/issues/6345
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/build-test"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/merge-release"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
