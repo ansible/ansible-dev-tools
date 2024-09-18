@@ -13,6 +13,8 @@
     "label=disable",
     "--security-opt",
     "apparmor=unconfined",
+    "--security-opt",
+    "unmask=/sys/fs/cgroup",
     "--userns=host",
     "--hostname=ansible-dev-container"
   ],

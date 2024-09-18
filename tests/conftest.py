@@ -255,6 +255,7 @@ BASE_CMD = """{container_engine} run -d --rm
  --security-opt "apparmor=unconfined"
  --security-opt "label=disable"
  --security-opt "seccomp=unconfined"
+ --security-opt "unmask=/sys/fs/cgroup"
  -v $PWD:/workdir
 """
 
