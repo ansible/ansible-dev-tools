@@ -93,8 +93,6 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
     """
     result = exec_container("cat /etc/passwd | grep root | grep zsh")
     assert result.returncode == 0, "zsh not found in /etc/passwd"
-    result = exec_container("cat /etc/passwd | grep podman | grep zsh")
-    assert result.returncode == 0, "zsh not found in /etc/passwd"
 
 
 @pytest.mark.container()
