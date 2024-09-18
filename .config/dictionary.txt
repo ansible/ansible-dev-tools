@@ -8,7 +8,7 @@ arcname
 autoplay
 autouse
 capsys
-cgroups
+cgroupns
 codespaces
 collectonly
 confest
