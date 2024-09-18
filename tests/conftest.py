@@ -265,7 +265,7 @@ PODMAN_CMD = """ --user=root
 """
 
 DOCKER_CMD = """ --user=root
- --cgroupns host
+--privileged
 """
 
 END = """ {image_name}
