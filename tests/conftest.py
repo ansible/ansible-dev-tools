@@ -245,23 +245,23 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
 
 
 BASE_CMD = """{container_engine} run -d --rm
- --cap-add=SYS_ADMIN
- --cap-add=SYS_RESOURCE
  --device "/dev/fuse"
  -e NO_COLOR=1
  --hostname=ansible-dev-container
  --name={container_name}
  -p 8001:8001
- --security-opt "apparmor=unconfined"
- --security-opt "label=disable"
- --security-opt "seccomp=unconfined"
  -v $PWD:/workdir
 """
 
 PODMAN_CMD = """ --user=root
- --userns=host
- --security-opt=unmask=/sys/fs/cgroup
  --cap-add=mknod
+ --cap-add=SYS_ADMIN
+ --cap-add=SYS_RESOURCE
+ --security-opt "apparmor=unconfined"
+ --security-opt "label=disable"
+ --security-opt "seccomp=unconfined"
+ --security-opt=unmask=/sys/fs/cgroup
+ --userns=host
 """
 
 DOCKER_CMD = """ --user=root
