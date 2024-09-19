@@ -51,7 +51,7 @@ docutils==0.21.2
 enrich==1.2.7
 exceptiongroup==1.2.2
 execnet==2.1.1
-filelock==3.16.0
+filelock==3.16.1
 ghp-import==2.1.0
 griffe==1.3.1
 gunicorn==23.0.0
@@ -85,8 +85,8 @@ mkdocs-autorefs==1.2.0
 mkdocs-gen-files==0.5.0
 mkdocs-get-deps==0.2.0
 mkdocs-htmlproofer-plugin==1.3.0
-mkdocs-macros-plugin==1.0.5
-mkdocs-material==9.5.34
+mkdocs-macros-plugin==1.2.0
+mkdocs-material==9.5.35
 mkdocs-material-extensions==1.3.1
 mkdocs-minify-plugin==0.8.0
 mkdocs-monorepo-plugin==1.1.0
@@ -111,8 +111,8 @@ pbr==6.1.0
 pexpect==4.9.0
 pillow==10.4.0
 pip-tools==7.4.1
-pipdeptree==2.23.3
-platformdirs==4.3.3
+pipdeptree==2.23.4
+platformdirs==4.3.6
 pluggy==1.5.0
 pre-commit==3.8.0
 ptyprocess==0.7.0
@@ -121,7 +121,7 @@ pydoclint==0.5.7
 pygments==2.18.0
 pylint==3.2.7
 pymdown-extensions==10.9
-pyproject-api==1.7.1
+pyproject-api==1.7.2
 pyproject-hooks==1.1.0
 pytest==8.3.3
 pytest-ansible==24.9.0
@@ -152,14 +152,14 @@ tinycss2==1.3.0
 toml-sort==0.23.1
 tomli==2.0.1
 tomlkit==0.13.2
-tox==4.18.1
+tox==4.19.0
 tox-ansible==24.9.0
-types-pyyaml==6.0.12.20240808
+types-pyyaml==6.0.12.20240917
 types-requests==2.32.0.20240914
 typing-extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.3
-virtualenv==20.26.4
+virtualenv==20.26.5
 watchdog==5.0.2
 wcmatch==9.0
 webencodings==0.5.1
