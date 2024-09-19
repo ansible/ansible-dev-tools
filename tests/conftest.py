@@ -254,7 +254,8 @@ BASE_CMD = """{container_engine} run -d --rm
 """
 
 PODMAN_CMD = """ --user=root
- --cap-add=mknod
+ --cap-add=CAP_MKNOD
+ --cap-add=NET_ADMIN
  --cap-add=SYS_ADMIN
  --cap-add=SYS_RESOURCE
  --security-opt "apparmor=unconfined"

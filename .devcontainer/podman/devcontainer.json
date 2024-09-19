@@ -3,9 +3,10 @@
   "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
   "containerUser": "root",
   "runArgs": [
+    "--cap-add=CAP_MKNOD",
+    "--cap-add=NET_ADMIN",
     "--cap-add=SYS_ADMIN",
     "--cap-add=SYS_RESOURCE",
-    "--cap-add=mknod",
     "--device",
     "/dev/fuse",
     "--security-opt",
