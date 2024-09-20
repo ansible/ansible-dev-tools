@@ -1,0 +1,20 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: quay.io/fedora/fedora-minimal:40
+
+dependencies:
+  ansible_runner:
+    package_pip: ansible-runner
+
+  ansible_core:
+    package_pip: ansible-core
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+additional_build_steps:
+  prepend_base:
+    - RUN $PKGMGR -y install python3-devel
