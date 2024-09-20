@@ -3,6 +3,8 @@
   "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
   "containerUser": "root",
   "runArgs": [
+    "--cap-add=CAP_MKNOD",
+    "--cap-add=NET_ADMIN",
     "--cap-add=SYS_ADMIN",
     "--cap-add=SYS_RESOURCE",
     "--device",
@@ -13,6 +15,8 @@
     "label=disable",
     "--security-opt",
     "apparmor=unconfined",
+    "--security-opt",
+    "unmask=/sys/fs/cgroup",
     "--userns=host",
     "--hostname=ansible-dev-container"
   ],
