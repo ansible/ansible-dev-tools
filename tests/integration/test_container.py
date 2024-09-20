@@ -279,3 +279,21 @@ def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     )
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
     assert any(f"{namespace}.{name}" in line for line in stdout)
+
+
+@pytest.mark.container()
+def test_builder(
+    exec_container: Callable[[str], subprocess.CompletedProcess[str]],
+    test_fixture_dir_container: Path,
+    tmp_path: Path,
+) -> None:
+    """Test building an execution environment with ansible-builder.
+
+    Args:
+        exec_container: The container executor.
+        test_fixture_dir_container: The test fixture directory.
+        tmp_path: The temporary directory.
+    """
+    ee_file = test_fixture_dir_container / "execution-environment.yml"
+    result = exec_container(f"ansible-builder build -f {ee_file} -c {tmp_path}")
+    assert "Complete!" in result.stdout

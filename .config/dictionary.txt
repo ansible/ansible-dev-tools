@@ -18,6 +18,7 @@ endgroup
 gunicorn
 libera
 microdnf
+mknod
 modifyitems
 netcommon
 pkgmgr
