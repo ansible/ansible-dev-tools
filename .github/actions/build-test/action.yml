@@ -33,6 +33,7 @@ runs:
       with:
         # network=host driver-opt needed to push to local registry
         driver-opts: network=host
+        buildkitd-flags: --debug
 
     - name: Install or upgrade tools needed for the build and test
       shell: bash
