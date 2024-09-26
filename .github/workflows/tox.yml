@@ -55,6 +55,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Prune docker system
+        run: sudo ./final/docker-prune.sh
+
       - name: Build the container image for ${{ matrix.platform }} and test it
         uses: ./.github/actions/build-test
         # this needs to be passed only when on release pipeline:

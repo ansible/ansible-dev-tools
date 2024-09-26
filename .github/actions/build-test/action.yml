@@ -69,6 +69,8 @@ runs:
     - name: Build final image for ${{ matrix.platform }}
       id: build-final
       uses: docker/build-push-action@v6
+      env:
+        DOCKER_BUILD_SUMMARY: "false"
       with:
         context: ${{ github.workspace }}/final
         provenance: false
