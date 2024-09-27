@@ -41,7 +41,9 @@ homepage = "https://github.com/ansible/ansible-dev-tools"
 repository = "https://github.com/ansible/ansible-dev-tools"
 
 [tool.black]
+enable-unstable-feature = ["string_processing"]
 line-length = 100
+preview = true
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "pragma: no cover"]
@@ -336,6 +338,14 @@ line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint]
+external = [
+  "DOC" # pydoclint
+]
+ignore = [
+  # incompatible with ruff formatter
+  "COM812", # missing-space-after-comma
+  "ISC001" # implicit-str-concat
+]
 select = ["ALL"]
 
 [tool.ruff.lint.flake8-pytest-style]

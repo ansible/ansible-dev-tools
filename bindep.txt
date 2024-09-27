@@ -1,1 +1,1 @@
-python3-devel
+python3-devel [platform:redhat]
