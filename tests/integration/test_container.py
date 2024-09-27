@@ -252,7 +252,7 @@ def test_nav_playbook(
     assert any(output in line for line in stdout)
     cmd = (
         f"cd {tmp_path} &&"
-        f" ansible-navigator run site.yml"
+        " ansible-navigator run site.yml"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="Successful", timeout=10)
