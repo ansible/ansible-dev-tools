@@ -25,8 +25,9 @@ jobs:
   build-image:
     runs-on: ${{ matrix.builder }}
     name: ${{ matrix.name }}
-    # commented to speedup execution
-    # needs: tox
+    # uses same runner for image building, but devspace image builds faster
+    needs:
+      - devspaces
     services:
       registry:
         image: registry:2
@@ -88,9 +89,29 @@ jobs:
         with:
           registry: ghcr.io
 
+  devspaces:
+    runs-on: devtools-multiarch-builder
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the devspaces image
+        uses: ./.github/actions/build-release
+        with:
+          publish: "{{ github.event_name == 'release' && github.event.action == 'published' && 'true' || 'false' }}"
+
   pypi:
     name: Publish to PyPI registry
-    needs: build-image
+    needs:
+      - build-image
+      - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
     runs-on: ubuntu-22.04

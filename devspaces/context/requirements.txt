@@ -1,0 +1,3 @@
+ansible-dev-tools
+kubernetes==29.0.0
+molecule-plugins[podman]==23.5.3
