@@ -20,58 +20,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tox:
-    uses: ansible/team-devtools/.github/workflows/tox.yml@main
-  build-image:
-    runs-on: ${{ matrix.builder }}
-    name: ${{ matrix.name }}
-    # uses same runner for image building, but devspace image builds faster
-    needs:
-      - devspaces
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - builder: devtools-multiarch-builder
-            platform: linux/amd64
-            name: amd64
-          - builder: devtools-arm64-runner
-            platform: linux/arm64
-            name: arm64
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Prune docker system
-        run: sudo ./final/docker-prune.sh
-
-      - name: Build the container image for ${{ matrix.platform }} and test it
-        uses: ./.github/actions/build-test
-        # this needs to be passed only when on release pipeline:
-        with:
-          registry: ghcr.io
-          push: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+  # tox:
+  #   uses: ansible/team-devtools/.github/workflows/tox.yml@main
+  ee:
+    uses: ./.github/workflows/.build-image.yml
 
   publish-image:
     environment: release # approval
     runs-on: ubuntu-latest
     needs:
-      - build-image
-      - tox
+      - ee
+      # - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Check out repository
@@ -91,6 +50,9 @@ jobs:
 
   devspaces:
     runs-on: devtools-multiarch-builder
+    # uses same runner for image building
+    needs:
+      - ee
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -110,8 +72,8 @@ jobs:
   pypi:
     name: Publish to PyPI registry
     needs:
-      - build-image
-      - tox
+      - ee
+      # - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
     runs-on: ubuntu-22.04

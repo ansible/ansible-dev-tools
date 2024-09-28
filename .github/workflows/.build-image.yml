@@ -1,0 +1,113 @@
+---
+name: Build & Test
+# description: Build the final container image and run tests on it
+
+on:
+  workflow_call:
+    inputs:
+      registry:
+        type: string
+        description: Target registry to push the final image.
+        default: ghcr.io
+      namespace:
+        description: Namespace of the container image.
+        default: ansible
+        type: string
+      final_image:
+        description: Name of the final image.
+        default: community-ansible-dev-tools
+        type: string
+      push:
+        description: If it should push the result of not. Accepts only true / false strings.
+        default: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        type: string
+jobs:
+  build-test:
+    runs-on: ${{ matrix.builder }}
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - builder: devtools-multiarch-builder
+            platform: linux/amd64
+            name: amd64
+          - builder: devtools-arm64-runner
+            platform: linux/arm64
+            name: arm64
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prune docker system
+        run: sudo ./final/docker-prune.sh
+
+      - name: Prepare
+        shell: bash
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          sudo apt install -y python3-pip python3-build pipx
+          pipx install tox
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          # network=host driver-opt needed to push to local registry
+          driver-opts: network=host
+          buildkitd-flags: --debug
+
+      - name: Run tox -e ee
+        shell: bash
+        run: tox -e ee
+
+      - name: Push the built image to ${{ inputs.registry }} by digest for ${{ matrix.platform }}
+        id: push-final
+        if: inputs.push == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ github.workspace }}/final
+          provenance: false
+          file: ${{ github.workspace }}/final/Containerfile
+          build-contexts: |
+            ${{ inputs.final_image }}-base=docker-image://localhost:5000/${{ inputs.final_image }}-base:latest
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,name=${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        if: inputs.push == 'true'
+        shell: bash
+        run: |
+          rm -rf /tmp/digests
+          mkdir -p /tmp/digests
+          digest="${{ steps.push-final.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: inputs.push == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+      # this step is ONLY needed for maintainence of self hosted runners
+      - name: Cleanup docker
+        shell: bash
+        if: always()
+        run: |
+          docker system prune -af --volumes
