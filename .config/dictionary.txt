@@ -16,6 +16,7 @@ containerfile
 devcontainer
 devel
 devfile
+devspaces
 endgroup
 gunicorn
 libera
