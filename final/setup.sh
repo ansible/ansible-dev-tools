@@ -1,6 +1,13 @@
 #!/bin/bash -e
-# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps
+# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate
 set -euxo pipefail
+
+# When building for multiple-architectures in parallel using emulation
+# it's really easy for one/more dnf processes to timeout or mis-count
+# the minimum download rates.  Bump both to be extremely forgiving of
+# an overworked host.
+echo -e "\n\n# Added during image build" >> /etc/dnf/dnf.conf
+echo -e "minrate=100\ntimeout=60\n" >> /etc/dnf/dnf.conf
 
 microdnf -q -y makecache && microdnf -q -y update
 microdnf -q -y install shadow-utils
