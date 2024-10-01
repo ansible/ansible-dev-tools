@@ -12,7 +12,7 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 [ansible-creator](https://github.com/ansible/ansible-creator): a utility for scaffolding Ansible projects and content with leading practices.
 
-[ansible-lint](https://github.com/ansible/ansible-lint):  a utility to identify and correct stylistic errors and anti-patterns in Ansible playbooks and roles.
+[ansible-lint](https://github.com/ansible/ansible-lint): a utility to identify and correct stylistic errors and anti-patterns in Ansible playbooks and roles.
 
 [ansible-navigator](https://github.com/ansible/ansible-navigator) a text-based user interface (TUI) for developing and troubleshooting Ansible content with execution environments.
 
