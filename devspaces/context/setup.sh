@@ -29,7 +29,7 @@ dnf install -y \
     --exclude container-selinux
 dnf clean all
 
-/usr/bin/python${PYV} -m pip install --no-cache-dir -r requirements.txt
+/usr/bin/python${PYV} -m pip install -r requirements.txt
 
 ansible-galaxy collection install -r requirements.yml
 
