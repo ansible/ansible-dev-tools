@@ -1,6 +1,6 @@
 # Builds community-ansible-dev-tools-container-base image which provides
 # container-in-container support and all installs all binary dependencies
-# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS
+# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS,onigurumacffi
 FROM community-ansible-dev-tools-base:latest
 
 USER root
@@ -36,7 +36,7 @@ git \
 nano \
 vim \
 dumb-init \
-# ansible-pylibssh needs:
+# ansible-pylibssh, onigurumacffi/arm64 needs:
 gcc \
 git-core \
 libssh-devel \
@@ -46,6 +46,8 @@ ncurses \
 oniguruma-devel \
 python3-bcrypt \
 python3-cffi \
+# onigurumacffi/arm64 needs:
+python3-devel \
 python3-pip \
 python3-pyyaml \
 python3-ruamel-yaml \

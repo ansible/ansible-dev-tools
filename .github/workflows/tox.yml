@@ -26,8 +26,6 @@ jobs:
     runs-on: ${{ matrix.builder }}
     name: ${{ matrix.name }}
     # uses same runner for image building, but devspace image builds faster
-    needs:
-      - devspaces
     services:
       registry:
         image: registry:2
@@ -41,7 +39,8 @@ jobs:
           - builder: devtools-multiarch-builder
             platform: linux/amd64
             name: amd64
-          - builder: devtools-arm64-runner
+          - builder: ubuntu-24.04-arm64-2core
+            # devtools-arm64-runner
             platform: linux/arm64
             name: arm64
 
