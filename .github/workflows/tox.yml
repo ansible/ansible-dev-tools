@@ -22,12 +22,14 @@ concurrency:
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
+    with:
+      run_pre: ./tools/test-setup.sh
+      other_names: ""
+      jobs_producing_coverage: 5
   build-image:
     runs-on: ${{ matrix.builder }}
     name: ${{ matrix.name }}
     # uses same runner for image building, but devspace image builds faster
-    needs:
-      - devspaces
     services:
       registry:
         image: registry:2
@@ -41,7 +43,8 @@ jobs:
           - builder: devtools-multiarch-builder
             platform: linux/amd64
             name: amd64
-          - builder: devtools-arm64-runner
+          - builder: ubuntu-24.04-arm64-2core
+            # devtools-arm64-runner
             platform: linux/arm64
             name: arm64
 
@@ -56,8 +59,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prune docker system
-        run: sudo ./final/docker-prune.sh
+      - name: Setup runner
+        run: |
+          ./tools/test-setup.sh
+          sudo ./final/docker-prune.sh
 
       - name: Build the container image for ${{ matrix.platform }} and test it
         uses: ./.github/actions/build-test

@@ -19,6 +19,7 @@ devfile
 endgroup
 gunicorn
 libera
+libonig
 microdnf
 mknod
 modifyitems
