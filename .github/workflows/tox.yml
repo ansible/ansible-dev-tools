@@ -22,6 +22,10 @@ concurrency:
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
+    with:
+      run_pre: ./tools/test-setup.sh
+      other_names: ""
+      jobs_producing_coverage: 5
   build-image:
     runs-on: ${{ matrix.builder }}
     name: ${{ matrix.name }}
@@ -55,8 +59,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prune docker system
-        run: sudo ./final/docker-prune.sh
+      - name: Setup runner
+        run: |
+          ./tools/test-setup.sh
+          sudo ./final/docker-prune.sh
 
       - name: Build the container image for ${{ matrix.platform }} and test it
         uses: ./.github/actions/build-test
