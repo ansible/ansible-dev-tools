@@ -4,7 +4,8 @@ ci:
   autoupdate_commit_msg: "chore: pre-commit autoupdate"
   autoupdate_schedule: monthly
   autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
-
+  skip:
+    - shellcheck # no docker support on pre-commit.ci
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -32,6 +33,11 @@ repos:
           (?x)^(
             .config/pydoclint-baseline.txt
           )$
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
 
   - repo: https://github.com/pycontribs/mirrors-prettier
     rev: v3.3.3

@@ -61,7 +61,7 @@ for dir in $overlay_subdirs; do
   # Check if the directory is associated with an active container or image
   if ! echo "$all_layer_ids" | grep -q "$dir"; then
     echo "Removing orphan directory: $overlay_dir/$dir"
-    rm -rf "$overlay_dir/$dir"
+    rm -rf "${overlay_dir:?}/$dir"
   fi
 done
 
