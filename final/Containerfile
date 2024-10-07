@@ -1,6 +1,6 @@
 # Builds community-ansible-dev-tools-container-base image which provides
 # container-in-container support and all installs all binary dependencies
-# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS
+# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS,onigurumacffi
 FROM community-ansible-dev-tools-base:latest
 
 USER root
@@ -18,41 +18,8 @@ LABEL org.opencontainers.image.vendor="Red Hat"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 LABEL org.opencontainers.image.description="An execution environment targeted for Ansible content creators."
 
-
-RUN microdnf -y makecache && microdnf -y update
-RUN microdnf -y install shadow-utils
-RUN rpm --setcaps shadow-utils 2>/dev/null
-RUN \
-microdnf install -y \
-tar \
-echo \
-podman \
-fuse-overlayfs \
-openssh-clients \
-zsh \
-util-linux-user \
-which \
-git \
-nano \
-vim \
-dumb-init \
-# ansible-pylibssh needs:
-gcc \
-git-core \
-libssh-devel \
-python3-markupsafe \
-# ansible-navigator needs:
-ncurses \
-oniguruma-devel \
-python3-bcrypt \
-python3-cffi \
-python3-pip \
-python3-pyyaml \
-python3-ruamel-yaml \
-python3-wheel \
---exclude container-selinux \
-    && microdnf clean all \
-    && ln -s /usr/bin/vim /usr/bin/vi
+WORKDIR /context
+RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip context/setup.sh
 
 ARG _REPO_URL="https://raw.githubusercontent.com/containers/image_build/main/podman"
 ADD $_REPO_URL/containers.conf /etc/containers/containers.conf
@@ -108,7 +75,7 @@ RUN for dir in \
 # base ansible-dev-tools setup
 
 COPY dist/*.whl /tmp/dist
-RUN sh -ec -o pipefail "ls -1 /tmp/dist/*.whl | xargs -I '{}' python3 -m pip install --no-cache-dir '{}[server,lock]' && rm -rf /tmp/dist"
+RUN --mount=type=cache,dst=/root/.cache/pip sh -ec -o pipefail "ls -1 /tmp/dist/*.whl | xargs -I '{}' python3 -m pip install -q '{}[server,lock]' && rm -rf /tmp/dist"
 
 RUN \
 mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles && \

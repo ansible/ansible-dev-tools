@@ -16,6 +16,7 @@ updates:
         patterns:
           - "*"
         exclude-patterns:
+          - ansible-compat
           - ansible-creator
           - ansible-dev-environment
           - ansible-dev-tools

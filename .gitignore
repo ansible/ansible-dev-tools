@@ -175,5 +175,5 @@ cython_debug/
 _readthedocs
 
 # ansible-builder
-context
-collections
+/context
+/collections

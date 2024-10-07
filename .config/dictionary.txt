@@ -1,3 +1,4 @@
+KUBEDOCK
 accesslog
 addinivalue
 addoption
@@ -14,17 +15,21 @@ confest
 containerfile
 devcontainer
 devel
+devfile
 endgroup
 gunicorn
 libera
+libonig
 microdnf
 mknod
 modifyitems
 netcommon
+opencontainers
 pkgmgr
 pylibssh
 seccomp
 signingkey
+subdirs
 testenv
 uninstallation
 unmarshal

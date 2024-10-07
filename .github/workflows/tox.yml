@@ -22,10 +22,14 @@ concurrency:
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
+    with:
+      run_pre: ./tools/test-setup.sh
+      other_names: ""
+      jobs_producing_coverage: 5
   build-image:
     runs-on: ${{ matrix.builder }}
     name: ${{ matrix.name }}
-    needs: tox
+    # uses same runner for image building, but devspace image builds faster
     services:
       registry:
         image: registry:2
@@ -39,7 +43,8 @@ jobs:
           - builder: devtools-multiarch-builder
             platform: linux/amd64
             name: amd64
-          - builder: devtools-arm64-runner
+          - builder: ubuntu-24.04-arm64-2core
+            # devtools-arm64-runner
             platform: linux/arm64
             name: arm64
 
@@ -54,6 +59,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup runner
+        run: |
+          ./tools/test-setup.sh
+          sudo ./final/docker-prune.sh
+
       - name: Build the container image for ${{ matrix.platform }} and test it
         uses: ./.github/actions/build-test
         # this needs to be passed only when on release pipeline:
@@ -64,7 +74,9 @@ jobs:
   publish-image:
     environment: release # approval
     runs-on: ubuntu-latest
-    needs: build-image
+    needs:
+      - build-image
+      - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Check out repository
@@ -82,9 +94,29 @@ jobs:
         with:
           registry: ghcr.io
 
+  devspaces:
+    runs-on: devtools-multiarch-builder
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the devspaces image
+        uses: ./.github/actions/build-release
+        with:
+          publish: "{{ github.event_name == 'release' && github.event.action == 'published' && 'true' || 'false' }}"
+
   pypi:
     name: Publish to PyPI registry
-    needs: build-image
+    needs:
+      - build-image
+      - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
     runs-on: ubuntu-22.04

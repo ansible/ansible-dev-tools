@@ -16,6 +16,7 @@ Imported source package '<package>' as '/**/src/<package>/__init__.py'
 <...>
 Tracing '/**/src/<package>/__init__.py'
 """
+
 from __future__ import annotations
 
 import errno
@@ -315,12 +316,7 @@ def _start_container() -> None:
     try:
         subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
     except subprocess.CalledProcessError as exc:
-        err = (
-            f"Failed to start container:\n"
-            f"cmd: {cmd}\n"
-            f"stdout: {exc.stdout}\n"
-            f"stderr: {exc.stderr}"
-        )
+        err = f"Failed to start container:\ncmd: {cmd}\nstdout: {exc.stdout}\nstderr: {exc.stderr}"
         pytest.fail(err)
 
     # image is local, can't be pulled, use default
@@ -419,17 +415,24 @@ def _start_server() -> None:
         env=os.environ,
     )
     tries = 0
-    max_tries = 10
+    timeout = 2
+    max_tries = 15  # GHA macos runner showed occasional failures with 10s
+    msg = "Could not start the server."
     while tries < max_tries:
         try:
-            res = requests.get("http://localhost:8000", timeout=1)
+            # timeout increased to 2s due to observed GHA macos failures
+            res = requests.get("http://localhost:8000", timeout=timeout)
             if res.status_code == requests.codes.get("not_found"):
                 return
-        except requests.exceptions.ConnectionError:  # noqa: PERF203
+        except (requests.exceptions.ConnectionError, requests.RequestException):  # noqa: PERF203
             tries += 1
             time.sleep(1)
-
-    msg = "Could not start the server."
+    INFRASTRUCTURE.proc.terminate()
+    stdout, stderr = INFRASTRUCTURE.proc.communicate()
+    msg += (
+        f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
+        f" Server stdout:\n{stdout.decode()}\nServer stderr:\n{stderr.decode()}"
+    )
     raise RuntimeError(msg)
 
 
