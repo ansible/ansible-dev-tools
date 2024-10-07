@@ -1,25 +1,17 @@
 # Builds community-ansible-dev-tools-container-base image which provides
 # container-in-container support and all installs all binary dependencies
-# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS,onigurumacffi
+# cspell:ignore minrate,opencontainers,cffi,ruamel,subuid,subgid,workdir,chgrp,mountopt,microdnf,makecache,setcaps,pylibssh,chsh,nodev,overlayfs,libssh,markupsafe,additionalimage,USERNS
 FROM community-ansible-dev-tools-base:latest
-
-USER root
-
-# When building for multiple-architectures in parallel using emulation
-# it's really easy for one/more dnf processes to timeout or mis-count
-# the minimum download rates.  Bump both to be extremely forgiving of
-# an overworked host.
-RUN echo -e "\n\n# Added during image build" >> /etc/dnf/dnf.conf && \
-    echo -e "minrate=100\ntimeout=60\n" >> /etc/dnf/dnf.conf
-
 LABEL org.opencontainers.image.source=https://github.com/ansible/ansible-dev-tools
 LABEL org.opencontainers.image.authors="Ansible DevTools"
 LABEL org.opencontainers.image.vendor="Red Hat"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 LABEL org.opencontainers.image.description="An execution environment targeted for Ansible content creators."
 
-WORKDIR /context
-RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip context/setup.sh
+USER root
+
+RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip ./setup.sh
+
 
 ARG _REPO_URL="https://raw.githubusercontent.com/containers/image_build/main/podman"
 ADD $_REPO_URL/containers.conf /etc/containers/containers.conf
@@ -75,42 +67,9 @@ RUN for dir in \
 # base ansible-dev-tools setup
 
 COPY dist/*.whl /tmp/dist
-RUN --mount=type=cache,dst=/root/.cache/pip sh -ec -o pipefail "ls -1 /tmp/dist/*.whl | xargs -I '{}' python3 -m pip install -q '{}[server,lock]' && rm -rf /tmp/dist"
+RUN sh -ec -o pipefail "ls -1 /tmp/dist/*.whl | xargs -I '{}' python3 -m pip install --no-cache-dir '{}[server,lock]' && rm -rf /tmp/dist"
 
-RUN \
-mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles && \
-git config --system --add safe.directory /
-
-# The dev container for docker runs as root
-RUN chsh -s $(which zsh) root
-
-RUN <<EOF
-# Install argcomplete
-python3 -m pip install argcomplete
-activate-global-python-argcomplete
-EOF
-
-# Install oh-my-zsh
-USER root
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# add some helpful CLI commands to check we do not remove them inadvertently and output some helpful version information at build time.
-RUN set -ex \
-&& ansible --version \
-&& ansible-lint --version \
-&& ansible-runner --version \
-&& molecule --version \
-&& molecule drivers \
-&& podman --version \
-&& python3 --version \
-&& git --version \
-&& ansible-galaxy role list \
-&& ansible-galaxy collection list \
-&& rpm -qa \
-&& uname -a
-
-# Make a workdir usable by the root user
-RUN mkdir -p /workdir
+RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip ./setup2.sh
 
 WORKDIR /workdir
 ENTRYPOINT ["/opt/builder/bin/entrypoint", "dumb-init"]
