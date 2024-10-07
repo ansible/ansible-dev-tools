@@ -146,7 +146,7 @@ def test_navigator_simple(
         f" --pp never --eei {infrastructure.image_name}"
     )
     stdout, stderr, return_code = cmd_in_tty(cmd)
-    assert not stderr
+    assert not stderr, f"stderr: {stderr} while running {cmd}"
     assert return_code == 0
     assert "Success" in stdout
     assert "ok=1" in stdout

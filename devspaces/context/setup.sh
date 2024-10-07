@@ -16,12 +16,12 @@ dnf install -y -q \
     ncurses \
     openssh-clients \
     podman \
-    python${PYV} \
-    python${PYV}-cffi \
-    python${PYV}-markupsafe \
-    python${PYV}-pip \
-    python${PYV}-pyyaml \
-    python${PYV}-wheel \
+    "python${PYV}" \
+    "python${PYV}-cffi" \
+    "python${PYV}-markupsafe" \
+    "python${PYV}-pip" \
+    "python${PYV}-pyyaml" \
+    "python${PYV}-wheel" \
     tar \
     util-linux-user \
     which \
@@ -30,7 +30,7 @@ dnf install -y -q \
 #     python${PYV}-ruamel-yaml \
 dnf -y -q clean all
 
-/usr/bin/python${PYV} -m pip install --root-user-action=ignore -r requirements.txt
+"/usr/bin/python${PYV}" -m pip install --root-user-action=ignore -r requirements.txt
 
 ansible-galaxy collection install -r requirements.yml
 
