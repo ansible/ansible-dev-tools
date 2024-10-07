@@ -1,0 +1,13 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: ghcr.io/ansible/community-ansible-dev-tools:latest
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+
+options:
+  package_manager_path: /usr/bin/dnf5

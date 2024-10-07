@@ -46,36 +46,21 @@ The below example shows how to make a custom EE that adds the `amazon.aws` and `
 
 1. Create an `execution-environment.yml` file with the following content.
 
-   ```yaml title="execution-environment.yml"
-   ---
-   version: 3
-
-   images:
-     base_image: ghcr.io/ansible/community-ansible-dev-tools-container:latest
-
-   dependencies:
-     galaxy: requirements.yml
-     python: requirements.txt
-   ```
+```yaml title="execution-environment.yml"
+{!examples/execution-environment.yml!}
+```
 
 2. Populate `requirements.txt` and `requirements.yml` with the respective contents.
 
-   ```text title="requirements.txt"
-   ansible-pylibssh==1.1.0
-   ```
-
-   ```yaml title="requirements.yml"
-   ---
-   collections:
-     - name: amazon.aws
-     - name: cisco.nxos
-   ```
+```bash title="requirements.txt"
+{!examples/requirements.txt!}
+```
 
 3. Use `ansible-builder` to create the new EE.
 
-   ```bash
-   ansible-builder build -t custom-ee:latest --prune-images -v3
-   ```
+```bash
+ansible-builder build -t custom-ee:latest --prune-images -v3
+```
 
 Once this image is built, you can use [`ansible-navigator`](https://ansible.readthedocs.io/projects/navigator/) to reference this image and run your playbooks!
 
@@ -84,7 +69,7 @@ Once this image is built, you can use [`ansible-navigator`](https://ansible.read
 If you want to use this image with `podman` the following command to run the container.
 
 ```bash
-podman run  -it --rm \
+podman run -it --rm \
  --cap-add=SYS_ADMIN \
  --cap-add=SYS_RESOURCE \
  --device "/dev/fuse" \

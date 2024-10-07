@@ -13,3 +13,8 @@ ansible-builder create -f execution-environment.yml --output-filename Containerf
 $BUILD_CMD -f context/Containerfile context/ --tag community-ansible-dev-tools-base:latest
 $BUILD_CMD -f final/Containerfile final/ --tag community-ansible-dev-tools:test
 pytest --only-container --image-name community-ansible-dev-tools:test
+
+# Test the build of example execution environment to avoid regressions
+pushd docs/examples
+ansible-builder build
+popd
