@@ -178,3 +178,5 @@ _readthedocs
 /context
 /collections
 out
+docs/examples/context/_build
+docs/examples/context
