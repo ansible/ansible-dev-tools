@@ -177,3 +177,4 @@ _readthedocs
 # ansible-builder
 /context
 /collections
+out

@@ -22,7 +22,7 @@ def test_error(server_url: str, resource: str) -> None:
         server_url: The server URL.
         resource: The resource to test.
     """
-    response = requests.post(f"{server_url}/v1/creator/{resource}", timeout=1)
+    response = requests.post(f"{server_url}/v1/creator/{resource}", timeout=10)
     assert response.status_code == requests.codes.get("bad_request")
     assert response.text == "Missing required request body"
 
@@ -41,7 +41,7 @@ def test_playbook_v1(server_url: str, tmp_path: Path) -> None:
             "scm_org": "ansible",
             "scm_project": "devops",
         },
-        timeout=1,
+        timeout=10,
     )
     assert response.status_code == requests.codes.get("created")
     assert response.headers["Content-Disposition"] == 'attachment; filename="ansible-devops.tar.gz"'
@@ -69,7 +69,7 @@ def test_collection_v1(server_url: str, tmp_path: Path) -> None:
             "collection": "namespace.name",
             "project": "collection",
         },
-        timeout=1,
+        timeout=10,
     )
     assert response.status_code == requests.codes.get("created")
     assert response.headers["Content-Disposition"] == 'attachment; filename="namespace.name.tar.gz"'

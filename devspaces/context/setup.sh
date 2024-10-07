@@ -1,35 +1,36 @@
 #!/bin/bash -e
-# cspell: ignore makecache overlayfs libssh chgrp
+# cspell: ignore makecache overlayfs libssh chgrp noplugins
 set -eux pipefail
 
 set -e
-dnf -y makecache
-dnf -y update
-dnf install -y \
-    tar \
-    podman \
-    fuse-overlayfs \
-    openssh-clients \
-    zsh \
-    util-linux-user \
-    which \
-    git \
+dnf --noplugins remove -y -q subscription-manager dnf-plugin-subscription-manager
+dnf -y -q makecache
+dnf -y -q update
+dnf install -y -q \
     dumb-init \
+    fuse-overlayfs \
     gcc \
+    git \
     git-core \
     libssh-devel \
-    python3-markupsafe \
     ncurses \
-    python3-bcrypt \
-    python3-cffi \
-    python3-pip \
-    python3-pyyaml \
-    python3-ruamel-yaml \
-    python3-wheel \
+    openssh-clients \
+    podman \
+    python${PYV} \
+    python${PYV}-cffi \
+    python${PYV}-markupsafe \
+    python${PYV}-pip \
+    python${PYV}-pyyaml \
+    python${PYV}-wheel \
+    tar \
+    util-linux-user \
+    which \
+    zsh \
     --exclude container-selinux
-dnf clean all
+#     python${PYV}-ruamel-yaml \
+dnf -y -q clean all
 
-/usr/bin/python${PYV} -m pip install -r requirements.txt
+/usr/bin/python${PYV} -m pip install --root-user-action=ignore -r requirements.txt
 
 ansible-galaxy collection install -r requirements.yml
 
