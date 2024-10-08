@@ -71,12 +71,12 @@ repos:
         types_or: [python, pyi]
 
   - repo: https://github.com/psf/black # must be after ruff
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - id: black
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.13.3
+    rev: v8.14.0
     hooks:
       - id: cspell
         name: Spell check with cspell
