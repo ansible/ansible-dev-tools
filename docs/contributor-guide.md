@@ -60,6 +60,14 @@ tox -e test-image -- --container-engine=<ce> --image-name <image>
 
 See the `tests/integration/test_container.py` for examples.
 
+### Manual testing of devspaces container
+
+At this moment the devspaces container is not tested by the CI, so it is important to test it manually before merging any changes.
+
+- Get the checksum of the temporary container made from your pull request, the containers are pushed to https://github.com/ansible/ansible-dev-tools/pkgs/container/ansible-devspaces-tmp
+- Open an already made
+- https://console.redhat.com/openshift/sandbox
+
 ## Talk to us
 
 - Join the Ansible forum:
