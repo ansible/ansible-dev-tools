@@ -34,6 +34,7 @@ python3-pip \
 python3-pyyaml \
 python3-ruamel-yaml \
 python3-wheel \
+tree \
 --exclude container-selinux \
     && microdnf -q clean all \
     && ln -s /usr/bin/vim /usr/bin/vi

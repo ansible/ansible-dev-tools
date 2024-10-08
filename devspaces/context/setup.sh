@@ -23,6 +23,7 @@ dnf install -y -q \
     "python${PYV}-pyyaml" \
     "python${PYV}-wheel" \
     tar \
+    tree \
     util-linux-user \
     which \
     zsh \
