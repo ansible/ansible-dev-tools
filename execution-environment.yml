@@ -15,8 +15,8 @@ dependencies:
   galaxy: requirements.yml
 
 options:
-  package_manager_path: /usr/bin/microdnf
+  package_manager_path: /usr/bin/dnf5
 
 additional_build_steps:
   prepend_base:
-    - RUN $PKGMGR -y install python3-devel
+    - RUN $PKGMGR -y -q install python3-devel
