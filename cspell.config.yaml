@@ -4,6 +4,7 @@ dictionaryDefinitions:
     addWords: true
 dictionaries:
   - bash
+  - software-terms
   - networking-terms
   - python
   - words
