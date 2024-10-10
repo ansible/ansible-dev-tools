@@ -3,6 +3,7 @@ ansible-creator>=24.4.1
 ansible-dev-environment
 ansible-lint
 ansible-navigator
+ansible-rulebook>=1.1.1
 ansible-sign
 molecule
 pytest-ansible
