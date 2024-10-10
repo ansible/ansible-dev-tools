@@ -10,7 +10,10 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
   },
-  "flake8.importStrategy": "fromEnvironment",
+  "ansible.ansible.useFullyQualifiedCollectionNames": true,
+  "ansible.completion.provideModuleOptionAliases": true,
+  "ansible.completion.provideRedirectModules": true,
+  "ansible.validation.lint.enabled": true,
   "markiscodecoverage.searchCriteria": ".cache/.coverage/lcov.info",
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
   "mypy-type-checker.importStrategy": "fromEnvironment",
