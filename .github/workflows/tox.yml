@@ -24,81 +24,33 @@ jobs:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
     with:
       run_pre: ./tools/test-setup.sh
+      max_python: "3.13"
+      jobs_producing_coverage: 7
       other_names_also: |
         devspaces
+        ee-amd64:tox -e ee:runner=devtools-multiarch-builder
+        ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
     secrets: inherit # needed for logging to the ghcr.io registry
-  build-image:
-    runs-on: ${{ matrix.builder }}
-    name: ${{ matrix.name }}
-    # uses same runner for image building, but devspace image builds faster
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - builder: devtools-multiarch-builder
-            platform: linux/amd64
-            name: amd64
-          - builder: ubuntu-24.04-arm64-2core
-            # devtools-arm64-runner
-            platform: linux/arm64
-            name: arm64
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup runner
-        run: |
-          ./tools/test-setup.sh
-          sudo ./final/docker-prune.sh
-
-      - name: Build the container image for ${{ matrix.platform }} and test it
-        uses: ./.github/actions/build-test
-        # this needs to be passed only when on release pipeline:
-        with:
-          registry: ghcr.io
-          push: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-
-  publish-image:
-    environment: release # approval
-    runs-on: ubuntu-latest
+  publish-ee:
+    # environment: release # approval
+    runs-on: ubuntu-24.04
     needs:
-      - build-image
       - tox
-    if: github.event_name == 'release' && github.event.action == 'published'
+    # if: github.ref == 'refs/heads/main'
+    # github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push final manifest to ghcr.io
-        uses: ./.github/actions/merge-release
-        with:
-          registry: ghcr.io
+      - name: pull-merge-push for the the two arch images under a single manifest
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
 
   publish-devspaces:
     runs-on: ubuntu-24.04
     needs:
-      - build-image
       - tox
     if: github.ref == 'refs/heads/main'
     steps:
@@ -114,10 +66,8 @@ jobs:
           docker tag "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
           docker push "ghcr.io/ansible/ansible-devspaces-tmp:${{ github.event.release.tag_name }}"
 
-  pypi:
-    name: Publish to PyPI registry
+  publish-wheel:
     needs:
-      - build-image
       - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
@@ -153,11 +103,12 @@ jobs:
           github.event_name == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1
 
-  forum_post:
+  forum-post:
     if: github.event_name == 'release' && github.event.action == 'published'
     needs:
-      - pypi
-      - publish-image
+      - publish-wheel
+      - publish-ee
+      - publish-devspaces
     runs-on: ubuntu-24.04
 
     steps:
