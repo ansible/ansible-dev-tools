@@ -30,7 +30,7 @@ dnf install -y -q \
 #     python${PYV}-ruamel-yaml \
 dnf -y -q clean all
 
-"/usr/bin/python${PYV}" -m pip install --root-user-action=ignore -r requirements.txt
+"/usr/bin/python${PYV}" -m pip install --root-user-action=ignore "$(ls -1 ./*.whl)[server,lock]" -r requirements.txt
 
 ansible-galaxy collection install -r requirements.yml
 
