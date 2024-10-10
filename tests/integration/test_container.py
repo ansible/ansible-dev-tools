@@ -72,7 +72,7 @@ def test_container_in_container(
 
 
 @pytest.mark.container()
-@pytest.mark.parametrize("app", ("nano", "tar", "vi"))
+@pytest.mark.parametrize("app", ("nano", "tar", "tree", "vi"))
 def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
     """Test the presence of an app in the container.
 
