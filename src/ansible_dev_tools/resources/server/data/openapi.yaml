@@ -28,6 +28,8 @@ paths:
                 $ref: "#/components/schemas/Error"
   /v1/creator/playbook:
     post:
+      description: "Deprecated, please use the `/v2/creator/playbook` instead."
+      deprecated: true
       summary: Create a new playbook project
       requestBody:
         content:
