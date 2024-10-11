@@ -3,9 +3,22 @@
 set -euxo pipefail
 ADT_CONTAINER_ENGINE=${ADT_CONTAINER_ENGINE:-docker}
 CONTAINER_NAME=ansible/ansible-workspace-env-reference:test
-env
 
 mkdir -p out
+# Ensure that we packaged the code first
+WHEELS=(dist/*.whl)
+if [ ${#WHEELS[@]} -ne 1 ]; then
+    tox -e pkg
+    WHEELS=(dist/*.whl)
+    if [ ${#WHEELS[@]} -ne 1 ]; then
+        echo "Unable to find a single wheel file in dist/ directory."
+        exit 2
+    fi
+fi
+tox -e pkg
+rm -f devspaces/context/*.whl
+cp dist/*.whl devspaces/context
+
 # we force use of linux/amd64 platform because source image supports only this
 # platform and without it, it will fail to cross-build when task runs on arm64.
 # --metadata-file=out/devspaces.meta --no-cache
