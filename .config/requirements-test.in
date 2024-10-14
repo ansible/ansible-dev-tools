@@ -15,4 +15,4 @@ toml-sort
 tox
 types-pyyaml
 types-requests
-django-stubs[compatible-mypy]
+django-stubs
