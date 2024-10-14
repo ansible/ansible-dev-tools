@@ -28,6 +28,7 @@ updates:
           - tox-ansible
     ignore:
       - dependency-name: referencing
+      - dependency-name: jsonschema-specifications
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
