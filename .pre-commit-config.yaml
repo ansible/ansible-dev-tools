@@ -116,7 +116,7 @@ repos:
         additional_dependencies:
           - ansible-creator<24.10.0
           - ansible-navigator
-          - django-stubs[compatible-mypy]
+          - django-stubs
           - jinja2
           - libtmux
           - openapi-core>=0.19.1
