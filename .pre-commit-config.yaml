@@ -100,7 +100,7 @@ repos:
         args:
           - --output-format=colorized
         additional_dependencies:
-          - ansible-creator
+          - ansible-creator<24.10.0
           - ansible-navigator
           - django
           - gunicorn
@@ -114,9 +114,9 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
-          - ansible-creator
+          - ansible-creator<24.10.0
           - ansible-navigator
-          - django-stubs[compatible-mypy]
+          - django-stubs
           - jinja2
           - libtmux
           - openapi-core>=0.19.1
