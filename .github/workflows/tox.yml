@@ -119,3 +119,10 @@ jobs:
 
       - name: Run the forum post script
         run: python3 forum_post.py ${{ github.event.repository.full_name }} ${{ github.event.release.tag_name }} ${{ secrets.FORUM_KEY }} ${{ secrets.FORUM_USER }}
+
+  push:
+    if: >
+      github.event_name == 'push' && contains(
+      fromJSON('["refs/heads/main", "refs/heads/releases", "refs/heads/stable"]'),
+      github.ref)
+    uses: ansible/team-devtools/.github/workflows/push.yml@main
