@@ -63,8 +63,8 @@ jobs:
       - name: Push image to ghcr.io as ${{ github.event.release.tag_name }}
         if: github.event_name == 'release' && github.event.action == 'published'
         run: |
-          docker tag "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
-          docker push "ghcr.io/ansible/ansible-devspaces-tmp:${{ github.event.release.tag_name }}"
+          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+          docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
 
   publish-wheel:
     needs:
