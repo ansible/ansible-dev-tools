@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - tox
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
     steps:
       - name: Push image to ghcr.io as ansible-devspaces-tmp:${GITHUB_SHA}
         run: |
@@ -79,7 +79,7 @@ jobs:
       FORCE_COLOR: 1
       PY_COLORS: 1
       TOXENV: pkg
-
+      TOX_EXTRA_BINDEP: 0
     steps:
       - name: Switch to using Python 3.10 by default
         uses: actions/setup-python@v5
