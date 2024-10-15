@@ -64,7 +64,9 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'published'
         run: |
           docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:latest"
           docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+          docker push "ghcr.io/ansible/ansible-devspaces:latest"
 
   publish-wheel:
     needs:
