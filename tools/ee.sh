@@ -42,14 +42,15 @@ if [ "--publish" == "${1:-}" ]; then
     ${ADT_CONTAINER_ENGINE} pull -q "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
     ${ADT_CONTAINER_ENGINE} pull -q "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-amd64"
 
-    TAG=ghcr.io/ansible/community-ansible-dev-tools:${2:-}
-    ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-amd64" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
-    ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
+    for TAG in ghcr.io/ansible/community-ansible-dev-tools:${2:-} ghcr.io/ansible/community-ansible-dev-tools:latest; do
+        ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-amd64" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
+        ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
 
-    # We push only when there is a release, and that is when $2 is not the same as GITHUB_SHA
-    if [ "--dry" != "${3:-}" ]; then
-        ${ADT_CONTAINER_ENGINE} manifest push "$TAG"
-    fi
+        # We push only when there is a release, and that is when $2 is not the same as GITHUB_SHA
+        if [ "--dry" != "${3:-}" ]; then
+            ${ADT_CONTAINER_ENGINE} manifest push "$TAG"
+        fi
+    done
     exit 0
 fi
 

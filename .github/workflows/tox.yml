@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  group: ${{ github.workflow }}-${ github.event_name }-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - tox
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
     steps:
       - name: Push image to ghcr.io as ansible-devspaces-tmp:${GITHUB_SHA}
         run: |
@@ -63,8 +63,10 @@ jobs:
       - name: Push image to ghcr.io as ${{ github.event.release.tag_name }}
         if: github.event_name == 'release' && github.event.action == 'published'
         run: |
-          docker tag "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
-          docker push "ghcr.io/ansible/ansible-devspaces-tmp:${{ github.event.release.tag_name }}"
+          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:latest"
+          docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+          docker push "ghcr.io/ansible/ansible-devspaces:latest"
 
   publish-wheel:
     needs:
@@ -79,7 +81,7 @@ jobs:
       FORCE_COLOR: 1
       PY_COLORS: 1
       TOXENV: pkg
-
+      TOX_EXTRA_BINDEP: 0
     steps:
       - name: Switch to using Python 3.10 by default
         uses: actions/setup-python@v5
