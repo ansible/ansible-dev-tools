@@ -66,7 +66,7 @@ def test_playbook_v2(server_url: str, tmp_path: Path) -> None:
     response = requests.post(
         f"{server_url}/v2/creator/playbook",
         json={
-            "project": "ansible-project",
+            "project": "playbook",
             "namespace": "ansible",
             "collection_name": "devops",
         },
