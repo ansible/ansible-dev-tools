@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate
+# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264
 set -euxo pipefail
 
 # When building for multiple-architectures in parallel using emulation
@@ -8,6 +8,9 @@ set -euxo pipefail
 # an overworked host.
 echo -e "\n\n# Added during image build" >> /etc/dnf/dnf.conf
 echo -e "minrate=100\ntimeout=60\n" >> /etc/dnf/dnf.conf
+#  might config-manager is not available
+# microdnf config-manager --disable fedora-cisco-openh264
+rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo
 
 microdnf -q -y makecache && microdnf -q -y update
 microdnf -q -y install shadow-utils
