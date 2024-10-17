@@ -12,7 +12,7 @@ from django.core.wsgi import get_wsgi_application
 from django.urls import path
 from gunicorn.app.base import BaseApplication
 
-from ansible_dev_tools.resources.server.creator import CreatorFrontendV1
+from ansible_dev_tools.resources.server.creator import CreatorFrontendV1, CreatorFrontendV2
 
 
 if TYPE_CHECKING:
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 urlpatterns = (
     path(route="v1/creator/playbook", view=CreatorFrontendV1().playbook),
     path(route="v1/creator/collection", view=CreatorFrontendV1().collection),
+    path(route="v2/creator/playbook", view=CreatorFrontendV2().playbook),
 )
 
 
