@@ -9,6 +9,8 @@
     "ms-python.mypy-type-checker",
     "ms-python.pylint",
     "ms-python.python",
+    "redhat.ansible",
+    "redhat.vscode-openshift-connector",
     "sonarsource.sonarlint-vscode",
     "streetsidesoftware.code-spell-checker",
     "timonwong.shellcheck"

@@ -88,7 +88,8 @@ extra:
 nav:
   - Home: index.md
   - Installation: installation.md
-  - Container: container.md
+  - Execution Environment: container.md
+  - DevSpaces: devspaces.md
   - User Guide:
       - user-guide/index.md
       - Testing: user-guide/testing.md
