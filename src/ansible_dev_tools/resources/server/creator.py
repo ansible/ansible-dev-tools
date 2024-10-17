@@ -7,7 +7,6 @@ import tempfile
 
 from pathlib import Path
 
-from ansible_creator._version import version as creator_version
 from ansible_creator.config import Config
 from ansible_creator.output import Output
 from ansible_creator.subcommands.init import Init
@@ -16,6 +15,9 @@ from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse
 
 from ansible_dev_tools.server_utils import validate_request, validate_response
+
+
+MIN_CREATOR_VERSION = "24.10.0"
 
 
 class CreatorFrontendV1:
@@ -137,7 +139,7 @@ class CreatorBackend:
         """
         init_path = self.tmp_dir / collection
         config = Config(
-            creator_version=creator_version,
+            creator_version=MIN_CREATOR_VERSION,
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             collection=collection,
@@ -153,31 +155,31 @@ class CreatorBackend:
     def playbook(
         self: CreatorBackend,
         project: str,
-        scm_org: str,
-        scm_project: str,
+        namespace: str,
+        collection_name: str,
     ) -> Path:
         """Scaffold a playbook project.
 
         Args:
             project: The project type.
-            scm_org: The SCM organization.
-            scm_project: The SCM project.
+            namespace: The collection namespace.
+            collection_name: The collection name.
 
         Returns:
             The tar file path.
         """
-        init_path = self.tmp_dir / f"{scm_org}-{scm_project}"
+        init_path = self.tmp_dir / f"{namespace}-{collection_name}"
         config = Config(
-            creator_version=creator_version,
+            creator_version=MIN_CREATOR_VERSION,
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
-            scm_org=scm_org,
-            scm_project=scm_project,
+            namespace=namespace,
+            collection_name=collection_name,
             subcommand="init",
         )
         Init(config).run()
-        tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
+        tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar.gz"
         with tarfile.open(tar_file, "w:gz") as tar:
             tar.add(str(init_path), arcname=".")
         return tar_file
