@@ -6,6 +6,7 @@ dictionaries:
   - bash
   - software-terms
   - networking-terms
+  - makefile
   - python
   - words
   - "!aws"
