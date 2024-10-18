@@ -33,6 +33,8 @@ jobs:
     secrets: inherit # needed for logging to the ghcr.io registry
 
   publish-ee:
+    permissions:
+      packages: write
     # environment: release # approval
     runs-on: ubuntu-24.04
     needs:
@@ -49,6 +51,8 @@ jobs:
         run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
 
   publish-devspaces:
+    permissions:
+      packages: write
     runs-on: ubuntu-24.04
     needs:
       - tox
