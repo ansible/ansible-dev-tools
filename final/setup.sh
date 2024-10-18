@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264
+# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264,additionalimage,mountopt,nodev
 set -euxo pipefail
 
 # When building for multiple-architectures in parallel using emulation
@@ -50,3 +50,14 @@ python3-wheel \
 --exclude container-selinux \
     && microdnf -q clean all \
     && ln -s /usr/bin/vim /usr/bin/vi
+
+curl -o /etc/containers/containers.conf https://raw.githubusercontent.com/containers/image_build/main/podman/containers.conf
+chmod 644 /etc/containers/containers.conf
+
+# Copy & modify the defaults to provide reference if runtime changes needed.
+# Changes here are required for running with fuse-overlay storage inside container.
+sed -e 's|^#mount_program|mount_program|g' \
+    -e '/additionalimage.*/a "/var/lib/shared",' \
+    -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' \
+    /usr/share/containers/storage.conf \
+    > /etc/containers/storage.conf
