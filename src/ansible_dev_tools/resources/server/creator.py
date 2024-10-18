@@ -59,9 +59,15 @@ class CreatorFrontendV1:
             return result
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
-            tar_file = CreatorBackend(Path(tmp_dir)).playbook(
-                **result.body,  # type: ignore[arg-type]
-            )
+            if "v1/creator/playbook" in request.path:
+                # print(result.body)
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook(
+                    **result.body,  # type: ignore[arg-type]
+                )
+            else:
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook_v2(
+                    **result.body,  # type: ignore[arg-type]
+                )
             response = self._response_from_tar(tar_file)
 
         return validate_response(
@@ -87,64 +93,6 @@ class CreatorFrontendV1:
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
             tar_file = CreatorBackend(Path(tmp_dir)).collection(
-                **result.body,  # type: ignore[arg-type]
-            )
-            response = self._response_from_tar(tar_file)
-
-        return validate_response(
-            request=request,
-            response=response,
-        )
-
-
-class CreatorFrontendV2(CreatorFrontendV1):
-    """The creator frontend, handles requests from users."""
-
-    def playbook(
-        self: CreatorFrontendV1,
-        request: HttpRequest,
-    ) -> FileResponse | HttpResponse:
-        """Create a new playbook project.
-
-        Args:
-            request: HttpRequest object.
-
-        Returns:
-            File or error response.
-        """
-        result = validate_request(request)
-        if isinstance(result, HttpResponse):
-            return result
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # result.body here is a dict, it appear the type hint is wrong
-            tar_file = CreatorBackendV2(Path(tmp_dir)).playbook(
-                **result.body,  # type: ignore[arg-type]
-            )
-            response = self._response_from_tar(tar_file)
-
-        return validate_response(
-            request=request,
-            response=response,
-        )
-
-    def collection(
-        self: CreatorFrontendV1,
-        request: HttpRequest,
-    ) -> FileResponse | HttpResponse:
-        """Create a new collection project.
-
-        Args:
-            request: HttpRequest object.
-
-        Returns:
-            File or error response.
-        """
-        result = validate_request(request)
-        if isinstance(result, HttpResponse):
-            return result
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # result.body here is a dict, it appear the type hint is wrong
-            tar_file = CreatorBackendV2(Path(tmp_dir)).collection(
                 **result.body,  # type: ignore[arg-type]
             )
             response = self._response_from_tar(tar_file)
@@ -237,51 +185,15 @@ class CreatorBackend:
             scm_project=scm_project,
             subcommand="init",
         )
+        # print(config)
         Init(config).run()
         tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
         with tarfile.open(tar_file, "w:gz") as tar:
             tar.add(str(init_path), arcname=".")
         return tar_file
 
-
-class CreatorBackendV2:
-    """The creator wrapper, handles interaction with the python creator project."""
-
-    def __init__(self: CreatorBackendV2, tmp_dir: Path) -> None:
-        """Initialize the creator.
-
-        Args:
-            tmp_dir: The temporary directory.
-        """
-        self.tmp_dir = tmp_dir
-
-    def collection(self: CreatorBackendV2, collection: str, project: str) -> Path:
-        """Scaffold a collection.
-
-        Args:
-            collection: The collection name.
-            project: The project type.
-
-        Returns:
-            The tar file path.
-        """
-        init_path = self.tmp_dir / collection
-        config = Config(
-            creator_version=MIN_CREATOR_VERSION,
-            init_path=str(init_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
-            collection=collection,
-            subcommand="init",
-            project=project,
-        )
-        Init(config).run()
-        tar_file = self.tmp_dir / f"{collection}.tar.gz"
-        with tarfile.open(tar_file, "w:gz") as tar:
-            tar.add(str(init_path), arcname=".")
-        return tar_file
-
-    def playbook(
-        self: CreatorBackendV2,
+    def playbook_v2(
+        self: CreatorBackend,
         project: str,
         namespace: str,
         collection_name: str,
@@ -303,9 +215,10 @@ class CreatorBackendV2:
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
             namespace=namespace,
-            scm_project=collection_name,
+            collection_name=collection_name,
             subcommand="init",
         )
+        # print(config)
         Init(config).run()
         tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar.gz"
         with tarfile.open(tar_file, "w:gz") as tar:
