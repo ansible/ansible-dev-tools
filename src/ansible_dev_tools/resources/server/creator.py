@@ -60,7 +60,6 @@ class CreatorFrontendV1:
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
             if "v1/creator/playbook" in request.path:
-                # print(result.body)
                 tar_file = CreatorBackend(Path(tmp_dir)).playbook(
                     **result.body,  # type: ignore[arg-type]
                 )
@@ -181,11 +180,10 @@ class CreatorBackend:
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
-            scm_org=scm_org,
-            scm_project=scm_project,
+            namespace=scm_org,
+            collection_name=scm_project,
             subcommand="init",
         )
-        # print(config)
         Init(config).run()
         tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
         with tarfile.open(tar_file, "w:gz") as tar:
@@ -218,7 +216,6 @@ class CreatorBackend:
             collection_name=collection_name,
             subcommand="init",
         )
-        # print(config)
         Init(config).run()
         tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar.gz"
         with tarfile.open(tar_file, "w:gz") as tar:
