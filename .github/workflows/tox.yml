@@ -31,6 +31,8 @@ jobs:
         ee-amd64:tox -e ee:runner=devtools-multiarch-builder
         ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
     secrets: inherit # needed for logging to the ghcr.io registry
+    permissions:
+      packages: write
 
   publish-ee:
     permissions:
