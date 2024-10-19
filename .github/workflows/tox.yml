@@ -19,6 +19,12 @@ concurrency:
   group: ${{ github.workflow }}-${ github.event_name }-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+permissions:
+  checks: read
+  packages: write # tox/devspaces, tox/ee, publish-* jobs
+  pull-requests: write # tox/check jobs
+  id-token: write # tox/check job
+
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
@@ -31,12 +37,8 @@ jobs:
         ee-amd64:tox -e ee:runner=devtools-multiarch-builder
         ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
     secrets: inherit # needed for logging to the ghcr.io registry
-    permissions:
-      packages: write
 
   publish-ee:
-    permissions:
-      packages: write
     # environment: release # approval
     runs-on: ubuntu-24.04
     needs:
@@ -53,8 +55,6 @@ jobs:
         run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
 
   publish-devspaces:
-    permissions:
-      packages: write
     runs-on: ubuntu-24.04
     needs:
       - tox
@@ -80,9 +80,6 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
     runs-on: ubuntu-24.04
-    permissions:
-      id-token: write
-
     env:
       FORCE_COLOR: 1
       PY_COLORS: 1
