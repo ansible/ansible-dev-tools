@@ -56,6 +56,35 @@ def test_playbook_v1(server_url: str, tmp_path: Path) -> None:
         )
 
 
+def test_playbook_v2(server_url: str, tmp_path: Path) -> None:
+    """Test the playbook creation.
+
+    Args:
+        server_url: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
+    response = requests.post(
+        f"{server_url}/v2/creator/playbook",
+        json={
+            "project": "playbook",
+            "namespace": "ansible",
+            "collection_name": "devops",
+        },
+        timeout=10,
+    )
+    assert response.status_code == requests.codes.get("created")
+    assert response.headers["Content-Disposition"] == 'attachment; filename="ansible-devops.tar.gz"'
+    assert response.headers["Content-Type"] == "application/tar+gzip"
+    dest_file = tmp_path / "ansible-devops.tar.gz"
+    with dest_file.open(mode="wb") as tar_file:
+        tar_file.write(response.content)
+    with tarfile.open(dest_file) as file:
+        assert (
+            "./collections/ansible_collections/ansible/devops/roles/run/README.md"
+            in file.getnames()
+        )
+
+
 def test_collection_v1(server_url: str, tmp_path: Path) -> None:
     """Test the collection creation.
 
