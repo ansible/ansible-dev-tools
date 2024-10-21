@@ -19,6 +19,12 @@ concurrency:
   group: ${{ github.workflow }}-${ github.event_name }-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+permissions:
+  checks: read
+  packages: write # tox/devspaces, tox/ee, publish-* jobs
+  pull-requests: write # tox/check jobs
+  id-token: write # tox/check job
+
 jobs:
   tox:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
@@ -74,9 +80,6 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
     runs-on: ubuntu-24.04
-    permissions:
-      id-token: write
-
     env:
       FORCE_COLOR: 1
       PY_COLORS: 1
