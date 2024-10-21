@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 urlpatterns = (
     path(route="v1/creator/playbook", view=CreatorFrontendV1().playbook),
     path(route="v1/creator/collection", view=CreatorFrontendV1().collection),
+    path(route="v2/creator/playbook", view=CreatorFrontendV1().playbook),
 )
 
 
