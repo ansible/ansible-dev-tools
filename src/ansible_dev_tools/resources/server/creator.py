@@ -18,7 +18,7 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from ansible_dev_tools.server_utils import validate_request, validate_response
 
 
-MIN_CREATOR_VERSION = "24.10.0"
+MIN_CREATOR_VERSION = "24.10.1"
 
 
 class CreatorFrontendV1:
