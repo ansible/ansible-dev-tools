@@ -72,15 +72,28 @@ def test_container_in_container(
 
 
 @pytest.mark.container
-@pytest.mark.parametrize("app", ("nano", "tar", "vi"))
-def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
+@pytest.mark.parametrize(
+    ("app", "command"),
+    (
+        pytest.param("nano", None, id="nano"),
+        pytest.param("tar", None, id="tar"),
+        pytest.param("vi", None, id="vi"),
+        pytest.param("oc", "oc version --client=true", id="oc"),
+    ),
+)
+def test_app(
+    exec_container: Callable[[str], subprocess.CompletedProcess[str]],
+    app: str,
+    command: str | None,
+) -> None:
     """Test the presence of an app in the container.
 
     Args:
         exec_container: The container executor.
         app: The app to test.
+        command: Command used to test tool version and or presence.
     """
-    result = exec_container(f"{app} --version")
+    result = exec_container(command if command else f"{app} --version")
     assert result.returncode == 0, f"{app} command failed"
 
 
@@ -203,7 +216,7 @@ def test_nav_collections(
         f"ansible-navigator collections --lf {tmp_path}/navigator.log"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=15)
     assert any("ansible.builtin" in line for line in stdout)
     assert any("ansible.posix" in line for line in stdout)
     cmd = ":0"
@@ -247,7 +260,7 @@ def test_nav_playbook(
         infrastructure: The testing infrastructure
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=15)
     output = "Note: playbook project created"
     assert any(output in line for line in stdout)
     cmd = (
@@ -295,5 +308,5 @@ def test_builder(
         tmp_path: The temporary directory.
     """
     ee_file = test_fixture_dir_container / "execution-environment.yml"
-    result = exec_container(f"ansible-builder build -f {ee_file} -c {tmp_path}")
+    result = exec_container(f"ANSIBLE_NOCOLOR=1 ansible-builder build -f {ee_file} -c {tmp_path}")
     assert "Complete!" in result.stdout

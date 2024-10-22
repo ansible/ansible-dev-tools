@@ -61,10 +61,11 @@ fi
 python -m build --outdir "$REPO_DIR/final/dist/" --wheel "$REPO_DIR"
 ansible-builder create -f execution-environment.yml --output-filename Containerfile -v3
 $BUILD_CMD -f context/Containerfile context/ --tag "${TAG_BASE}"
+cp tools/setup-image.sh final/
 $BUILD_CMD -f final/Containerfile final/ --tag "${CONTAINER_NAME}"
 
 # Check container size and layers
-mk containers check $CONTAINER_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=1300 --max-layers=22
+mk containers check $CONTAINER_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=1430 --max-layers=22
 
 pytest -v --only-container --container-engine=docker --image-name "${CONTAINER_NAME}"
 #  -k test_navigator_simple

@@ -18,6 +18,7 @@ fi
 tox -e pkg
 rm -f devspaces/context/*.whl
 cp dist/*.whl devspaces/context
+cp tools/setup-image.sh devspaces/context
 
 # we force use of linux/amd64 platform because source image supports only this
 # platform and without it, it will fail to cross-build when task runs on arm64.

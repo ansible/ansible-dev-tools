@@ -2,7 +2,8 @@
 # cspell: ignore makecache overlayfs libssh chgrp noplugins
 set -eux pipefail
 
-set -e
+DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 dnf --noplugins remove -y -q subscription-manager dnf-plugin-subscription-manager
 dnf -y -q makecache
 dnf -y -q update
@@ -40,3 +41,6 @@ chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /home
 cp podman.py /usr/bin/podman.wrapper
 chown 0:0 /usr/bin/podman.wrapper
 chmod +x /usr/bin/podman.wrapper
+
+# shellcheck disable=SC1091
+source "$DIR/setup-image.sh"
