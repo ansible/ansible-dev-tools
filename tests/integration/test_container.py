@@ -72,15 +72,25 @@ def test_container_in_container(
 
 
 @pytest.mark.container()
-@pytest.mark.parametrize("app", ("nano", "tar", "vi"))
-def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
+@pytest.mark.parametrize(
+    ("app", "command"),
+    (
+        pytest.param("nano", None, id="nano"),
+        pytest.param("tar", None, id="tar"),
+        pytest.param("vi", None, id="vi"),
+        pytest.param("oc", "oc version --client=true", id="oc"),
+    ),
+)
+def test_app(
+    exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str, command: str | None
+) -> None:
     """Test the presence of an app in the container.
 
     Args:
         exec_container: The container executor.
         app: The app to test.
     """
-    result = exec_container(f"{app} --version")
+    result = exec_container(f"{app} --version" if not command else command)
     assert result.returncode == 0, f"{app} command failed"
 
 
