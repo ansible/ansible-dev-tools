@@ -21,9 +21,6 @@ from ansible_dev_tools.server_utils import validate_request, validate_response
 MIN_CREATOR_VERSION = "24.10.1"
 
 
-MIN_CREATOR_VERSION = "24.10.1"
-
-
 def create_tar_file(init_path: Path, tar_file: Path) -> None:
     """Create a tar file from the given directory.
 
@@ -230,6 +227,5 @@ class CreatorBackend:
         )
         Init(config).run()
         tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar.gz"
-        with tarfile.open(tar_file, "w:gz") as tar:
-            tar.add(str(init_path), arcname=".")
+        create_tar_file(init_path, tar_file)
         return tar_file
