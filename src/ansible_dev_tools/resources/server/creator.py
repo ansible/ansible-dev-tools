@@ -18,6 +18,17 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from ansible_dev_tools.server_utils import validate_request, validate_response
 
 
+def create_tar_file(init_path: Path, tar_file: Path) -> None:
+    """Create a tar file from the given directory.
+
+    Args:
+        init_path: The directory path to create the tar file from.
+        tar_file: The output tar file path.
+    """
+    with tarfile.open(tar_file, "w:gz") as tar:
+        tar.add(str(init_path), arcname=".")
+
+
 class CreatorFrontendV1:
     """The creator frontend, handles requests from users."""
 
@@ -146,8 +157,7 @@ class CreatorBackend:
         )
         Init(config).run()
         tar_file = self.tmp_dir / f"{collection}.tar.gz"
-        with tarfile.open(tar_file, "w:gz") as tar:
-            tar.add(str(init_path), arcname=".")
+        create_tar_file(init_path, tar_file)
         return tar_file
 
     def playbook(
@@ -178,6 +188,5 @@ class CreatorBackend:
         )
         Init(config).run()
         tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
-        with tarfile.open(tar_file, "w:gz") as tar:
-            tar.add(str(init_path), arcname=".")
+        create_tar_file(init_path, tar_file)
         return tar_file
