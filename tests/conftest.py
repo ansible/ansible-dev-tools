@@ -393,7 +393,7 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def exec_container() -> Callable[[str], subprocess.CompletedProcess[str]]:
     """Run the container.
 
@@ -450,7 +450,7 @@ def _stop_server() -> None:
     INFRASTRUCTURE.proc = None
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_fixture_dir(request: pytest.FixtureRequest) -> Path:
     """Provide the fixture directory for a given test.
 
@@ -463,7 +463,7 @@ def test_fixture_dir(request: pytest.FixtureRequest) -> Path:
     return FIXTURES_DIR / request.path.relative_to(Path(__file__).parent).with_suffix("")
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
     """Provide the fixture directory for a given test within the container.
 
@@ -478,7 +478,7 @@ def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
     ).with_suffix("")
 
 
-@pytest.fixture()
+@pytest.fixture
 def infrastructure() -> Infrastructure:
     """Provide the infrastructure.
 
@@ -556,7 +556,7 @@ def _cmd_in_tty(  # noqa: C901
     return result[m_stdout].decode("utf-8"), result[m_stderr].decode("utf-8"), proc.returncode
 
 
-@pytest.fixture()
+@pytest.fixture
 def cmd_in_tty() -> Callable[..., tuple[str, str, int]]:
     """Provide the cmd in tty function as a fixture.
 

@@ -64,7 +64,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+    rev: v0.7.0
     hooks:
       - id: ruff
         args:
@@ -75,12 +75,12 @@ repos:
         types_or: [python, pyi]
 
   - repo: https://github.com/psf/black # must be after ruff
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - id: black
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.13.3
+    rev: v8.15.2
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -110,7 +110,7 @@ repos:
           - pyyaml
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.11.2
+    rev: v1.13.0
     hooks:
       - id: mypy
         additional_dependencies:
