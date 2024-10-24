@@ -48,6 +48,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /v2/creator/collection:
+    post:
+      summary: Create a new collection project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatorCollection"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/tar+gzip:
+              schema:
+                AnyValue: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v2/creator/playbook:
+    post:
+      summary: Create a new playbook project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatorPlaybookNewCLI"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/tar+gzip:
+              schema:
+                AnyValue: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -68,6 +112,16 @@ components:
         scm_project:
           type: string
         scm_org:
+          type: string
+    CreatorPlaybookNewCLI:
+      type: object
+      additionalProperties: false
+      properties:
+        project:
+          type: string
+        collection_name:
+          type: string
+        namespace:
           type: string
     Error:
       type: object
