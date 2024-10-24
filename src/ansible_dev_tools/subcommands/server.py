@@ -12,7 +12,7 @@ from django.core.wsgi import get_wsgi_application
 from django.urls import path
 from gunicorn.app.base import BaseApplication
 
-from ansible_dev_tools.resources.server.creator import CreatorFrontendV1
+from ansible_dev_tools.resources.server.creator_v1 import CreatorFrontendV1
 
 
 if TYPE_CHECKING:
