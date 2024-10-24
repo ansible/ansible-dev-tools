@@ -18,9 +18,6 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from ansible_dev_tools.server_utils import validate_request, validate_response
 
 
-MIN_CREATOR_VERSION = "24.10.1"
-
-
 def create_tar_file(init_path: Path, tar_file: Path) -> None:
     """Create a tar file from the given directory.
 
@@ -71,11 +68,11 @@ class CreatorFrontendV1:
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
             if "v1/creator/playbook" in request.path:
-                tar_file = CreatorBackend(Path(tmp_dir)).playbook(
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook_v1(
                     **result.body,  # type: ignore[arg-type]
                 )
             else:
-                tar_file = CreatorBackend(Path(tmp_dir)).playbook_v2(
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook(
                     **result.body,  # type: ignore[arg-type]
                 )
             response = self._response_from_tar(tar_file)
@@ -168,7 +165,7 @@ class CreatorBackend:
         create_tar_file(init_path, tar_file)
         return tar_file
 
-    def playbook(
+    def playbook_v1(
         self: CreatorBackend,
         project: str,
         scm_org: str,
@@ -184,22 +181,9 @@ class CreatorBackend:
         Returns:
             The tar file path.
         """
-        init_path = self.tmp_dir / f"{scm_org}-{scm_project}"
-        config = Config(
-            creator_version=creator_version,
-            init_path=str(init_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
-            project=project,
-            namespace=scm_org,
-            collection_name=scm_project,
-            subcommand="init",
-        )
-        Init(config).run()
-        tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
-        create_tar_file(init_path, tar_file)
-        return tar_file
+        return self.playbook(project, namespace=scm_org, collection_name=scm_project)
 
-    def playbook_v2(
+    def playbook(
         self: CreatorBackend,
         project: str,
         namespace: str,
@@ -217,7 +201,7 @@ class CreatorBackend:
         """
         init_path = self.tmp_dir / f"{namespace}-{collection_name}"
         config = Config(
-            creator_version=MIN_CREATOR_VERSION,
+            creator_version=creator_version,
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
