@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from .conftest import ContainerTmux
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_versions(exec_container: Callable[[str], subprocess.CompletedProcess[str]]) -> None:
     """Test the versions.
 
@@ -36,7 +36,7 @@ def test_versions(exec_container: Callable[[str], subprocess.CompletedProcess[st
         assert pkg in versions.stdout, f"{pkg} not found in version output"
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]]) -> None:
     """Test podman from within the container.
 
@@ -47,7 +47,7 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
     assert result.returncode == 0, "podman command failed"
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_container_in_container(
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
 ) -> None:
@@ -71,7 +71,7 @@ def test_container_in_container(
     assert test_path_access.returncode == 0
 
 
-@pytest.mark.container()
+@pytest.mark.container
 @pytest.mark.parametrize("app", ("nano", "tar", "vi"))
 def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str) -> None:
     """Test the presence of an app in the container.
@@ -84,7 +84,7 @@ def test_app(exec_container: Callable[[str], subprocess.CompletedProcess[str]], 
     assert result.returncode == 0, f"{app} command failed"
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[str]]) -> None:
     """Test the user shell.
 
@@ -95,7 +95,7 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
     assert result.returncode == 0, "zsh not found in /etc/passwd"
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_navigator_simple_c_in_c(
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
     test_fixture_dir_container: Path,
@@ -120,7 +120,7 @@ def test_navigator_simple_c_in_c(
     assert "ok=1" in result.stdout
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_navigator_simple(
     cmd_in_tty: Callable[[str], tuple[str, str, int]],
     infrastructure: Infrastructure,
@@ -152,7 +152,7 @@ def test_navigator_simple(
     assert "ok=1" in stdout
 
 
-@pytest.mark.container()
+@pytest.mark.container
 @pytest.mark.parametrize("resource", ("playbook", "collection"))
 def test_error_container(server_in_container_url: str, resource: str) -> None:
     """Test the error response.
@@ -164,7 +164,7 @@ def test_error_container(server_in_container_url: str, resource: str) -> None:
     tst_error(server_url=server_in_container_url, resource=resource)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_collection_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
     """Test the collection creation.
 
@@ -175,7 +175,7 @@ def test_collection_v1_container(server_in_container_url: str, tmp_path: Path) -
     tst_collection_v1(server_url=server_in_container_url, tmp_path=tmp_path)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> None:
     """Test the playbook creation.
 
@@ -186,7 +186,7 @@ def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> 
     tst_playbook_v1(server_url=server_in_container_url, tmp_path=tmp_path)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_nav_collections(
     container_tmux: ContainerTmux,
     tmp_path: Path,
@@ -211,7 +211,7 @@ def test_nav_collections(
     assert any("add_host" in line for line in stdout)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_nav_images(
     container_tmux: ContainerTmux,
     tmp_path: Path,
@@ -233,7 +233,7 @@ def test_nav_images(
     assert any(image in line for line in stdout)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_nav_playbook(
     container_tmux: ContainerTmux,
     tmp_path: Path,
@@ -259,7 +259,7 @@ def test_nav_playbook(
     assert stdout[-1].endswith("Successful")
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     """Test ansible-navigator run using a creator created collection.
 
@@ -281,7 +281,7 @@ def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     assert any(f"{namespace}.{name}" in line for line in stdout)
 
 
-@pytest.mark.container()
+@pytest.mark.container
 def test_builder(
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
     test_fixture_dir_container: Path,

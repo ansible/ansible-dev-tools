@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from tests.conftest import Infrastructure
 
 
-@pytest.fixture()
+@pytest.fixture
 def session_params() -> dict[str, int]:
     """Set the tmux session parameters.
 
@@ -88,7 +88,7 @@ class ContainerTmux:
         self.send_and_wait(cmd="exit", wait_for="")
 
 
-@pytest.fixture()
+@pytest.fixture
 def container_tmux(
     infrastructure: Infrastructure,
     session: Session,
