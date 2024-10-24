@@ -82,7 +82,9 @@ def test_container_in_container(
     ),
 )
 def test_app(
-    exec_container: Callable[[str], subprocess.CompletedProcess[str]], app: str, command: str | None
+    exec_container: Callable[[str], subprocess.CompletedProcess[str]],
+    app: str,
+    command: str | None,
 ) -> None:
     """Test the presence of an app in the container.
 
