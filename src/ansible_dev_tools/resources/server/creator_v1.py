@@ -182,8 +182,8 @@ class CreatorBackend:
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
-            scm_org=scm_org,
-            scm_project=scm_project,
+            namespace=scm_org,
+            collection_name=scm_project,
             subcommand="init",
         )
         Init(config).run()
