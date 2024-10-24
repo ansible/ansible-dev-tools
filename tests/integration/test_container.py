@@ -248,7 +248,7 @@ def test_nav_playbook(
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
-    output = "Note: ansible project created"
+    output = "Note: playbook project created"
     assert any(output in line for line in stdout)
     cmd = (
         f"cd {tmp_path} &&"
@@ -272,7 +272,7 @@ def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     collection_path = tmp_path / "collections" / "ansible_collections" / namespace / name
     cmd = f"ansible-creator init collection test_ns.test_name {collection_path}"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
-    output = f"Note: collection {namespace}.{name} created"
+    output = "Note: collection project created"
     assert any(output in line for line in stdout)
     cmd = (
         f"ANSIBLE_COLLECTIONS_PATH={tmp_path}/collections ansible-navigator collections --ee false"

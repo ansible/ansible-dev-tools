@@ -67,9 +67,14 @@ class CreatorFrontendV1:
             return result
         with tempfile.TemporaryDirectory() as tmp_dir:
             # result.body here is a dict, it appear the type hint is wrong
-            tar_file = CreatorBackend(Path(tmp_dir)).playbook(
-                **result.body,  # type: ignore[arg-type]
-            )
+            if "v1/creator/playbook" in request.path:
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook_v1(
+                    **result.body,  # type: ignore[arg-type]
+                )
+            else:
+                tar_file = CreatorBackend(Path(tmp_dir)).playbook(
+                    **result.body,  # type: ignore[arg-type]
+                )
             response = self._response_from_tar(tar_file)
 
         return validate_response(
@@ -160,7 +165,7 @@ class CreatorBackend:
         create_tar_file(init_path, tar_file)
         return tar_file
 
-    def playbook(
+    def playbook_v1(
         self: CreatorBackend,
         project: str,
         scm_org: str,
@@ -176,17 +181,35 @@ class CreatorBackend:
         Returns:
             The tar file path.
         """
-        init_path = self.tmp_dir / f"{scm_org}-{scm_project}"
+        return self.playbook(project, namespace=scm_org, collection_name=scm_project)
+
+    def playbook(
+        self: CreatorBackend,
+        project: str,
+        namespace: str,
+        collection_name: str,
+    ) -> Path:
+        """Scaffold a playbook project.
+
+        Args:
+            project: The project type.
+            namespace: The collection namespace.
+            collection_name: The collection name.
+
+        Returns:
+            The tar file path.
+        """
+        init_path = self.tmp_dir / f"{namespace}-{collection_name}"
         config = Config(
             creator_version=creator_version,
             init_path=str(init_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             project=project,
-            scm_org=scm_org,
-            scm_project=scm_project,
+            namespace=namespace,
+            collection_name=collection_name,
             subcommand="init",
         )
         Init(config).run()
-        tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
+        tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar.gz"
         create_tar_file(init_path, tar_file)
         return tar_file
