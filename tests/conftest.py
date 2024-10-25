@@ -22,6 +22,7 @@ from __future__ import annotations
 import errno
 import os
 import pty
+import re
 import select
 import shutil
 import subprocess
@@ -371,6 +372,24 @@ def _stop_container() -> None:
     subprocess.run(cmd, check=True, capture_output=True)  # noqa: S603
 
 
+def strip_ansi_escape(data: str | bytes) -> str:
+    """Remove all ANSI escapes from string or bytes.
+
+    If bytes is passed instead of string, it will be converted to string
+    using UTF-8.
+
+    Args:
+        data: Input string or bytes
+
+    Returns:
+        String with removed ANSI sequences
+    """
+    if isinstance(data, bytes):  # pragma: no branch
+        data = data.decode("utf-8")
+
+    return re.sub(r"\x1b[^m]*m", "", data)
+
+
 def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     """Run the container.
 
@@ -384,13 +403,17 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
         f"{INFRASTRUCTURE.container_engine} exec -t"
         f" {INFRASTRUCTURE.container_name} bash -c '{command}'"
     )
-    return subprocess.run(
+    result = subprocess.run(
         cmd,
         check=False,
         capture_output=True,
         text=True,
         shell=True,
     )
+    # we need to strip the ansi escape codes from the output
+    result.stdout = strip_ansi_escape(result.stdout)
+    result.stderr = strip_ansi_escape(result.stderr)
+    return result
 
 
 @pytest.fixture

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 
 from typing import TYPE_CHECKING
@@ -69,16 +70,20 @@ class ContainerTmux:
             err = "No active pane found."
             pytest.fail(err)
         self.pane.send_keys(cmd)
-        timeout = time.time() + timeout
+        start_time = time.time()
         while True:
             stdout = self.pane.capture_pane()
+            stdout_list = stdout if isinstance(stdout, list) else [stdout]
             if not wait_for:
-                return stdout if isinstance(stdout, list) else [stdout]
+                return stdout_list
             if any(wait_for in line for line in stdout):
-                return stdout if isinstance(stdout, list) else [stdout]
-            if time.time() > timeout:
+                return stdout_list
+            if time.time() > timeout + start_time:
                 break
-        error = f"Timeout waiting for {wait_for} in {stdout}"
+        error = (
+            f"Timeout waiting for {timeout} seconds to find string '{wait_for}' in:\n"
+            f" {os.linesep.join(stdout_list)}"
+        )
         pytest.fail(error)
 
     def exit(self) -> None:

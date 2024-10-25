@@ -335,6 +335,7 @@ builtins = ["__"]
 cache-dir = "./.cache/.ruff"
 fix = true
 line-length = 100
+required-version = ">=0.7.1"
 target-version = "py310"
 
 [tool.ruff.lint]
