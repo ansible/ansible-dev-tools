@@ -94,7 +94,7 @@ tzdata==2024.2
 urllib3==2.2.3
 virtualenv==20.27.0
 wcmatch==10.0
-werkzeug==3.0.4
+werkzeug==3.0.6
 yamllint==1.35.1
 zipp==3.20.2
 
