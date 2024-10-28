@@ -6,6 +6,10 @@ ci:
   autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
   skip:
     - shellcheck # no docker support on pre-commit.ci
+default_language_version:
+  # minimal version we support officially as this will impact mypy, pylint and
+  # pip-tools in undesirable ways.
+  python: "3.10"
 repos:
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.7.3

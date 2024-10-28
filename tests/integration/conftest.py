@@ -52,7 +52,8 @@ class ContainerTmux:
             f"{self.infrastructure.container_engine} exec -it"
             f" {self.infrastructure.container_name} /bin/zsh"
         )
-        self.send_and_wait(cmd, "workdir", 3)
+        # 3s was not enough as we seen the arm64 runner timing out often
+        self.send_and_wait(cmd, "workdir", 6)
 
     def send_and_wait(self, cmd: str, wait_for: str, timeout: float = 3.0) -> list[str]:
         """Send a command and wait for a response.
