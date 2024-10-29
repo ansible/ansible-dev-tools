@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264,additionalimage,mountopt,nodev,iname,chsh
+# cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264,additionalimage,mountopt,nodev,iname,chsh,PIND
 set -euxo pipefail
 
 # When building for multiple-architectures in parallel using emulation
@@ -62,6 +62,9 @@ sed -e 's|^#mount_program|mount_program|g' \
     -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' \
     /usr/share/containers/storage.conf \
     > /etc/containers/storage.conf
+
+# Apparently, PIND on MacOS fails to build containers when drive=overlayfs but works with vfs!
+sed -i -e 's|^driver =.*$|driver = "vfs"|g' /etc/containers/storage.conf
 
 DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
