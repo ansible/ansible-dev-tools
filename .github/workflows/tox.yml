@@ -23,6 +23,7 @@ permissions:
   checks: read
   packages: write # tox/devspaces, tox/ee, publish-* jobs
   pull-requests: write # tox/check jobs
+  contents: write # push job to update release notes
   id-token: write # tox/check job
 
 jobs:
