@@ -2,6 +2,7 @@
 # cspell: ignore onigurumacffi,makecache,euxo,libssh,overlayfs,setcaps,minrate,openh264,additionalimage,mountopt,nodev,iname,chsh,PIND
 set -euxo pipefail
 
+DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # When building for multiple-architectures in parallel using emulation
 # it's really easy for one/more dnf processes to timeout or mis-count
 # the minimum download rates.  Bump both to be extremely forgiving of
@@ -114,6 +115,9 @@ activate-global-python-argcomplete
 
 # Install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# shellcheck disable=SC1091
+source "$DIR/setup-image.sh"
 
 # add some helpful CLI commands to check we do not remove them inadvertently and output some helpful version information at build time.
 set -ex

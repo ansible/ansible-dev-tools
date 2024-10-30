@@ -181,3 +181,6 @@ out
 docs/examples/context/_build
 docs/examples/context
 devspaces/context/*.whl
+devspaces/context/setup-image.sh
+final/context/setup-image.sh
+final/setup-image.sh
