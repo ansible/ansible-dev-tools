@@ -75,6 +75,7 @@ def test_container_in_container(
 @pytest.mark.parametrize(
     ("app", "command"),
     (
+        pytest.param("locate", None, id="locate"),
         pytest.param("nano", None, id="nano"),
         pytest.param("tar", None, id="tar"),
         pytest.param("vi", None, id="vi"),

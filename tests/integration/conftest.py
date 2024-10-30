@@ -90,7 +90,7 @@ class ContainerTmux:
     def exit(self) -> None:
         """Exit the tmux session."""
         if any("ansible-navigator" in cmd for cmd in self.cmds):
-            self.send_and_wait(cmd=":q", wait_for="workdir")
+            self.send_and_wait(cmd=":q", wait_for="workdir", timeout=6)
         self.send_and_wait(cmd="exit", wait_for="")
 
 

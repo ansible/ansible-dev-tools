@@ -23,6 +23,7 @@ libera
 libonig
 microdnf
 mknod
+mlocate
 modifyitems
 netcommon
 opencontainers

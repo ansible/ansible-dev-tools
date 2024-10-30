@@ -32,6 +32,7 @@ zsh \
 util-linux-user \
 which \
 git \
+mlocate \
 nano \
 vim \
 dumb-init \

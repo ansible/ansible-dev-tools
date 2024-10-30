@@ -14,6 +14,7 @@ dnf install -y -q \
     git \
     git-core \
     libssh-devel \
+    mlocate \
     ncurses \
     openssh-clients \
     podman \
