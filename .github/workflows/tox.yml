@@ -27,146 +27,250 @@ permissions:
   id-token: write # tox/check job
 
 jobs:
-  tox:
-    uses: ansible/team-devtools/.github/workflows/tox.yml@main
-    with:
-      run_pre: ./tools/test-setup.sh
-      max_python: "3.13"
-      default_python: "3.10" # min version, for 'lint' in particular
-      jobs_producing_coverage: 7
-      other_names_also: |
-        devspaces
-        ee-amd64:tox -e ee:runner=devtools-multiarch-builder
-        ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
-    secrets: inherit # needed for logging to the ghcr.io registry
-
-  codeql:
-    name: codeql
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ["python"]
-
+  smoke:
+    # persistent self-hosted runner so minikube would not need to be installed each time
+    runs-on: ubuntu-24.04-amd64-azure
+    # ubuntu-24.04
     steps:
-      - name: Checkout repository
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      # Initializes the CodeQL tools for scanning.
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          # If you wish to specify custom queries, you can do so here or in a config file.
-          # By default, queries listed here will override any specified in a config file.
-          # Prefix the list here with "+" to use these queries and those in the config file.
+      - run: ./tools/test-setup.sh
+      # - name: Prepare Che-Code Dockerfile ( remove tests )
+      #   run: |
+      #     #
+      #     # truncate Dockerfile, remove section that runs tests
+      #     #
+      #     cp -f build/dockerfiles/linux-libc-ubi8.Dockerfile build/dockerfiles/linux-libc-ubi8.no-test.Dockerfile
+      #     REMOVE_FROM="### Beginning of tests"
+      #     REMOVE_TO="### Ending of tests"
+      #     sed -i "/${REMOVE_FROM}/,/${REMOVE_TO}/{/${REMOVE_FROM}/n;/${REMOVE_TO}/!d;}" build/dockerfiles/linux-libc-ubi8.no-test.Dockerfile
 
-          # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-          # queries: security-extended,security-and-quality
+      #     #
+      #     # show the Dockerfile
+      #     #
+      #     cat build/dockerfiles/linux-libc-ubi8.no-test.Dockerfile
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # - name: Compile Che-Code editor
+      #   run: |
+      #     #
+      #     # build linux-libc-ubi8-amd64:latest docker image
+      #     #
+      #     docker image prune -a -f
+      #     docker build --memory-swap -1 --memory 12g -f build/dockerfiles/linux-libc-ubi8.no-test.Dockerfile -t linux-libc-ubi8-amd64 .
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{matrix.language}}"
+      # - name: Build Che-Code Docker image
+      #   run: |
+      #     #
+      #     # build che-code:latest docker image
+      #     #
+      #     cp -f build/dockerfiles/assembly.Dockerfile build/dockerfiles/assembly.copy.Dockerfile
+      #     REPLACE_FROM="FROM linux-musl-amd64 as linux-musl-content"
+      #     sed -i -r -e "s|${REPLACE_FROM}||" build/dockerfiles/assembly.copy.Dockerfile
+      #     REPLACE_FROM="COPY --from=linux-musl-content --chown=0:0 /checode-linux-musl /mnt/rootfs/checode-linux-musl"
+      #     sed -i -r -e "s|${REPLACE_FROM}||" build/dockerfiles/assembly.copy.Dockerfile
+      #     REPLACE_FROM="FROM linux-libc-ubi9-amd64 as linux-libc-ubi9-content"
+      #     sed -i -r -e "s|${REPLACE_FROM}||" build/dockerfiles/assembly.copy.Dockerfile
+      #     REPLACE_FROM="COPY --from=linux-libc-ubi9-content --chown=0:0 /checode-linux-libc/ubi9 /mnt/rootfs/checode-linux-libc/ubi9"
+      #     sed -i -r -e "s|${REPLACE_FROM}||" build/dockerfiles/assembly.copy.Dockerfile
 
-  publish-ee:
-    # environment: release # approval
-    runs-on: ubuntu-24.04
-    needs:
-      - tox
-    # if: github.ref == 'refs/heads/main'
-    # github.event_name == 'release' && github.event.action == 'published'
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      #     export DOCKER_BUILDKIT=1
+      #     docker build -f build/dockerfiles/assembly.copy.Dockerfile -t che-code .
 
-      - name: pull-merge-push for the the two arch images under a single manifest
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
+      #     docker tag che-code:latest che-code:next
+      #     docker save -o /tmp/che-code-latest.tar che-code:latest che-code:next
 
-  publish-devspaces:
-    runs-on: ubuntu-24.04
-    needs:
-      - codeql
-      - tox
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
-    steps:
-      - name: Push image to ghcr.io as ansible-devspaces-tmp:${GITHUB_SHA}
+      # - name: Display docker images
+      #   run: |
+      #     docker images
+
+      # - name: Cleanup docker images
+      #   run: |
+      #     docker system prune -af
+
+      # - name: Disk free
+      #   run: |
+      #     df -h
+
+      # - name: Start minikube
+      #   id: run-minikube
+      #   uses: che-incubator/setup-minikube-action@next
+      #   with:
+      #     minikube-version: v1.34.0
+
+      - name: smoke
+        run: ./tools/smoke.sh
+
+      - name: Bump logs
+        if: always()
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-          docker pull "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}"
-          docker tag "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}"
+          NS=admin-che
+          TARGET_DIR="/tmp/devworkspace-happy-path-artifacts/${NS}-info"
+          mkdir -p "$TARGET_DIR"
+          for POD in $(kubectl get pods -o name -n ${NS}); do
+            for CONTAINER in $(kubectl get -n ${NS} ${POD} -o jsonpath="{.spec.containers[*].name}"); do
+            echo "[INFO] Downloading logs $POD/$CONTAINER in $NS"
+            # container name includes `pod/` prefix. remove it
+            LOGS_FILE=$TARGET_DIR/$(echo ${POD}-${CONTAINER}.log | sed 's|pod/||g')
+            kubectl logs ${POD} -c ${CONTAINER} -n ${NS} > $LOGS_FILE || true
+            done
+          done
+          echo "[INFO] Bumping events in namespace ${NS}"
+          kubectl get events -n $NS  > $TARGET_DIR/events.log || true
 
-      - name: Push image to ghcr.io as ${{ github.event.release.tag_name }}
-        if: github.event_name == 'release' && github.event.action == 'published'
-        run: |
-          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
-          docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:latest"
-          docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
-          docker push "ghcr.io/ansible/ansible-devspaces:latest"
-
-  publish-wheel:
-    needs:
-      - codeql
-      - tox
-    if: github.event_name == 'release' && github.event.action == 'published'
-    environment: release # approval
-    runs-on: ubuntu-24.04
-    env:
-      FORCE_COLOR: 1
-      PY_COLORS: 1
-      TOXENV: pkg
-      TOX_EXTRA_BINDEP: 0
-    steps:
-      - name: Switch to using Python 3.10 by default
-        uses: actions/setup-python@v5
+      - name: Store e2e artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          python-version: "3.10"
+          name: e2e-artifacts
+          path: /tmp/tests
 
-      - name: Install tox
-        run: python3 -m pip install --user "tox>=4.0.0"
-
-      - name: Check out src from Git
-        uses: actions/checkout@v4
+      - name: Store k8s logs
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          fetch-depth: 0 # needed by setuptools-scm
-          submodules: true
+          name: k8s-logs
+          path: /tmp/devworkspace-happy-path-artifacts/admin-che-info
+  # tox:
+  #   uses: ansible/team-devtools/.github/workflows/tox.yml@main
+  #   with:
+  #     run_pre: ./tools/test-setup.sh
+  #     max_python: "3.13"
+  #     default_python: "3.10" # min version, for 'lint' in particular
+  #     jobs_producing_coverage: 7
+  #     other_names_also: |
+  #       devspaces
+  #       ee-amd64:tox -e ee:runner=devtools-multiarch-builder
+  #       ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
+  #   secrets: inherit # needed for logging to the ghcr.io registry
 
-      - name: Build dists
-        run: python3 -m tox
+  # codeql:
+  #   name: codeql
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
 
-      - name: Publish to pypi.org
-        if: >- # "create" workflows run separately from "push" & "pull_request"
-          github.event_name == 'release'
-        uses: pypa/gh-action-pypi-publish@release/v1
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       language: ["python"]
 
-  forum-post:
-    if: github.event_name == 'release' && github.event.action == 'published'
-    needs:
-      - publish-wheel
-      - publish-ee
-      - publish-devspaces
-    runs-on: ubuntu-24.04
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-    steps:
-      - name: Retreive the forum post script from team-devtools
-        run: curl -O https://raw.githubusercontent.com/ansible/team-devtools/main/.github/workflows/forum_post.py
+  #     # Initializes the CodeQL tools for scanning.
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v3
+  #       with:
+  #         languages: ${{ matrix.language }}
+  #         # If you wish to specify custom queries, you can do so here or in a config file.
+  #         # By default, queries listed here will override any specified in a config file.
+  #         # Prefix the list here with "+" to use these queries and those in the config file.
 
-      - name: Run the forum post script
-        run: python3 forum_post.py ${{ github.event.repository.full_name }} ${{ github.event.release.tag_name }} ${{ secrets.FORUM_KEY }} ${{ secrets.FORUM_USER }}
+  #         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+  #         # queries: security-extended,security-and-quality
 
-  push:
-    if: >
-      github.event_name == 'push' && contains(
-      fromJSON('["refs/heads/main", "refs/heads/releases", "refs/heads/stable"]'),
-      github.ref)
-    uses: ansible/team-devtools/.github/workflows/push.yml@main
+  #     - name: Autobuild
+  #       uses: github/codeql-action/autobuild@v3
+
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v3
+  #       with:
+  #         category: "/language:${{matrix.language}}"
+
+  # publish-ee:
+  #   # environment: release # approval
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - tox
+  #   # if: github.ref == 'refs/heads/main'
+  #   # github.event_name == 'release' && github.event.action == 'published'
+  #   steps:
+  #     - name: Check out repository
+  #       uses: actions/checkout@v4
+
+  #     - name: pull-merge-push for the the two arch images under a single manifest
+  #       env:
+  #         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  #       run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
+
+  # publish-devspaces:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - codeql
+  #     - tox
+  #   if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
+  #   steps:
+  #     - name: Push image to ghcr.io as ansible-devspaces-tmp:${GITHUB_SHA}
+  #       run: |
+  #         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+  #         docker pull "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}"
+  #         docker tag "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}"
+
+  #     - name: Push image to ghcr.io as ${{ github.event.release.tag_name }}
+  #       if: github.event_name == 'release' && github.event.action == 'published'
+  #       run: |
+  #         docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+  #         docker tag "ghcr.io/ansible/ansible-devspaces:${GITHUB_SHA}" "ghcr.io/ansible/ansible-devspaces:latest"
+  #         docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
+  #         docker push "ghcr.io/ansible/ansible-devspaces:latest"
+
+  # publish-wheel:
+  #   needs:
+  #     - codeql
+  #     - tox
+  #   if: github.event_name == 'release' && github.event.action == 'published'
+  #   environment: release # approval
+  #   runs-on: ubuntu-24.04
+  #   env:
+  #     FORCE_COLOR: 1
+  #     PY_COLORS: 1
+  #     TOXENV: pkg
+  #     TOX_EXTRA_BINDEP: 0
+  #   steps:
+  #     - name: Switch to using Python 3.10 by default
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.10"
+
+  #     - name: Install tox
+  #       run: python3 -m pip install --user "tox>=4.0.0"
+
+  #     - name: Check out src from Git
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0 # needed by setuptools-scm
+  #         submodules: true
+
+  #     - name: Build dists
+  #       run: python3 -m tox
+
+  #     - name: Publish to pypi.org
+  #       if: >- # "create" workflows run separately from "push" & "pull_request"
+  #         github.event_name == 'release'
+  #       uses: pypa/gh-action-pypi-publish@release/v1
+
+  # forum-post:
+  #   if: github.event_name == 'release' && github.event.action == 'published'
+  #   needs:
+  #     - publish-wheel
+  #     - publish-ee
+  #     - publish-devspaces
+  #   runs-on: ubuntu-24.04
+
+  #   steps:
+  #     - name: Retreive the forum post script from team-devtools
+  #       run: curl -O https://raw.githubusercontent.com/ansible/team-devtools/main/.github/workflows/forum_post.py
+
+  #     - name: Run the forum post script
+  #       run: python3 forum_post.py ${{ github.event.repository.full_name }} ${{ github.event.release.tag_name }} ${{ secrets.FORUM_KEY }} ${{ secrets.FORUM_USER }}
+
+  # push:
+  #   if: >
+  #     github.event_name == 'push' && contains(
+  #     fromJSON('["refs/heads/main", "refs/heads/releases", "refs/heads/stable"]'),
+  #     github.ref)
+  #   uses: ansible/team-devtools/.github/workflows/push.yml@main
