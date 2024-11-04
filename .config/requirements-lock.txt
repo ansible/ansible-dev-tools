@@ -30,7 +30,6 @@ cryptography==43.0.3
 distlib==0.3.9
 distro==1.9.0
 django==5.1.2
-docutils==0.21.2
 enrich==1.2.7
 exceptiongroup==1.2.2
 execnet==2.1.1
