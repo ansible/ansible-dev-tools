@@ -1,6 +1,24 @@
 ---
 version: 2
 updates:
+  # direct dependencies that we want to mention in changelog (no grouping)
+  - package-ecosystem: pip
+    directory: /.config/
+    schedule:
+      interval: daily
+    labels:
+      - dependabot-deps-updates
+      - minor
+    allow:
+      - dependency-name: ansible-core
+      - dependency-name: ansible-compat
+      - dependency-name: ansible-creator
+      - dependency-name: ansible-dev-environment
+      - dependency-name: ansible-lint
+      - dependency-name: ansible-navigator
+      - dependency-name: molecule
+      - dependency-name: pytest-ansible
+      - dependency-name: tox-ansible
   # indirect dependencies that we do not want to mention in changelog
   - package-ecosystem: pip
     directory: /.config/
@@ -9,8 +27,7 @@ updates:
       interval: weekly
     labels:
       - dependabot-deps-updates
-      # We need to manually decide which ones are to be mentioned.
-      # - skip-changelog
+      - skip-changelog
     groups:
       dependencies:
         patterns:
