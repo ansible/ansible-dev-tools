@@ -20,6 +20,7 @@ Tracing '/**/src/<package>/__init__.py'
 from __future__ import annotations
 
 import errno
+import logging
 import os
 import pty
 import re
@@ -28,7 +29,6 @@ import shutil
 import subprocess
 import sys
 import time
-import warnings
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -47,6 +47,7 @@ if TYPE_CHECKING:
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -301,7 +302,7 @@ def _start_container() -> None:
 
     if "podman" in INFRASTRUCTURE.container_engine:
         cmd = BASE_CMD + PODMAN_CMD + auth_mount + END
-        warnings.warn("Podman auth mount added: " + auth_mount, stacklevel=0)
+        LOGGER.warning("Podman auth mount added: %s", auth_mount)
     elif "docker" in INFRASTRUCTURE.container_engine:
         cmd = BASE_CMD + DOCKER_CMD + END
     else:
@@ -313,7 +314,7 @@ def _start_container() -> None:
         container_name=INFRASTRUCTURE.container_name,
         image_name=INFRASTRUCTURE.image_name,
     )
-    warnings.warn("Running: " + cmd, stacklevel=0)
+    LOGGER.warning("Running: %s", cmd)
     try:
         subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
     except subprocess.CalledProcessError as exc:
@@ -332,7 +333,7 @@ def _start_container() -> None:
     else:
         nav_ee = get_nav_default_ee_in_container()
         warning = f"localhost / . not in image name, pulling default {nav_ee} for navigator"
-    warnings.warn(warning, stacklevel=0)
+    LOGGER.warning(warning)
     INFRASTRUCTURE.navigator_ee = nav_ee
     _proc = _exec_container(command=f"podman pull {nav_ee}")
 
