@@ -79,8 +79,8 @@ referencing==0.31.1
 requests==2.32.3
 resolvelib==1.0.1
 rfc3339-validator==0.1.4
-rich==13.9.3
-rpds-py==0.20.0
+rich==13.9.4
+rpds-py==0.20.1
 ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.12
 six==1.16.0
@@ -92,9 +92,9 @@ tox-ansible==24.9.0
 typing-extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
-virtualenv==20.27.0
+virtualenv==20.27.1
 wcmatch==10.0
-werkzeug==3.0.6
+werkzeug==3.1.1
 yamllint==1.35.1
 zipp==3.20.2
 
