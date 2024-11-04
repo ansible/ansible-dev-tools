@@ -25,6 +25,7 @@ updates:
           - molecule
           - pytest-ansible
           - referencing # https://github.com/p1c2u/jsonschema-path/issues/143
+          - resolvelib # tight connection with ansible-core
           - tox-ansible
     ignore:
       - dependency-name: referencing
