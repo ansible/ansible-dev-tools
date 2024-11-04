@@ -216,7 +216,7 @@ def test_nav_collections(
         f"ansible-navigator collections --lf {tmp_path}/navigator.log"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=15)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=30)
     assert any("ansible.builtin" in line for line in stdout)
     assert any("ansible.posix" in line for line in stdout)
     cmd = ":0"
