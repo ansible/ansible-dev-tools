@@ -40,6 +40,43 @@ jobs:
         ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
     secrets: inherit # needed for logging to the ghcr.io registry
 
+  codeql:
+    name: codeql
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["python"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          # If you wish to specify custom queries, you can do so here or in a config file.
+          # By default, queries listed here will override any specified in a config file.
+          # Prefix the list here with "+" to use these queries and those in the config file.
+
+          # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+          # queries: security-extended,security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
   publish-ee:
     # environment: release # approval
     runs-on: ubuntu-24.04
@@ -59,6 +96,7 @@ jobs:
   publish-devspaces:
     runs-on: ubuntu-24.04
     needs:
+      - codeql
       - tox
     if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
     steps:
@@ -78,6 +116,7 @@ jobs:
 
   publish-wheel:
     needs:
+      - codeql
       - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
