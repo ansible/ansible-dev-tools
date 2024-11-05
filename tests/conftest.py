@@ -345,11 +345,14 @@ def get_nav_default_ee_in_container() -> str:
         str: The default ee for navigator in the container.
     """
     cmd = (
-        'python -c "from ansible_navigator.utils.packaged_data import ImageEntry;'
+        'python3 -c "from ansible_navigator.utils.packaged_data import ImageEntry;'
         'print(ImageEntry.DEFAULT_EE.get(app_name=\\"ansible_navigator\\"))"'
     )
 
     proc = _exec_container(cmd)
+    if proc.returncode != 0:
+        err = f"Failed to get default ee for navigator in container:\n{proc.stderr}\n{proc.stdout}"
+        pytest.fail(err)
     return proc.stdout.strip()
 
 
