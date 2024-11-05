@@ -20,7 +20,7 @@ fi
 REPO_DIR=$(git rev-parse --show-toplevel)
 
 TAG_BASE=community-ansible-dev-tools-base:latest
-CONTAINER_NAME=community-ansible-dev-tools:test
+IMAGE_NAME=community-ansible-dev-tools:test
 
 # BUILD_CMD="podman build --squash-all"
 BUILD_CMD="${ADT_CONTAINER_ENGINE} buildx build --progress=plain"
@@ -62,12 +62,12 @@ python -m build --outdir "$REPO_DIR/final/dist/" --wheel "$REPO_DIR"
 ansible-builder create -f execution-environment.yml --output-filename Containerfile -v3
 $BUILD_CMD -f context/Containerfile context/ --tag "${TAG_BASE}"
 cp tools/setup-image.sh final/
-$BUILD_CMD -f final/Containerfile final/ --tag "${CONTAINER_NAME}"
+$BUILD_CMD -f final/Containerfile final/ --tag "${IMAGE_NAME}"
 
 # Check container size and layers
-mk containers check $CONTAINER_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=1500 --max-layers=22
+mk containers check "$IMAGE_NAME" --engine="${ADT_CONTAINER_ENGINE}" --max-size=1500 --max-layers=22
 
-pytest -v --only-container --container-engine=docker --image-name "${CONTAINER_NAME}"
+pytest -v --only-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 #  -k test_navigator_simple
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
@@ -75,11 +75,11 @@ ansible-builder build
 popd
 
 if [[ -n "${GITHUB_SHA:-}" ]]; then
-    FQ_CONTAINER_NAME="ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA}-$ARCH"
-    $ADT_CONTAINER_ENGINE tag $CONTAINER_NAME "${FQ_CONTAINER_NAME}"
+    FQ_IMAGE_NAME="ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA}-$ARCH"
+    $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "${FQ_IMAGE_NAME}"
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
         echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
     fi
-    $ADT_CONTAINER_ENGINE push "${FQ_CONTAINER_NAME}"
+    $ADT_CONTAINER_ENGINE push "${FQ_IMAGE_NAME}"
 fi
