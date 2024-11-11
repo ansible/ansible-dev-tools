@@ -33,7 +33,7 @@ jobs:
       run_pre: ./tools/test-setup.sh
       max_python: "3.13"
       default_python: "3.10" # min version, for 'lint' in particular
-      jobs_producing_coverage: 7
+      jobs_producing_coverage: 8
       other_names_also: |
         devspaces
         ee-amd64:tox -e ee:runner=devtools-multiarch-builder
