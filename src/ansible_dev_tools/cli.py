@@ -18,15 +18,15 @@ if TYPE_CHECKING:
 class Cli:
     """The Cli class."""
 
-    def __init__(self: Cli) -> None:
+    def __init__(self) -> None:
         """Initialize the CLI and parse CLI args."""
         self.args: dict[str, Any]
 
-    def parse_args(self: Cli) -> None:
+    def parse_args(self) -> None:
         """Parse the command line arguments."""
         self.args = vars(parse())
 
-    def _run_subcommand(self: Cli, subcommand: str) -> None:
+    def _run_subcommand(self, subcommand: str) -> None:
         """Run the subcommand.
 
         Args:
@@ -37,7 +37,7 @@ class Cli:
         subcommand_cls = getattr(import_module(subcommand_module), subcommand_cls_name)
         subcommand_cls(**self.args).run()
 
-    def run(self: Cli) -> None:
+    def run(self) -> None:
         """Dispatch work to correct subcommand class."""
         subcommand = self.args.pop("subcommand")
         if subcommand == "server":
