@@ -32,7 +32,7 @@ def create_tar_file(init_path: Path, tar_file: Path) -> None:
 class CreatorFrontendV2:
     """The creator frontend, handles requests from users."""
 
-    def _response_from_tar(self: CreatorFrontendV2, tar_file: Path) -> FileResponse:
+    def _response_from_tar(self, tar_file: Path) -> FileResponse:
         """Create a FileResponse from a tar file.
 
         Args:
@@ -51,7 +51,7 @@ class CreatorFrontendV2:
         return response
 
     def playbook(
-        self: CreatorFrontendV2,
+        self,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
         """Create a new playbook project.
@@ -78,7 +78,7 @@ class CreatorFrontendV2:
         )
 
     def collection(
-        self: CreatorFrontendV2,
+        self,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
         """Create a new collection project.
@@ -108,7 +108,7 @@ class CreatorFrontendV2:
 class CreatorOutput(Output):
     """The creator output."""
 
-    def __init__(self: CreatorOutput, log_file: str) -> None:
+    def __init__(self, log_file: str) -> None:
         """Initialize the creator output.
 
         Convenience class to consistently define output with a changing temporary directory.
@@ -128,7 +128,7 @@ class CreatorOutput(Output):
 class CreatorBackend:
     """The creator wrapper, handles interaction with the python creator project."""
 
-    def __init__(self: CreatorBackend, tmp_dir: Path) -> None:
+    def __init__(self, tmp_dir: Path) -> None:
         """Initialize the creator.
 
         Args:
@@ -136,7 +136,7 @@ class CreatorBackend:
         """
         self.tmp_dir = tmp_dir
 
-    def collection(self: CreatorBackend, collection: str, project: str) -> Path:
+    def collection(self, collection: str, project: str) -> Path:
         """Scaffold a collection.
 
         Args:
@@ -161,7 +161,7 @@ class CreatorBackend:
         return tar_file
 
     def playbook(
-        self: CreatorBackend,
+        self,
         project: str,
         namespace: str,
         collection_name: str,
