@@ -32,7 +32,7 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
     """Custom application to integrate Gunicorn with the django WSGI app."""
 
     # pylint: disable=abstract-method
-    def __init__(self: AdtServerApp, app: WSGIHandler, options: dict[str, str]) -> None:
+    def __init__(self, app: WSGIHandler, options: dict[str, str]) -> None:
         """Initialize the application.
 
         Args:
@@ -43,7 +43,7 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
         self.application = app
         super().__init__()
 
-    def load_config(self: AdtServerApp) -> None:
+    def load_config(self) -> None:
         """Load configuration for gunicorn."""
         config = {
             key: value
@@ -53,7 +53,7 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
         for key, value in config.items():
             self.cfg.set(key.lower(), value)
 
-    def load(self: AdtServerApp) -> WSGIHandler:
+    def load(self) -> WSGIHandler:
         """Load application.
 
         Returns:
@@ -65,7 +65,7 @@ class AdtServerApp(BaseApplication):  # type: ignore[misc]
 class Server:
     """Ansible Devtools server implementation."""
 
-    def __init__(self: Server, port: str, debug: bool) -> None:  # noqa: FBT001
+    def __init__(self, port: str, debug: bool) -> None:  # noqa: FBT001
         """Initialize an AdtServer object.
 
         Args:
@@ -90,7 +90,7 @@ class Server:
         setup()
         self.application = get_wsgi_application()
 
-    def run(self: Server) -> None:
+    def run(self) -> None:
         """Start the server."""
         options = {"bind": f"0.0.0.0:{self.port}"}
         if self.debug:

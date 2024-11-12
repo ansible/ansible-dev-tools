@@ -347,9 +347,8 @@ external = [
   "DOC" # pydoclint
 ]
 ignore = [
-  # incompatible with ruff formatter
-  "COM812", # missing-space-after-comma
-  "ISC001" # implicit-str-concat
+  "COM812", # conflicts with ISC001 on format
+  "ISC001" # conflicts with COM812 on format
 ]
 select = ["ALL"]
 
