@@ -51,7 +51,7 @@ class CreatorFrontendV2:
         return response
 
     def playbook(
-        self: CreatorFrontendV2,
+        self,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
         """Create a new playbook project.
@@ -78,7 +78,7 @@ class CreatorFrontendV2:
         )
 
     def collection(
-        self: CreatorFrontendV2,
+        self,
         request: HttpRequest,
     ) -> FileResponse | HttpResponse:
         """Create a new collection project.
@@ -161,7 +161,7 @@ class CreatorBackend:
         return tar_file
 
     def playbook(
-        self: CreatorBackend,
+        self,
         project: str,
         namespace: str,
         collection_name: str,

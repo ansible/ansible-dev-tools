@@ -161,7 +161,7 @@ class CreatorBackend:
         return tar_file
 
     def playbook(
-        self: CreatorBackend,
+        self,
         project: str,
         scm_org: str,
         scm_project: str,
