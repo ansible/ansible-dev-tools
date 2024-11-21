@@ -19,7 +19,6 @@ dnf install -y -q \
     podman \
     "python${PYV}" \
     "python${PYV}-cffi" \
-    "python${PYV}-markupsafe" \
     "python${PYV}-pip" \
     "python${PYV}-pyyaml" \
     "python${PYV}-wheel" \
