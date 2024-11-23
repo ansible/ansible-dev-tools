@@ -1,4 +1,4 @@
-FROM quay.io/devfile/base-developer-image:ubi8-latest
+FROM quay.io/devfile/base-developer-image:ubi9-latest
 
 ARG PYV=3.11
 
