@@ -292,7 +292,7 @@ def _start_container() -> None:
     engine = INFRASTRUCTURE.container_engine
     cmd = (
         f'{engine} ps -q --filter "name={INFRASTRUCTURE.container_name}" | xargs -r {engine} stop;'
-        f'{engine} ps -aq --filter "name=$name" | xargs -r {engine}  rm'
+        f'{engine} ps -aq --filter "name=$name" | xargs -r {engine} rm --force --volumes'
     )
     subprocess.run(cmd, check=True, capture_output=False, shell=True, text=True)
 
