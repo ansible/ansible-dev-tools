@@ -26,7 +26,7 @@ charset-normalizer==3.4.0
 click==8.1.7
 click-help-colors==0.9.4
 colorama==0.4.6
-cryptography==43.0.3
+cryptography==44.0.0
 distlib==0.3.9
 distro==1.9.0
 django==5.1.3
@@ -68,7 +68,7 @@ ptyprocess==0.7.0
 pycparser==2.22
 pygments==2.18.0
 pyproject-api==1.8.0
-pytest==8.3.3
+pytest==8.3.4
 pytest-ansible==24.9.0
 pytest-xdist==3.6.1
 python-daemon==3.1.0
@@ -85,13 +85,13 @@ ruamel-yaml-clib==0.2.12
 six==1.16.0
 sqlparse==0.5.2
 subprocess-tee==0.4.2
-tomli==2.1.0
+tomli==2.2.1
 tox==4.23.2
 tox-ansible==24.10.0
 typing-extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
-virtualenv==20.27.1
+virtualenv==20.28.0
 wcmatch==10.0
 werkzeug==3.1.3
 yamllint==1.35.1
