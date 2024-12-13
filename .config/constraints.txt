@@ -124,7 +124,7 @@ pymdown-extensions==10.12
 pyproject-api==1.8.0
 pyproject-hooks==1.2.0
 pytest==8.3.4
-pytest-ansible==24.9.0
+pytest-ansible==24.12.0
 pytest-xdist==3.6.1
 python-daemon==3.1.2
 python-dateutil==2.9.0.post0
