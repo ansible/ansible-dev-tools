@@ -40,7 +40,7 @@ jobs:
       - integration
       - unit-galaxy
       - ansible-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - run: >-
           python -c "assert 'failure' not in
