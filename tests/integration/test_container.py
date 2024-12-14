@@ -109,7 +109,7 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
 
 
 @pytest.mark.container
-def test_navigator_simple_c_in_c(
+def test_navigator_2_c_in_c(
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
     test_fixture_dir_container: Path,
     tmp_path: Path,
@@ -134,7 +134,7 @@ def test_navigator_simple_c_in_c(
 
 
 @pytest.mark.container
-def test_navigator_simple(
+def test_navigator_1(
     cmd_in_tty: Callable[[str], tuple[str, str, int]],
     infrastructure: Infrastructure,
     test_fixture_dir: Path,

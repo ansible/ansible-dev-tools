@@ -329,7 +329,6 @@ addopts = "-ra --showlocals --durations=10 -p no:pytest-ansible"
 cache_dir = "./.cache/.pytest"
 log_cli = true
 log_cli_level = "WARNING"
-showlocals = true
 testpaths = "tests"
 tmp_path_retention_policy = "failed"
 verbosity_assertions = 2

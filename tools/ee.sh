@@ -20,7 +20,9 @@ fi
 REPO_DIR=$(git rev-parse --show-toplevel)
 
 TAG_BASE=community-ansible-dev-tools-base:latest
-IMAGE_NAME=community-ansible-dev-tools:test
+# keep the localhost/ prefix on image name all the time or we will face various
+# problems related to docker/podman differences when this is missing.
+IMAGE_NAME=localhost/community-ansible-dev-tools:test
 
 # BUILD_CMD="podman build --squash-all"
 BUILD_CMD="${ADT_CONTAINER_ENGINE} buildx build --progress=plain"
@@ -64,11 +66,15 @@ $BUILD_CMD -f context/Containerfile context/ --tag "${TAG_BASE}"
 cp tools/setup-image.sh final/
 $BUILD_CMD -f final/Containerfile final/ --tag "${IMAGE_NAME}"
 
+# We save local image in order to import it inside the container later for c-in-c testing
+# Do not try to gzip the image because there is no notable change in size and
+# it seems to add ~20% more in total test execution time.
+$ADT_CONTAINER_ENGINE save $IMAGE_NAME > image.tar
+
 # Check container size and layers
 mk containers check "$IMAGE_NAME" --engine="${ADT_CONTAINER_ENGINE}" --max-size=1500 --max-layers=22
 
-pytest -v --only-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
-#  -k test_navigator_simple
+pytest -v --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
 ansible-builder build
