@@ -289,11 +289,12 @@ def _start_container() -> None:
     Raises:
         ValueError: If the container engine is not podman or docker.
     """
+    engine = INFRASTRUCTURE.container_engine
     cmd = (
-        f"{INFRASTRUCTURE.container_engine} kill {INFRASTRUCTURE.container_name};"
-        f"{INFRASTRUCTURE.container_engine} rm {INFRASTRUCTURE.container_name}"
+        f'{engine} ps -q --filter "name={INFRASTRUCTURE.container_name}" | xargs -r {engine} stop;'
+        f'{engine} ps -aq --filter "name=$name" | xargs -r {engine}  rm'
     )
-    subprocess.run(cmd, check=False, capture_output=True, shell=True, text=True)
+    subprocess.run(cmd, check=True, capture_output=False, shell=True, text=True)
 
     auth_file = "$XDG_RUNTIME_DIR/containers/auth.json"
     auth_mount = ""
@@ -321,21 +322,12 @@ def _start_container() -> None:
         err = f"Failed to start container:\ncmd: {cmd}\nstdout: {exc.stdout}\nstderr: {exc.stderr}"
         pytest.fail(err)
 
-    # image is local, can't be pulled, use default
-    if INFRASTRUCTURE.image_name.startswith("localhost"):
-        nav_ee = get_nav_default_ee_in_container()
-        warning = f"localhost in image name, pulling default {nav_ee} for navigator"
-    # dots and slashes in image name, use it
-    elif "/" in INFRASTRUCTURE.image_name and "." in INFRASTRUCTURE.image_name:
-        nav_ee = INFRASTRUCTURE.image_name
-        warning = f"/ and . in image name, pulling {nav_ee} for navigator"
-    # otherwise, use default
+    if INFRASTRUCTURE.image_name:
+        INFRASTRUCTURE.navigator_ee = INFRASTRUCTURE.image_name
+        _proc = _exec_container(command="podman load < image.tar")
     else:
         nav_ee = get_nav_default_ee_in_container()
-        warning = f"localhost / . not in image name, pulling default {nav_ee} for navigator"
-    LOGGER.warning(warning)
-    INFRASTRUCTURE.navigator_ee = nav_ee
-    _proc = _exec_container(command=f"podman pull {nav_ee}")
+        _proc = _exec_container(command=f"podman pull {nav_ee}")
 
 
 def get_nav_default_ee_in_container() -> str:
