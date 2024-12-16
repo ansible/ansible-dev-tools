@@ -32,7 +32,7 @@ jobs:
     with:
       run_pre: ./tools/test-setup.sh
       max_python: "3.13"
-      default_python: "3.10" # min version, for 'lint' in particular
+      default_python: "3.11" # min version, for 'lint' in particular
       jobs_producing_coverage: 8
       other_names_also: |
         devspaces
@@ -127,10 +127,10 @@ jobs:
       TOXENV: pkg
       TOX_EXTRA_BINDEP: 0
     steps:
-      - name: Switch to using Python 3.10 by default
+      - name: Switch to using Python 3.11 by default
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install tox
         run: python3 -m pip install --user "tox>=4.0.0"

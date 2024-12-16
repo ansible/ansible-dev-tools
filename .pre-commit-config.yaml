@@ -12,7 +12,10 @@ ci:
 default_language_version:
   # minimal version we support officially as this will impact mypy, pylint and
   # pip-tools in undesirable ways.
-  python: "3.10"
+  # minimal version determined by minimal version required by ansible-core, but
+  # we might keep a backwards compatibility version for older ones, but the
+  # lock extra will not be usable those.
+  python: "3.11"
 repos:
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.7.3
@@ -93,7 +96,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.5.9"
+    rev: "0.5.12"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
@@ -142,7 +145,7 @@ repos:
         name: Upgrade constraints files and requirements
         # files: ^(pyproject\.toml|requirements\.txt)$
         language: python
-        language_version: "3.10" # minimal we support officially
+        language_version: "3.11" # minimal required by latest ansible-core
         entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml --upgrade
         pass_filenames: false
         stages:
@@ -153,7 +156,7 @@ repos:
         name: Check constraints files and requirements
         # files: ^(pyproject\.toml|requirements\.txt)$
         language: python
-        language_version: "3.10" # minimal we support officially
+        language_version: "3.11" # minimal required by latest ansible-core
         entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml
         pass_filenames: false
         additional_dependencies:
@@ -165,7 +168,7 @@ repos:
         entry: python3 -m uv pip compile -q --upgrade --constraint=.config/constraints.txt --output-file=.config/requirements-lock.txt pyproject.toml --strip-extras
         files: ^.config\/.*requirements.*$
         language: python
-        language_version: "3.10" # minimal we support officially
+        language_version: "3.11" # minimal required by latest ansible-core
         pass_filenames: false
         stages: [manual]
         additional_dependencies:
