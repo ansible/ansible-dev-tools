@@ -96,7 +96,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.5.12"
+    rev: "0.5.9"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
