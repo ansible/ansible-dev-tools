@@ -6,6 +6,9 @@ ci:
   autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
   skip:
     - shellcheck # no docker support on pre-commit.ci
+    - deps
+    - constraints
+    - lock
 default_language_version:
   # minimal version we support officially as this will impact mypy, pylint and
   # pip-tools in undesirable ways.
@@ -48,7 +51,7 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/pycontribs/mirrors-prettier
-    rev: v3.3.3
+    rev: v3.4.2
     hooks:
       - id: prettier
         always_run: true
@@ -68,7 +71,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.8.3
     hooks:
       - id: ruff
         args:
@@ -84,7 +87,7 @@ repos:
       - id: black
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.16.0
+    rev: v8.16.1
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -131,34 +134,39 @@ repos:
         # Override default pre-commit '--ignore-missing-imports'
         args: [--strict]
 
-  - repo: https://github.com/jazzband/pip-tools
-    rev: 7.4.1
+  - # keep at bottom as these are slower
+    repo: local
     hooks:
-      - id: pip-compile
-        name: deps
+      - id: deps
         alias: deps
-        stages: [manual]
-        # The manual unsafe packages below are b/c of the test extras dep on the server extras
-        # which should not pull in the src pkg
-        entry: |
-          pip-compile .config/requirements.in -q --upgrade --all-extras --no-annotate --strip-extras
-          --unsafe-package ansible-dev-tools
-          --unsafe-package distribute
-          --unsafe-package pip
-          --unsafe-package setuptools
-          --output-file=.config/constraints.txt pyproject.toml
-        files: ^.config\/.*requirements.*$
+        name: Upgrade constraints files and requirements
+        # files: ^(pyproject\.toml|requirements\.txt)$
+        language: python
         language_version: "3.10" # minimal we support officially
-      - id: pip-compile
-        name: lock
+        entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml --upgrade
+        pass_filenames: false
+        stages:
+          - manual
+        additional_dependencies:
+          - uv>=0.4.3
+      - id: constraints
+        name: Check constraints files and requirements
+        # files: ^(pyproject\.toml|requirements\.txt)$
+        language: python
+        language_version: "3.10" # minimal we support officially
+        entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml
+        pass_filenames: false
+        additional_dependencies:
+          - uv>=0.4.3
+      - id: lock
+        name: Update requirements-lock.txt
         alias: lock
-        stages: [manual]
-        entry: |
-          pip-compile .config/requirements.in -q --upgrade --extra server --no-annotate --strip-extras
-          --constraint=.config/constraints.txt
-          --unsafe-package distribute
-          --unsafe-package pip
-          --unsafe-package setuptools
-          --output-file=.config/requirements-lock.txt pyproject.toml
+        always_run: true
+        entry: python3 -m uv pip compile -q --upgrade --constraint=.config/constraints.txt --output-file=.config/requirements-lock.txt pyproject.toml --strip-extras
         files: ^.config\/.*requirements.*$
+        language: python
         language_version: "3.10" # minimal we support officially
+        pass_filenames: false
+        stages: [manual]
+        additional_dependencies:
+          - uv>=0.4.3
