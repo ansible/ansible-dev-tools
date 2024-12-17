@@ -136,3 +136,6 @@ uname -a
 
 # Make a workdir usable by the root user
 mkdir -p /workdir
+
+# compatibility with recent docker versions:
+chmod go+rwx /etc/passwd
