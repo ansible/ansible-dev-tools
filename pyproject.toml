@@ -347,6 +347,7 @@ external = [
 ]
 ignore = [
   "COM812", # conflicts with ISC001 on format
+  "E501", # line-too-long / rely on black
   "ISC001" # conflicts with COM812 on format
 ]
 select = ["ALL"]
