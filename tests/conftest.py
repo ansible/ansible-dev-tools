@@ -25,6 +25,7 @@ import os
 import pty
 import re
 import select
+import shlex
 import shutil
 import subprocess
 import sys
@@ -310,10 +311,14 @@ def _start_container() -> None:
         err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
         raise ValueError(err)
 
-    cmd = cmd.replace("\n", " ").format(
-        container_engine=INFRASTRUCTURE.container_engine,
-        container_name=INFRASTRUCTURE.container_name,
-        image_name=INFRASTRUCTURE.image_name,
+    cmd = (
+        cmd.replace("\n", " ")
+        .format(
+            container_engine=INFRASTRUCTURE.container_engine,
+            container_name=INFRASTRUCTURE.container_name,
+            image_name=INFRASTRUCTURE.image_name,
+        )
+        .replace("  ", " ")
     )
     LOGGER.warning("Running: %s", cmd)
     try:
@@ -395,9 +400,16 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
-    cmd = (
-        f"{INFRASTRUCTURE.container_engine} exec -t"
-        f" {INFRASTRUCTURE.container_name} bash -c '{command}'"
+    cmd = shlex.join(
+        [
+            INFRASTRUCTURE.container_engine,
+            "exec",
+            "-t",
+            INFRASTRUCTURE.container_name,
+            "bash",
+            "-c",
+            command,
+        ]
     )
     result = subprocess.run(
         cmd,
