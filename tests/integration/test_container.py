@@ -1,6 +1,9 @@
 """Run tests against the container."""
 
+# cspell: ignore cinc
 from __future__ import annotations
+
+import shlex
 
 from typing import TYPE_CHECKING
 
@@ -48,24 +51,41 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
 
 
 @pytest.mark.container
-def test_container_in_container(
+def test_cinc(
+    infrastructure: Infrastructure,
     exec_container: Callable[[str], subprocess.CompletedProcess[str]],
 ) -> None:
     """Test podman container-in-container functionality for plugin copy.
 
     Args:
+        infrastructure: The testing infrastructure.
         exec_container: The container executor.
     """
+    # We do not want to accidentally pull here because we expected to load
+    # the tar image into the container. Our scope is to test the image we did
+    # not publish yet to any registry.
     podman_run_container = exec_container(
-        "podman run -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1"
-        " -e ANSIBLE_FORCE_COLOR=0 --name ghcr_io_ansible_community_ansible_dev_tools_latest"
-        " ghcr.io/ansible/community-ansible-dev-tools:latest bash",
+        "podman run --pull=never -i --rm -d -e ANSIBLE_DEV_TOOLS_CONTAINER=1"
+        " -e ANSIBLE_FORCE_COLOR=0 --name test_cinc"
+        f" {infrastructure.image_name} bash",
     )
     assert podman_run_container.returncode == 0
 
     test_path_access = exec_container(
-        "podman exec ghcr_io_ansible_community_ansible_dev_tools_latest"
-        " ls /usr/local/lib/python3.12/site-packages/ansible/plugins/",
+        shlex.join(
+            [
+                "podman",
+                "exec",
+                "test_cinc",
+                "python3",
+                "-c",
+                (
+                    "import pathlib, sys; sys.exit(0 if"
+                    " pathlib.Path(f'/usr/local/lib/python{sys.version_info[0]}.{sys.version_info[1]}/site-packages/ansible/plugins/').exists()"
+                    " else 1);"
+                ),
+            ],
+        ),
     )
     assert "OCI permission denied" not in test_path_access.stdout
     assert test_path_access.returncode == 0
