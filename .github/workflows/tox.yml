@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - tox
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     # github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Check out repository
