@@ -67,7 +67,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.3
+    rev: v0.8.4
     hooks:
       - id: ruff
         args:
@@ -83,13 +83,13 @@ repos:
       - id: black
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.16.1
+    rev: v8.17.0
     hooks:
       - id: cspell
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.5.12"
+    rev: "0.5.14"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
@@ -97,7 +97,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/pycqa/pylint.git
-    rev: v3.3.2
+    rev: v3.3.3
     hooks:
       - id: pylint
         args:
@@ -113,7 +113,7 @@ repos:
           - pyyaml
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.13.0
+    rev: v1.14.0
     hooks:
       - id: mypy
         additional_dependencies:
