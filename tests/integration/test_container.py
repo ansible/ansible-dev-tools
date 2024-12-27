@@ -14,6 +14,7 @@ from ansible_dev_tools.version_builder import PKGS
 from .test_server_creator_v1 import test_collection_v1 as tst_collection_v1
 from .test_server_creator_v1 import test_error as tst_error
 from .test_server_creator_v1 import test_playbook_v1 as tst_playbook_v1
+from .test_server_info import test_metadata as tst_get_metadata
 
 
 if TYPE_CHECKING:
@@ -217,6 +218,16 @@ def test_playbook_v1_container(server_in_container_url: str, tmp_path: Path) -> 
         tmp_path: The temporary directory.
     """
     tst_playbook_v1(server_url=server_in_container_url, tmp_path=tmp_path)
+
+
+@pytest.mark.container
+def test_get_metadata_container(server_in_container_url: str) -> None:
+    """Test the metadata endpoint.
+
+    Args:
+        server_in_container_url: The dev tools server.
+    """
+    tst_get_metadata(server_url=server_in_container_url)
 
 
 @pytest.mark.container

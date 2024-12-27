@@ -20,6 +20,8 @@ def test_metadata(server_url: str) -> None:
         response.status_code == expected_response_code
     ), f"Expected status code 200 but got {response.status_code}"
 
+    assert response.headers["Content-Type"] == "application/json"
+
     data = response.json()
 
     assert "versions" in data, "Response is missing 'versions' key"
