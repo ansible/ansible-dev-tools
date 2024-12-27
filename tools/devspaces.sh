@@ -30,7 +30,7 @@ mk containers check $IMAGE_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=16
 
 pytest --only-container --container-engine="${ADT_CONTAINER_ENGINE}" --container-name=devspaces --image-name=$IMAGE_NAME "$@" || echo "::error::Ignored failed devspaces tests, please https://github.com/ansible/ansible-dev-tools/issues/467"
 
-if [[ -n "${GITHUB_SHA:-}" ]]; then
+if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
     $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}"
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
