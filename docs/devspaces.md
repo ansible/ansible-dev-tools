@@ -4,7 +4,7 @@ Ansible Development Tools can also be used using OpenShift Dev Spaces. If you ar
 
 In fact this repository is already configured to be used with OpenShift Dev Spaces and by clicking [![Contribute](https://www.eclipse.org/che/contribute.svg)](https://devspaces.apps.sandbox-m3.1530.p1.openshiftapps.com/dashboard/#/load-factory?url=https%3A%2F%2Fgithub.com%2Fansible%2Fansible-dev-tools), you can open it inside the OpenShift Dev Spaces and may make your own contribution.
 
-[![Contribute](https://www.eclipse.org/che/contribute.svg)](https://workspaces.openshift.com/f?url=https://github.com/devspaces-samples/ansible-devspaces-demo)
+You can test loading the OpenShift Dev Space defined inside [redhat-developer-demos](https://github.com/redhat-developer-demos/ansible-devspaces-demo/tree/devspaces-3-rhel-9) repository by clicking [![Developer Workspace](https://www.eclipse.org/che/contribute.svg)](https://workspaces.openshift.com/f?url=https://github.com/redhat-developer-demos/ansible-devspaces-demo/tree/devspaces-3-rhel-9)
 
 This repository provides a development environment for Ansible playbook creation, testing with Molecule, and ansible-lint checks using OpenShift Dev Spaces.
 
