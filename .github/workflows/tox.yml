@@ -33,9 +33,10 @@ jobs:
       run_pre: ./tools/test-setup.sh
       max_python: "3.13"
       default_python: "3.11" # min version, for 'lint' in particular
-      jobs_producing_coverage: 8
+      jobs_producing_coverage: 9
       other_names_also: |
         devspaces
+        devel
         ee-amd64:tox -e ee:runner=devtools-multiarch-builder
         ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
     secrets: inherit # needed for logging to the ghcr.io registry

@@ -3,7 +3,7 @@ black
 coverage[toml]
 libtmux
 mypy
-pip-tools
+pip
 pre-commit
 pydoclint
 pylint
