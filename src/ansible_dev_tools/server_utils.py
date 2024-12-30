@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 
-from django.http import FileResponse, HttpRequest, HttpResponse
+from django.http import FileResponse, HttpRequest, HttpResponse, JsonResponse
 from openapi_core import OpenAPI
 from openapi_core.contrib.django import DjangoOpenAPIRequest, DjangoOpenAPIResponse
 from openapi_core.exceptions import OpenAPIError
@@ -26,7 +26,7 @@ OPENAPI = OpenAPI.from_dict(
 )
 
 
-def validate_request(request: HttpRequest) -> RequestUnmarshalResult | HttpResponse:
+def validate_request(request: HttpRequest) -> RequestUnmarshalResult | HttpResponse | JsonResponse:
     """Validate the request against the OpenAPI schema.
 
     Args:

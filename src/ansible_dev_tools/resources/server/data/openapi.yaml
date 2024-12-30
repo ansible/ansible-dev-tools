@@ -1,9 +1,19 @@
 openapi: 3.1.0
 info:
-  title: Playbook Creator API
+  title: Ansible Development Tools APIs
   version: 1.0.0
-  description: API for ansible creator
+  description: APIs for ansible development tools
 paths:
+  /metadata:
+    get:
+      summary: Retrieve versions of installed tools and existing API endpoints
+      responses:
+        "200":
+          description: A list of installed tools and their versions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Metadata"
   /v1/creator/collection:
     post:
       summary: Create a new collection project
@@ -95,6 +105,19 @@ paths:
 
 components:
   schemas:
+    Metadata:
+      type: object
+      properties:
+        versions:
+          type: object
+          additionalProperties:
+            type: string
+        apis:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     CreatorCollection:
       type: object
       additionalProperties: false

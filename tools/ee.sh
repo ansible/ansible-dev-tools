@@ -80,7 +80,7 @@ pushd docs/examples
 ansible-builder build
 popd
 
-if [[ -n "${GITHUB_SHA:-}" ]]; then
+if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
     FQ_IMAGE_NAME="ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA}-$ARCH"
     $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "${FQ_IMAGE_NAME}"
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
