@@ -39,11 +39,11 @@ def zsh_path() -> Path:
 
 
 @pytest.fixture(scope="module")
-def completion_checker(zsh_path: Path) -> Callable[[str], tuple[bool, str]]:
+def completion_checker(zsh: Path) -> Callable[[str], tuple[bool, str]]:
     """Provide a function to test ZSH completion status for commands.
 
     Args:
-        zsh_path: Path to the ZSH executable.
+        zsh: Path to the ZSH executable.
 
     Returns:
         A callable that takes a command name and returns a tuple of
@@ -61,10 +61,6 @@ def completion_checker(zsh_path: Path) -> Callable[[str], tuple[bool, str]]:
             A tuple of (is_active, details) where is_active is a boolean
             indicating if completions are working, and details is a string
             containing the test output or error message.
-
-        Raises:
-            subprocess.TimeoutExpired: If the command times out.
-            OSError: If an OS-level error occurs.
         """
         # Construct the test command
         test_command = (
@@ -76,7 +72,7 @@ def completion_checker(zsh_path: Path) -> Callable[[str], tuple[bool, str]]:
 
         try:
             result = subprocess.run(  # noqa: S603
-                [zsh_path, "-c", test_command],
+                [zsh, "-c", test_command],
                 capture_output=True,
                 text=True,
                 check=False,
@@ -105,14 +101,14 @@ class TestShellCompletions:
     )
     def test_command_completions(
         self,
-        completion_checker: Callable[[str], tuple[bool, str]],
+        check_completions: Callable[[str], tuple[bool, str]],
         command: str,
     ) -> None:
         """Verify that command completions are properly configured and active.
 
         Args:
-            completion_checker: Fixture providing the completion testing function.
+            check_completions: Fixture providing the completion testing function.
             command: The command to test completions for.
         """
-        is_active, details = completion_checker(command)
+        is_active, details = check_completions(command)
         assert is_active, f"Completions for '{command}' are not active. Details:\n{details}"
