@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.parametrize("resource", ("playbook", "collection"))
-def test_error(server_url: str, resource: str) -> None:
+def test_error_v1(server_url: str, resource: str) -> None:
     """Test the error response.
 
     Args:
