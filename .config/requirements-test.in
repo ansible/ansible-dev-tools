@@ -9,6 +9,7 @@ pydoclint
 pylint
 pytest
 pytest-instafail
+pytest-plus
 pytest-xdist
 requests
 ruff
