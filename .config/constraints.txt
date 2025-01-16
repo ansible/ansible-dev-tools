@@ -3,7 +3,7 @@
 ansible-builder==3.1.0
 ansible-compat==25.0.0
 ansible-core==2.18.1
-ansible-creator==24.12.1
+ansible-creator==25.0.0
 ansible-dev-environment==24.12.0
 ansible-lint==24.12.2
 ansible-navigator==24.12.0
