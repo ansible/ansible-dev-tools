@@ -17,6 +17,9 @@ default_language_version:
   # lock extra will not be usable those.
   python: "3.11"
 repos:
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.7.3
   #   hooks:
@@ -46,7 +49,7 @@ repos:
     hooks:
       - id: shellcheck
 
-  - repo: https://github.com/pycontribs/mirrors-prettier
+  - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.4.2
     hooks:
       - id: prettier
@@ -78,13 +81,13 @@ repos:
         types_or: [python, pyi]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.17.0
+    rev: v8.17.1
     hooks:
       - id: cspell
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.5.14"
+    rev: "0.6.0"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
