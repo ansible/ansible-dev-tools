@@ -61,7 +61,7 @@ ruamel-yaml==0.18.6
 ruamel-yaml-clib==0.2.12
 subprocess-tee==0.4.2
 tox==4.23.2
-tox-ansible==24.12.0
+tox-ansible==25.1.0
 tzdata==2024.2
 virtualenv==20.28.0
 wcmatch==10.0
