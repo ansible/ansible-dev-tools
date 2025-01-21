@@ -83,9 +83,9 @@ class Infrastructure:
         """Initialize the infrastructure.
 
         Raises:
-            ValueError: If the container engine is not found.
-            ValueError: If the container name is not set.
-            ValueError: If both only_container and include_container are set.
+            ValueError: If the container engine is not found,
+                If the container name is not set.
+                If both only_container and include_container are set.
         """
         self.container_engine = self.session.config.getoption("--container-engine")
         self.container_name = self.session.config.getoption("--container-name", "")

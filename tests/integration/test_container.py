@@ -12,7 +12,7 @@ import pytest
 from ansible_dev_tools.version_builder import PKGS
 
 from .test_server_creator_v1 import test_collection_v1 as tst_collection_v1
-from .test_server_creator_v1 import test_error as tst_error
+from .test_server_creator_v1 import test_error_v1 as tst_error
 from .test_server_creator_v1 import test_playbook_v1 as tst_playbook_v1
 from .test_server_info import test_metadata as tst_get_metadata
 
