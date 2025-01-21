@@ -16,9 +16,9 @@ def test_metadata(server_url: str) -> None:
     response = requests.get(endpoint, timeout=10)
 
     expected_response_code = 200
-    assert (
-        response.status_code == expected_response_code
-    ), f"Expected status code 200 but got {response.status_code}"
+    assert response.status_code == expected_response_code, (
+        f"Expected status code 200 but got {response.status_code}"
+    )
 
     assert response.headers["Content-Type"] == "application/json"
 
