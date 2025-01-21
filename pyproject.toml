@@ -402,6 +402,6 @@ environments = ["platform_system != 'Windows'"]
 
 [tool.uv.pip]
 # annotation-style = "line"
-custom-compile-command = "tox run deps"
+custom-compile-command = "tox run -e deps"
 no-annotate = true
 no-emit-package = ["pip", "resolvelib", "typing_extensions", "uv", "pip", "distribute", "setuptools"]
