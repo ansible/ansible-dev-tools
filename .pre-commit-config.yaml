@@ -67,7 +67,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
+    rev: v0.9.2
     hooks:
       - id: ruff
         args:
@@ -76,11 +76,6 @@ repos:
         types_or: [python, pyi]
       - id: ruff-format # must be after ruff
         types_or: [python, pyi]
-
-  - repo: https://github.com/psf/black # must be after ruff
-    rev: 24.10.0
-    hooks:
-      - id: black
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v8.17.0
