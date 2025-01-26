@@ -7,19 +7,17 @@ IMAGE_NAME=ansible/ansible-workspace-env-reference:test
 mkdir -p out dist
 # Ensure that we packaged the code first
 # shellcheck disable=SC2207
+rm -f dist/*.*
+tox -e pkg
+# shellcheck disable=SC2207
 WHEELS=($(find dist -name '*.whl' -maxdepth 1 -execdir echo '{}' ';'))
 if [ ${#WHEELS[@]} -ne 1 ]; then
-    tox -e pkg
-    # shellcheck disable=SC2207
-    WHEELS=($(find dist -name '*.whl' -maxdepth 1 -execdir echo '{}' ';'))
-    if [ ${#WHEELS[@]} -ne 1 ]; then
-        echo "Unable to find a single wheel file in dist/ directory: ${WHEELS[*]}"
-        exit 2
-    fi
+    echo "Unable to find a single wheel file in dist/ directory: ${WHEELS[*]}"
+    exit 2
 fi
 rm -f devspaces/context/*.whl
-cp dist/*.whl devspaces/context
-cp tools/setup-image.sh devspaces/context
+ln -f dist/*.whl devspaces/context
+ln -f tools/setup-image.sh devspaces/context
 
 # we force use of linux/amd64 platform because source image supports only this
 # platform and without it, it will fail to cross-build when task runs on arm64.

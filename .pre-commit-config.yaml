@@ -7,8 +7,6 @@ ci:
   skip:
     - shellcheck # no docker support on pre-commit.ci
     - deps
-    - constraints
-    - lock
 default_language_version:
   # minimal version we support officially as this will impact mypy, pylint and
   # pip-tools in undesirable ways.
@@ -65,12 +63,12 @@ repos:
       - id: toml-sort-fix
 
   - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.4.1
+    rev: 1.5.0
     hooks:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.2
+    rev: v0.9.3
     hooks:
       - id: ruff
         args:
@@ -137,30 +135,14 @@ repos:
         # files: ^(pyproject\.toml|requirements\.txt)$
         language: python
         language_version: "3.11" # minimal required by latest ansible-core
-        entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml --upgrade
+        # do not use --all-extra because it will include the lock extra which prevents upgrade
+        entry: >
+          bash -c
+          "python3 -m uv pip compile --upgrade -q --extra docs --extra server --extra test --output-file=.config/constraints.txt pyproject.toml;
+          python3 -m uv pip compile -q --upgrade --constraint=.config/constraints.txt --output-file=.config/requirements-lock.txt pyproject.toml --strip-extras
+          "
         pass_filenames: false
         stages:
           - manual
         additional_dependencies:
-          - uv>=0.4.3
-      - id: constraints
-        name: Check constraints files and requirements
-        # files: ^(pyproject\.toml|requirements\.txt)$
-        language: python
-        language_version: "3.11" # minimal required by latest ansible-core
-        entry: python3 -m uv pip compile -q --all-extras --output-file=.config/constraints.txt pyproject.toml
-        pass_filenames: false
-        additional_dependencies:
-          - uv>=0.4.3
-      - id: lock
-        name: Update requirements-lock.txt
-        alias: lock
-        always_run: true
-        entry: python3 -m uv pip compile -q --upgrade --constraint=.config/constraints.txt --output-file=.config/requirements-lock.txt pyproject.toml --strip-extras
-        files: ^.config\/.*requirements.*$
-        language: python
-        language_version: "3.11" # minimal required by latest ansible-core
-        pass_filenames: false
-        stages: [manual]
-        additional_dependencies:
-          - uv>=0.4.3
+          - uv>=0.5.4
