@@ -113,9 +113,6 @@ chsh -s "$(which zsh)" root
 python3 -m pip install argcomplete
 activate-global-python-argcomplete
 
-# Install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 # shellcheck disable=SC1091
 source "$DIR/setup-image.sh"
 
