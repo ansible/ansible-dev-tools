@@ -22,6 +22,8 @@ When it comes to creating automation content using Ansible, there are several pa
 - Simplified Ansible Automation: ansible-dev-tools focuses on crafting your automation scenarios and workflows with speed by reducing boilerplate code without
   dealing with the intricacies of managing and integrating different Ansible libraries.
 
+- Promote and provide [test isolation] from system and user environments.
+
 For those looking for an IDE-based experience, we also recommend you get familiar with the [Ansible extension for VSCode](https://marketplace.visualstudio.com/items?itemName=redhat.ansible).
 
 ## Included Packages

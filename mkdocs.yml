@@ -92,6 +92,7 @@ nav:
   - DevSpaces: devspaces.md
   - User Guide:
       - user-guide/index.md
+      - Test Isolation: user-guide/test-isolation.md
       - Testing: user-guide/testing.md
       - Building a Collection: user-guide/building-collection.md
       - Content Best Practices: user-guide/content-best-practices.md
