@@ -63,7 +63,7 @@ fi
 python -m build --outdir "$REPO_DIR/final/dist/" --wheel "$REPO_DIR"
 ansible-builder create -f execution-environment.yml --output-filename Containerfile -v3
 $BUILD_CMD -f context/Containerfile context/ --tag "${TAG_BASE}"
-cp tools/setup-image.sh final/
+ln -f tools/setup-image.sh final/
 $BUILD_CMD -f final/Containerfile final/ --tag "${IMAGE_NAME}"
 
 # We save local image in order to import it inside the container later for c-in-c testing
