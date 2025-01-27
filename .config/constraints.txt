@@ -43,7 +43,7 @@ dnspython==2.7.0
 docstring-parser-fork==0.0.12
 enrich==1.2.7
 execnet==2.1.1
-filelock==3.16.1
+filelock==3.17.0
 ghp-import==2.1.0
 griffe==1.5.5
 gunicorn==23.0.0
@@ -51,7 +51,7 @@ hjson==3.1.0
 htmlmin2==0.1.13
 identify==2.6.6
 idna==3.10
-importlib-metadata==8.5.0
+importlib-metadata==8.6.1
 iniconfig==2.0.0
 isodate==0.7.2
 isort==5.13.2
@@ -146,9 +146,9 @@ tox==4.24.1
 tox-ansible==25.1.0
 types-pyyaml==6.0.12.20241230
 types-requests==2.32.0.20241016
-tzdata==2024.2
+tzdata==2025.1
 urllib3==2.3.0
-virtualenv==20.28.0
+virtualenv==20.29.1
 watchdog==6.0.0
 wcmatch==10.0
 webencodings==0.5.1
