@@ -113,9 +113,6 @@ chsh -s "$(which zsh)" root
 python3 -m pip install argcomplete
 activate-global-python-argcomplete
 
-# Install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 # Add completions to zsh
 echo eval \"\$\(_MOLECULE_COMPLETE=zsh_source molecule\)\" > ~/.oh-my-zsh/custom/molecule-completions.zsh
 
