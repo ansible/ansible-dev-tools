@@ -85,7 +85,7 @@ mkdocs-minify-plugin==0.8.0
 mkdocs-monorepo-plugin==1.1.0
 mkdocstrings==0.27.0
 mkdocstrings-python==1.13.0
-molecule==25.1.0
+molecule==25.2.0
 more-itertools==10.6.0
 mypy==1.14.1
 mypy-extensions==1.0.0
