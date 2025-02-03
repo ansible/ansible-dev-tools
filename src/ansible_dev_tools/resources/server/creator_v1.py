@@ -25,7 +25,7 @@ def create_tar_file(init_path: Path, tar_file: Path) -> None:
         init_path: The directory path to create the tar file from.
         tar_file: The output tar file path.
     """
-    with tarfile.open(tar_file, "w:gz") as tar:
+    with tarfile.open(tar_file, "w") as tar:
         tar.add(str(init_path), arcname=".")
 
 
@@ -44,7 +44,7 @@ class CreatorFrontendV1:
         fs = FileSystemStorage(str(tar_file.parent))
         response = FileResponse(
             fs.open(tar_file.name, "rb"),
-            content_type="application/tar+gzip",
+            content_type="application/tar",
             status=201,
         )
         response["Content-Disposition"] = f'attachment; filename="{tar_file.name}"'
@@ -156,7 +156,7 @@ class CreatorBackend:
             project=project,
         )
         Init(config).run()
-        tar_file = self.tmp_dir / f"{collection}.tar.gz"
+        tar_file = self.tmp_dir / f"{collection}.tar"
         create_tar_file(init_path, tar_file)
         return tar_file
 
@@ -187,6 +187,6 @@ class CreatorBackend:
             subcommand="init",
         )
         Init(config).run()
-        tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar.gz"
+        tar_file = self.tmp_dir / f"{scm_org}-{scm_project}.tar"
         create_tar_file(init_path, tar_file)
         return tar_file
