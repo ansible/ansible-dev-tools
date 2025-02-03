@@ -6,9 +6,9 @@ completions are active for various commands.
 
 from __future__ import annotations
 
+import shutil
 import subprocess
 
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
@@ -19,49 +19,32 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture(scope="module")
-def zsh_path() -> Path:
-    """Locate the ZSH executable.
-
-    Returns:
-        Path to ZSH executable.
-
-    Raises:
-        FileNotFoundError: If ZSH is not found in standard locations.
-    """
-    path = next(
-        (Path(p) for p in ["/usr/bin/zsh", "/bin/zsh"] if Path(p).exists()),
-        None,
-    )
-    if not path:
-        msg = "ZSH not found in standard locations"
-        raise FileNotFoundError(msg)
-    return path
-
-
-@pytest.fixture(scope="module")
-def completion_checker(zsh: Path) -> Callable[[str], tuple[bool, str]]:
+def completion_checker() -> Callable[[str], tuple[bool, str]]:
     """Provide a function to test ZSH completion status for commands.
 
-    Args:
-        zsh: Path to the ZSH executable.
-
     Returns:
-        A callable that takes a command name and returns a tuple of
-        (is_active: bool, details: str) indicating whether completions
+        A tuple of (is_active, details) indicating whether completions
         are active for that command.
     """
 
     def check(command: str) -> tuple[bool, str]:
-        """Test if ZSH completions are active for a command.
+        """Check if ZSH completions are active for a given command.
 
         Args:
-            command: The name of the command to check completions for.
+            command: The command to test completions for.
 
         Returns:
-            A tuple of (is_active, details) where is_active is a boolean
-            indicating if completions are working, and details is a string
-            containing the test output or error message.
+            A tuple of (is_active, details) indicating whether completions
+            are active for that command.
+
+        Raises:
+            FileNotFoundError: If ZSH is not found in the system's PATH.
         """
+        zsh_path = shutil.which("zsh")
+        if zsh_path is None:
+            msg = "ZSH not found in $PATH"
+            raise FileNotFoundError(msg)
+
         # Construct the test command
         test_command = (
             "source ~/.zshrc && "
@@ -72,7 +55,7 @@ def completion_checker(zsh: Path) -> Callable[[str], tuple[bool, str]]:
 
         try:
             result = subprocess.run(  # noqa: S603
-                [zsh, "-c", test_command],
+                [zsh_path, "-c", test_command],
                 capture_output=True,
                 text=True,
                 check=False,
@@ -101,14 +84,15 @@ class TestShellCompletions:
     )
     def test_command_completions(
         self,
-        check_completions: Callable[[str], tuple[bool, str]],
         command: str,
+        completion_checker: Callable[[str], tuple[bool, str]],  # pylint: disable=redefined-outer-name
     ) -> None:
         """Verify that command completions are properly configured and active.
 
         Args:
-            check_completions: Fixture providing the completion testing function.
             command: The command to test completions for.
+            completion_checker: Fixture that checks completion status
+
         """
-        is_active, details = check_completions(command)
+        is_active, details = completion_checker(command)
         assert is_active, f"Completions for '{command}' are not active. Details:\n{details}"
