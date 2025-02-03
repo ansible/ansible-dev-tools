@@ -25,7 +25,7 @@ TAG_BASE=community-ansible-dev-tools-base:latest
 IMAGE_NAME=localhost/community-ansible-dev-tools:test
 
 # BUILD_CMD="podman build --squash-all"
-BUILD_CMD="${ADT_CONTAINER_ENGINE} buildx build --progress=plain"
+BUILD_CMD="${ADT_CONTAINER_ENGINE} buildx build --progress=plain --sbom=true"
 
 # Publish should run on CI only on main branch, with or without release tag
 if [ "--publish" == "${1:-}" ]; then
