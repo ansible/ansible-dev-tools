@@ -28,7 +28,6 @@ import select
 import shlex
 import shutil
 import subprocess
-import sys
 import time
 
 from dataclasses import dataclass
@@ -440,7 +439,10 @@ def _start_server() -> None:
     Raises:
         RuntimeError: If the server could not be started.
     """
-    bin_path = Path(sys.executable).parent / "adt"
+    bin_path = shutil.which("adt")
+    if bin_path is None:
+        msg = "adt not found in $PATH"
+        raise RuntimeError(msg)
     INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
         [bin_path, "server", "-p", "8000"],
         env=os.environ,
