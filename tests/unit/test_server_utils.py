@@ -66,7 +66,7 @@ def test_validate_response_pass(collection_request: HttpRequest) -> None:
         collection_request: A Django request object
     """
     response = HttpResponse()
-    response["Content-Type"] = "application/tar+gzip"
+    response["Content-Type"] = "application/tar"
     response.status_code = HTTPStatus.CREATED.value
     response.content = b"Hello, World!"
     result = validate_response(collection_request, response)
@@ -82,7 +82,7 @@ def test_validate_response_fail(collection_request: HttpRequest) -> None:
         collection_request: A Django request object
     """
     response = HttpResponse()
-    response["Content-Type"] = "application/tar+gzip"
+    response["Content-Type"] = "application/tar"
     response.status_code = HTTPStatus.CREATED.value
     result = validate_response(collection_request, response)
     assert result.status_code == HTTPStatus.BAD_REQUEST.value
