@@ -13,7 +13,7 @@ USER root
 ENV _CONTAINERS_USERNS_CONFIGURED=""
 ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
 ENV PIP_ROOT_USER_ACTION=ignore
-RUN --mount=type=bind,target=/final,Z --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip /final/setup.sh
+RUN --mount=type=bind,target=/final --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip /final/setup.sh
 
 # Note VOLUME options must always happen after setup.sh due to some chown inside that affects the mount
 # RUN commands can not modify existing volumes
