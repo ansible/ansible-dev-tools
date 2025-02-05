@@ -4,7 +4,8 @@ set -eux pipefail
 
 DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-dnf --noplugins remove -y -q subscription-manager dnf-plugin-subscription-manager
+dnf --noplugins remove -y -q subscription-manager dnf-plugin-subscription-manager iptables-legacy
+dnf install -y -q iptables-nft
 dnf -y -q makecache
 dnf -y -q update
 dnf install -y -q \
