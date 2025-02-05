@@ -5,7 +5,7 @@ ansible-compat==25.1.1
 ansible-core==2.18.1
 ansible-creator==25.0.0
 ansible-dev-environment==25.1.0
-ansible-lint==25.1.1
+ansible-lint==25.1.2
 ansible-navigator==25.1.0
 ansible-runner==2.4.0
 ansible-sign==0.1.1
