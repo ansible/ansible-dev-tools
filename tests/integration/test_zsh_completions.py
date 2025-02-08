@@ -36,14 +36,11 @@ def completion_checker() -> Callable[[str], tuple[bool, str]]:
         Returns:
             A tuple of (is_active, details) indicating whether completions
             are active for that command.
-
-        Raises:
-            FileNotFoundError: If ZSH is not found in the system's PATH.
         """
         zsh_path = shutil.which("zsh")
         if zsh_path is None:
-            msg = "ZSH not found in $PATH"
-            raise FileNotFoundError(msg)
+            msg = "ZSH not found in $PATH, skipping completion tests."
+            pytest.skip(msg)
 
         # Construct the test command
         test_command = (
