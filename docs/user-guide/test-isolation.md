@@ -28,39 +28,53 @@ an unpredictable way.
 Starting with early 2025, all ansible-dev-tools will aim to implement the
 following predictable behaviors:
 
-- Prefer being run from within a python virtual environment, warning the user
-  if this not the case.
+- Prefer being run from within a **writable** python virtual environment,
+  warning the user if this not the case.
 - Dynamically modify Ansible environment to prefer installation of dependencies
   such as collections, roles and python packages inside the current virtual
   environment.
 
-## Isolated mode (virtual environment) \[default\]
+## Isolated mode (default)
 
-This is the recommended way to run ansible-dev-tools. If a virtual environment
-is not detected, a warning will be displayed, prompting the user to use one
-for better isolation.
+- First folder that is not read-only from the list below will be used as cache directory and also :
 
-It should be noted that our tools will look for a `.venv` directory inside
-the current directory if a virtual environment is not already active and will
-try to use it if found.
+  - `$VIRTUAL_ENV/.ansible` for anything but collections, those will be inside `lib/python3.*/site-packages/ansible_collections` because this makes them available to ansible-core without any additional configuration.
+  - `$PROJECT_ROOT/.ansible`
+  - `$TMPDIR/.ansible-<sha256>` for temporary installations
 
-When running ansible-dev-tools inside a virtual environment, the following
-things will happen:
+- `ANSIBLE_HOME` will be defined to point to it, preventing accidental use of user's home directory. Its existing value will be ignored. If you want to avoid this, see non-isolated mode below.
+
+### Virtual environment detection
+
+Our tools will look for presence of `VIRTUAL_ENV` variable and use it.
+Otherwise they will also try to look a `.venv` directory inside
+the project directory will try to use it if found.
+
+When running ansible-dev-tools inside a **writable** virtual environment,
+the following things will happen:
 
 - Few Ansible environment variables will be automatically defined in order to
   make `ansible-galaxy` install commands to install content (collections and
-  roles) directly inside the virtual environment. Ansible-core itself is already able to find content from inside the virtual environment and this takes priority over the other paths.
+  roles) directly inside the virtual environment. Ansible-core itself is
+  already able to find content from inside the virtual environment and this
+  takes priority over the other paths.
 - Dependencies will automatically be installed inside the virtual environment
 
-## Non-isolated mode (outside virtual environments)
+## Non-isolated mode
 
-When running ansible-dev-tools outside a virtual environment, our tools will
-display a warning message explaining the user that the isolation mode is
-disabled.
+No changing of ansible include paths will be performed, and a warning will be
+displayed telling user that its user environment is not isolated and that
+result of tool execution may produce unpredictable results on other systems.
 
-- No alteration of ansible environment variables will be made. This is different
-  from the previous behaviors of ansible-lint or molecule, which tried to define
-  these to point to a temporary directory.
+The cache directory will point to `$ANSIBLE_HOME/tmp/compat-ZZZ`, where ZZZ is
+a sha256 hash of the project directory.
+
+## Offline mode
+
+Tools like ansible-lint provide an option `--offline` that will disable their
+ability to install any dependencies. This does not mean that they will run
+successfully without the dependencies, it just means that they user takes
+the responsibility to pre-install these before running the tools.
 
 ---
 
