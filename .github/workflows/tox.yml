@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - tox
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
     # This condition ensures that publishing can only happen on push events to the main branch.
     # Pull request events are excluded as they don't have the necessary permissions to publish.
     steps:
