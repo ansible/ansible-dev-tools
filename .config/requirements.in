@@ -1,10 +1,11 @@
 ansible-builder
+ansible-compat>=25.1.4
 ansible-creator>=24.10.1
 ansible-dev-environment
-ansible-lint
+ansible-lint>=25.1.3
 ansible-navigator
 ansible-sign
-molecule
+molecule>=25.3.0
 pytest-ansible
 setuptools
 tox-ansible

@@ -48,7 +48,7 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.4.2
+    rev: v3.5.1
     hooks:
       - id: prettier
         always_run: true
@@ -68,7 +68,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
+    rev: v0.9.6
     hooks:
       - id: ruff
         args:
@@ -85,7 +85,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.6.0"
+    rev: "0.6.2"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
