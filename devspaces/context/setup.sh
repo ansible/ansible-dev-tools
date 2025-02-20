@@ -27,6 +27,7 @@ dnf install -y -q \
     util-linux-user \
     which \
     zsh \
+    pinentry \
     --exclude container-selinux
 #     python${PYV}-ruamel-yaml \
 dnf -y -q clean all
