@@ -218,6 +218,7 @@ class CreatorBackend:
 
     def devfile(self) -> Path:
         """Scaffold a devfile.
+
         Returns:
             The tar file path.
         """
