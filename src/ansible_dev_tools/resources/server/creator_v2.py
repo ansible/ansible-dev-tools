@@ -121,9 +121,7 @@ class CreatorFrontendV2:
         if isinstance(result, HttpResponse):
             return result
         with tempfile.TemporaryDirectory() as tmp_dir:
-            tar_file = CreatorBackend(Path(tmp_dir)).devfile(
-                **result.body,  # type: ignore[arg-type]
-            )
+            tar_file = CreatorBackend(Path(tmp_dir)).devfile()
             response = self._response_from_tar(tar_file)
 
         return validate_response(
@@ -218,16 +216,12 @@ class CreatorBackend:
         create_tar_file(init_path, tar_file)
         return tar_file
 
-    def devfile(self, collection: str) -> Path:
+    def devfile(self) -> Path:
         """Scaffold a devfile.
-
-        Args:
-            collection: The collection name.
-
         Returns:
             The tar file path.
         """
-        # Path where the devfile will be added in the collection
+        # Path where the devfile will be added
         add_path = self.tmp_dir / "devfile"
         add_path.mkdir(parents=True, exist_ok=True)
 

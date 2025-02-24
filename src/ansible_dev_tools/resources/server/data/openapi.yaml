@@ -105,12 +105,6 @@ paths:
   /v2/creator/devfile:
     post:
       summary: Create a new devfile project
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreatorDevfile"
-        required: true
       responses:
         "201":
           description: Created
@@ -167,12 +161,6 @@ components:
         collection_name:
           type: string
         namespace:
-          type: string
-    CreatorDevfile:
-      type: object
-      additionalProperties: false
-      properties:
-        collection:
           type: string
     Error:
       type: object
