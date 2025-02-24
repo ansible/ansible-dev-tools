@@ -10,8 +10,8 @@ from pathlib import Path
 from ansible_creator._version import version as creator_version
 from ansible_creator.config import Config
 from ansible_creator.output import Output
-from ansible_creator.subcommands.init import Init
 from ansible_creator.subcommands.add import Add
+from ansible_creator.subcommands.init import Init
 from ansible_creator.utils import TermFeatures
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse
@@ -104,7 +104,7 @@ class CreatorFrontendV2:
             request=request,
             response=response,
         )
-   
+
     def devfile(
         self,
         request: HttpRequest,
@@ -130,8 +130,6 @@ class CreatorFrontendV2:
             request=request,
             response=response,
         )
-
-
 
 
 class CreatorOutput(Output):
@@ -220,7 +218,6 @@ class CreatorBackend:
         create_tar_file(init_path, tar_file)
         return tar_file
 
-
     def devfile(self, project: str, collection: str) -> Path:
         """Scaffold a devfile.
 
@@ -233,7 +230,7 @@ class CreatorBackend:
             The tar file path.
         """
         # Path where the devfile will be added in the collection
-        add_path= self.tmp_dir / collection
+        add_path = self.tmp_dir / collection
 
         config = Config(
             resource_type="devfile",

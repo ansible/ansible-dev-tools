@@ -175,7 +175,7 @@ components:
         collection:
           type: string
         project:
-          type: string  
+          type: string
     Error:
       type: object
       properties:
