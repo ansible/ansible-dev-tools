@@ -222,7 +222,7 @@ class CreatorBackend:
         Returns:
             The tar file path.
         """
-        # Path where the devfile will be added
+        # Path where the devfile is going to be added
         add_path = self.tmp_dir / "devfile"
         add_path.mkdir(parents=True, exist_ok=True)
 
