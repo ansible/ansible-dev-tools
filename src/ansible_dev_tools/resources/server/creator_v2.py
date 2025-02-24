@@ -11,6 +11,7 @@ from ansible_creator._version import version as creator_version
 from ansible_creator.config import Config
 from ansible_creator.output import Output
 from ansible_creator.subcommands.init import Init
+from ansible_creator.subcommands.add import Add
 from ansible_creator.utils import TermFeatures
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse
@@ -103,6 +104,34 @@ class CreatorFrontendV2:
             request=request,
             response=response,
         )
+   
+    def devfile(
+        self,
+        request: HttpRequest,
+    ) -> FileResponse | HttpResponse:
+        """Add a devfile.
+
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
+        """
+        result = validate_request(request)
+        if isinstance(result, HttpResponse):
+            return result
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_file = CreatorBackend(Path(tmp_dir)).devfile(
+                **result.body,  # type: ignore[arg-type]
+            )
+            response = self._response_from_tar(tar_file)
+
+        return validate_response(
+            request=request,
+            response=response,
+        )
+
+
 
 
 class CreatorOutput(Output):
@@ -189,4 +218,33 @@ class CreatorBackend:
         Init(config).run()
         tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar"
         create_tar_file(init_path, tar_file)
+        return tar_file
+
+
+    def devfile(self, project: str, collection: str) -> Path:
+        """Scaffold a devfile.
+
+        Args:
+            project: The project type.
+            devfile_name: The name of the devfile.
+            config_params: Configuration parameters for devfile creation.
+
+        Returns:
+            The tar file path.
+        """
+        # Path where the devfile will be added in the collection
+        add_path= self.tmp_dir / collection
+
+        config = Config(
+            resource_type="devfile",
+            project=project,
+            creator_version=creator_version,
+            add_path=str(add_path),
+            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            collection=collection,
+            subcommand="add",
+        )
+        Add(config).run()
+        tar_file = self.tmp_dir / "devfile.tar"
+        create_tar_file(add_path, tar_file)
         return tar_file

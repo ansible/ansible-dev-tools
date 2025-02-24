@@ -102,6 +102,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /v2/creator/devfile:
+    post:
+      summary: Create a new devfile project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatorDevfile"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/tar:
+              schema:
+                AnyValue: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -146,6 +168,14 @@ components:
           type: string
         namespace:
           type: string
+    CreatorDevfile:
+      type: object
+      additionalProperties: false
+      properties:
+        collection:
+          type: string
+        project:
+          type: string  
     Error:
       type: object
       properties:
