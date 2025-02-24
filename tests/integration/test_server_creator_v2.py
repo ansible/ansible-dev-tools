@@ -79,3 +79,25 @@ def test_collection_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./roles/run/tasks/main.yml" in file.getnames()
+ 
+def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
+    """Test the devfile creation.
+
+    Args:
+        server_url: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
+    response = requests.post(
+        f"{server_url}/v2/creator/devfile",
+        json={},
+        timeout=10,
+    )
+    assert response.status_code == requests.codes.get("created")
+    assert response.headers["Content-Disposition"] == 'attachment; filename="devfile.tar"'
+    assert response.headers["Content-Type"] == "application/tar"
+    dest_file = tmp_path / "devfile.tar"
+    with dest_file.open(mode="wb") as tar_file:
+        tar_file.write(response.content)
+    with tarfile.open(dest_file) as file:
+        assert "./devfile.yaml" in file.getnames()
+ 
