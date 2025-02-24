@@ -218,28 +218,26 @@ class CreatorBackend:
         create_tar_file(init_path, tar_file)
         return tar_file
 
-    def devfile(self, project: str, collection: str) -> Path:
+    def devfile(self, collection: str) -> Path:
         """Scaffold a devfile.
 
         Args:
             project: The project type.
-            devfile_name: The name of the devfile.
-            config_params: Configuration parameters for devfile creation.
 
         Returns:
             The tar file path.
         """
         # Path where the devfile will be added in the collection
-        add_path = self.tmp_dir / collection
+        add_path = self.tmp_dir / "devfile"
+        add_path.mkdir(parents=True, exist_ok=True)
 
         config = Config(
             resource_type="devfile",
-            project=project,
             creator_version=creator_version,
             path=str(add_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
-            collection=collection,
             subcommand="add",
+            overwrite=True,
         )
         Add(config).run()
         tar_file = self.tmp_dir / "devfile.tar"

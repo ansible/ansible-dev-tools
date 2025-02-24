@@ -174,8 +174,6 @@ components:
       properties:
         collection:
           type: string
-        project:
-          type: string
     Error:
       type: object
       properties:
