@@ -222,7 +222,7 @@ class CreatorBackend:
         """Scaffold a devfile.
 
         Args:
-            project: The project type.
+            collection: The collection name.
 
         Returns:
             The tar file path.
