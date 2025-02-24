@@ -79,7 +79,8 @@ def test_collection_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./roles/run/tasks/main.yml" in file.getnames()
- 
+
+
 def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
     """Test the devfile creation.
 
@@ -100,4 +101,3 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./devfile.yaml" in file.getnames()
- 
