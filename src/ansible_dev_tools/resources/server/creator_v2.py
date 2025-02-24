@@ -236,7 +236,7 @@ class CreatorBackend:
             resource_type="devfile",
             project=project,
             creator_version=creator_version,
-            add_path=str(add_path),
+            path=str(add_path),
             output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
             collection=collection,
             subcommand="add",
