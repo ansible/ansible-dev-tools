@@ -37,9 +37,11 @@ def test_error_devfile_v2(server_url: str) -> None:
     Raises:
         AssertionError: If the test assertions fail (e.g., response status code or tar content).
     """
-    #To simulate an error, we are sending the request with the get method as the api works with empty request body as well.
+    # To simulate an error, we are sending the request with the get method as the api works with empty request body as well.
     response = requests.get(f"{server_url}/v2/creator/devfile", timeout=10)
-    assert response.status_code == requests.codes.get("bad_request"),f"Expected 400 but got {response.status_code}"
+    assert response.status_code == requests.codes.get("bad_request"), (
+        f"Expected 400 but got {response.status_code}"
+    )
     assert response.text == "Operation get not found for " + f"{server_url}/v2/creator/devfile"
 
 
