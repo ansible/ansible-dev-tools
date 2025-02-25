@@ -32,7 +32,6 @@ def test_error_devfile_v2(server_url: str) -> None:
 
     Args:
         server_url: The server URL.
-        resource: The resource to test.
 
     Raises:
         AssertionError: If the test assertions fail (e.g., response status code or tar content).
