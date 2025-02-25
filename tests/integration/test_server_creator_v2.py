@@ -27,6 +27,22 @@ def test_error_v2(server_url: str, resource: str) -> None:
     assert response.text == "Missing required request body"
 
 
+def test_error_devfile_v2(server_url: str) -> None:
+    """Test the error response when a request body is sent unexpectedly.
+
+    Args:
+        server_url: The server URL.
+        resource: The resource to test.
+
+    Raises:
+        AssertionError: If the test assertions fail (e.g., response status code or tar content).
+    """
+    #To simulate an error, we are sending the request with the get method as the api works with empty request body as well.
+    response = requests.get(f"{server_url}/v2/creator/devfile", timeout=10)
+    assert response.status_code == requests.codes.get("bad_request"),f"Expected 400 but got {response.status_code}"
+    assert response.text == "Operation get not found for " + f"{server_url}/v2/creator/devfile"
+
+
 def test_playbook_v2(server_url: str, tmp_path: Path) -> None:
     """Test the playbook creation.
 
@@ -87,6 +103,9 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
     Args:
         server_url: The server URL.
         tmp_path: Pytest tmp_path fixture.
+
+    Raises:
+        AssertionError: If the test assertions fail (e.g., response status code or tar content).
     """
     response = requests.post(
         f"{server_url}/v2/creator/devfile",
