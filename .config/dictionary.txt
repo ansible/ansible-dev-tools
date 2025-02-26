@@ -26,6 +26,7 @@ mknod
 modifyitems
 netcommon
 opencontainers
+pinentry
 pkgmgr
 pylibssh
 seccomp
