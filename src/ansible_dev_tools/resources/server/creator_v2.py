@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 import tarfile
 import tempfile
 
@@ -18,9 +17,6 @@ from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse
 
 from ansible_dev_tools.server_utils import validate_request, validate_response
-
-
-logger = logging.getLogger(__name__)
 
 
 def create_tar_file(init_path: Path, tar_file: Path) -> None:
@@ -145,7 +141,6 @@ class CreatorFrontendV2:
         Returns:
             File or error response.
         """
-        logger.info("devcontainer view is called")
         result = validate_request(request)
         if isinstance(result, HttpResponse):
             return result
