@@ -43,6 +43,7 @@ def test_error_devfile_v2(server_url: str) -> None:
     )
     assert response.text == "Operation get not found for " + f"{server_url}/v2/creator/devfile"
 
+
 def test_error_devcontainer_v2(server_url: str) -> None:
     """Test the error response when a request body is sent unexpectedly.
 
@@ -137,6 +138,7 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./devfile.yaml" in file.getnames()
+
 
 def test_devcontainer_v2(server_url: str, tmp_path: Path) -> None:
     """Test the devfile creation.

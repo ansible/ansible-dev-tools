@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import tarfile
 import tempfile
 
@@ -17,9 +18,10 @@ from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse
 
 from ansible_dev_tools.server_utils import validate_request, validate_response
-import logging
+
 
 logger = logging.getLogger(__name__)
+
 
 def create_tar_file(init_path: Path, tar_file: Path) -> None:
     """Create a tar file from the given directory.
@@ -130,7 +132,7 @@ class CreatorFrontendV2:
             request=request,
             response=response,
         )
-    
+
     def devcontainer(
         self,
         request: HttpRequest,
