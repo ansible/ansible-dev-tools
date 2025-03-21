@@ -162,4 +162,4 @@ def test_devcontainer_v2(server_url: str, tmp_path: Path) -> None:
     with dest_file.open(mode="wb") as tar_file:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
-        assert "./devcontainer.yaml" in file.getnames()
+        assert "./.devcontainer/docker" in file.getnames()
