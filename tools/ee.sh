@@ -80,6 +80,8 @@ pushd docs/examples
 
 podman --version
 crun --version
+sudo apt-get update && sudo apt-get upgrade
+crun --version
 
 ansible-builder build
 popd
