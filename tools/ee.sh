@@ -78,6 +78,7 @@ pytest -v --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --ima
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
 
+podman --version
 crun --version
 
 ansible-builder build
