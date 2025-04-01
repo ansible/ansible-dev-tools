@@ -9,6 +9,7 @@ arcname
 autoplay
 autouse
 capsys
+cgroupfs
 codespaces
 collectonly
 confest
