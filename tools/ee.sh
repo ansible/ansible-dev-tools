@@ -77,13 +77,7 @@ mk containers check "$IMAGE_NAME" --engine="${ADT_CONTAINER_ENGINE}" --max-size=
 pytest -v --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
-
-podman --version
-crun --version
-sudo apt-get update && sudo apt-get upgrade
-crun --version
-
-ansible-builder build
+ansible-builder build --container-runtime="${ADT_CONTAINER_ENGINE}"
 popd
 
 if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
