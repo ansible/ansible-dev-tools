@@ -9,12 +9,10 @@ arcname
 autoplay
 autouse
 capsys
-cgroupfs
 codespaces
 collectonly
 confest
 containerfile
-crun
 devcontainer
 devel
 devfile
