@@ -28,6 +28,7 @@ urlpatterns = (
     path(route="v2/creator/playbook", view=CreatorFrontendV2().playbook),
     path(route="v2/creator/collection", view=CreatorFrontendV2().collection),
     path(route="v2/creator/devfile", view=CreatorFrontendV2().devfile),
+    path(route="v2/creator/devcontainer", view=CreatorFrontendV2().devcontainer),
 )
 
 

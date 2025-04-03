@@ -129,6 +129,30 @@ class CreatorFrontendV2:
             response=response,
         )
 
+    def devcontainer(
+        self,
+        request: HttpRequest,
+    ) -> FileResponse | HttpResponse:
+        """Add a devcontainer.
+
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
+        """
+        result = validate_request(request)
+        if isinstance(result, HttpResponse):
+            return result
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_file = CreatorBackend(Path(tmp_dir)).devcontainer()
+            response = self._response_from_tar(tar_file)
+
+        return validate_response(
+            request=request,
+            response=response,
+        )
+
 
 class CreatorOutput(Output):
     """The creator output."""
@@ -236,5 +260,28 @@ class CreatorBackend:
         )
         Add(config).run()
         tar_file = self.tmp_dir / "devfile.tar"
+        create_tar_file(add_path, tar_file)
+        return tar_file
+
+    def devcontainer(self) -> Path:
+        """Scaffold a devcontainer.
+
+        Returns:
+            The tar file path.
+        """
+        # Path where the container is going to be added
+        add_path = self.tmp_dir / "devcontainer"
+        add_path.mkdir(parents=True, exist_ok=True)
+
+        config = Config(
+            resource_type="devcontainer",
+            creator_version=creator_version,
+            path=str(add_path),
+            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            subcommand="add",
+            overwrite=True,
+        )
+        Add(config).run()
+        tar_file = self.tmp_dir / "devcontainer.tar"
         create_tar_file(add_path, tar_file)
         return tar_file
