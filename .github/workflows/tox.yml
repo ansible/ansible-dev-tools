@@ -128,7 +128,7 @@ jobs:
           git checkout -b update-devspaces-image-${{ github.event.release.tag_name }}
           sed -i "s|image:.*|image: ghcr.io/ansible/ansible-devspaces@sha256:${{ github.event.release.tag_name }}|" devfile.yaml
           git add devfile.yaml
-          git commit -m "Update devspaces-container image to ${{ github.event.release.tag_name }}"
+          git commit -m "Update devspaces container image SHA"
           git push origin update-devspaces-image-${{ github.event.release.tag_name }}
 
       - name: Create a pull request
@@ -137,8 +137,8 @@ jobs:
         run: |
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
           -d '{
-            "title": "Update devspaces-container image to '${{ github.event.release.tag_name }}'",
-            "body": "This PR updates the devspaces-container image to the latest release: '${{ github.event.release.tag_name }}'.",
+            "title": "Update ansible-devspaces container image",
+            "body": "This PR updates the ansible-devspaces container image SHA to the latest.",
             "head": "update-devspaces-image-'${{ github.event.release.tag_name }}'",
             "base": "main"
           }' \
