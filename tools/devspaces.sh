@@ -22,7 +22,7 @@ ln -f tools/setup-image.sh devspaces/context
 # we force use of linux/amd64 platform because source image supports only this
 # platform and without it, it will fail to cross-build when task runs on arm64.
 # --metadata-file=out/devspaces.meta --no-cache
-$ADT_CONTAINER_ENGINE buildx build --tag=$IMAGE_NAME --platform=linux/amd64 devspaces/context -f devspaces/Containerfile
+$ADT_CONTAINER_ENGINE buildx build --tag=$IMAGE_NAME --platform=linux/amd64 devspaces/context -f devspaces/Containerfile --sbom=true
 
 mk containers check $IMAGE_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=1600 --max-layers=23
 
