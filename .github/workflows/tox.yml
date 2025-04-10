@@ -135,14 +135,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
-          -d '{
-            "title": "Update ansible-devspaces container image",
-            "body": "This PR updates the ansible-devspaces container image SHA to the latest.",
-            "head": "update-devspaces-image-'${{ github.event.release.tag_name }}'",
-            "base": "main"
-          }' \
-          https://api.github.com/repos/redhat-developer-demos/ansible-devspaces-demo/pulls
+          gh pr create \
+            --title "Update ansible-devspaces container image" \
+            --body "This PR updates the ansible-devspaces container image SHA to the latest." \
+            --head "update-devspaces-image-'${{ github.event.release.tag_name }}'" \
+            --base "main" \
+            --repo "github.com/redhat-developer-demos/ansible-devspaces-demo"
 
   publish-wheel:
     needs:
