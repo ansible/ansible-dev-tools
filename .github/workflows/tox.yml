@@ -120,8 +120,6 @@ jobs:
         run: |
           gh repo fork git@github.com:redhat-developer-demos/ansible-devspaces-demo.git --clone
           cd ansible-devspaces-demo
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Create a new branch, update the file and push the branch
         run: |
