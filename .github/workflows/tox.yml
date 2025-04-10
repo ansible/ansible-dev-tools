@@ -116,9 +116,9 @@ jobs:
           docker push "ghcr.io/ansible/ansible-devspaces:${{ github.event.release.tag_name }}"
           docker push "ghcr.io/ansible/ansible-devspaces:latest"
 
-      - name: Clone the target repository
+      - name: Fork and Clone the target repository
         run: |
-          git clone https://github.com/redhat-developer-demos/ansible-devspaces-demo.git
+          gh repo fork git@github.com:redhat-developer-demos/ansible-devspaces-demo.git --clone
           cd ansible-devspaces-demo
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
