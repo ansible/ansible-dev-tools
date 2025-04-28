@@ -3,10 +3,10 @@
 ansible-builder==3.1.0
 ansible-compat==25.1.4
 ansible-core==2.18.2
-ansible-creator==25.3.1
-ansible-dev-environment==25.1.0
+ansible-creator==25.4.1
+ansible-dev-environment==25.4.0
 ansible-lint==25.2.0
-ansible-navigator==25.4.0
+ansible-navigator==25.4.1
 ansible-runner==2.4.0
 ansible-sign==0.1.1
 attrs==25.1.0
@@ -49,7 +49,7 @@ pycparser==2.22
 pygments==2.19.1
 pyproject-api==1.9.0
 pytest==8.3.4
-pytest-ansible==25.4.0
+pytest-ansible==25.4.1
 pytest-xdist==3.6.1
 python-daemon==3.1.2
 python-gnupg==0.5.4
