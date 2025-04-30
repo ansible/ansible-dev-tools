@@ -124,13 +124,14 @@ jobs:
           gh repo fork git@github.com:redhat-developer-demos/ansible-devspaces-demo.git --clone
           cd ansible-devspaces-demo
 
-      - name: Create a new branch, update the file and push the branch
+      - name: Create a new branch, update the file, push the branch and create a pull request
         if: github.event_name == 'release' && github.event.action == 'published'
         env:
           GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
         run: |
           git config --global user.name "ansibuddy"
-          git config --global user.email "ansible-devtools@redhat.com"
+          git config --global user.email "ansibuddy@users.noreply.github.com"
+          git config --global url."https://${{ secrets.ANSIBUDDY_BOT_PAT }}@github.com/".insteadOf "https://github.com/"
           cd ansible-devspaces-demo
           git checkout -b update-devspaces-image-${{ github.event.release.tag_name }}
           export SHA=$(docker manifest inspect -v ghcr.io/ansible/ansible-devspaces:latest | jq -r '[.Descriptor.digest][0]')
@@ -138,17 +139,10 @@ jobs:
           git add devfile.yaml
           git commit -m "Update devspaces container image SHA"
           git push origin update-devspaces-image-${{ github.event.release.tag_name }}
-
-      - name: Create a pull request
-        if: github.event_name == 'release' && github.event.action == 'published'
-        env:
-          GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
-        run: |
-          cd ansible-devspaces-demo
           gh pr create \
             --title "Update ansible-devspaces container image" \
             --body "This PR updates the ansible-devspaces container image SHA to the latest." \
-            --head "update-devspaces-image-'${{ github.event.release.tag_name }}'" \
+            --head "ansibuddy:update-devspaces-image-'${{ github.event.release.tag_name }}'" \
             --base "main" \
             --repo "github.com/redhat-developer-demos/ansible-devspaces-demo"
 
