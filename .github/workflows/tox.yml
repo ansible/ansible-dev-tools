@@ -175,6 +175,7 @@ jobs:
           sed -i "s|image:.*|image: ghcr.io/ansible/ansible-devspaces@${{ env.SHA }}|" devfile.yaml
           git add devfile.yaml
           git commit -m "Update devspaces container image SHA"
+          git remote -v
           git push origin update-devspaces-image-${{ github.event.release.tag_name }}
 
       - name: Create a pull request
