@@ -126,6 +126,8 @@ jobs:
 
       - name: Create a new branch, update the file and push the branch
         if: github.event_name == 'release' && github.event.action == 'published'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
         run: |
           git config --global user.name "ansibuddy"
           git config --global user.email "ansible-devtools@redhat.com"
