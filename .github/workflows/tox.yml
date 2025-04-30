@@ -168,6 +168,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
         run: |
           git config --global user.name "ansibuddy"
+          git config --global user.email "ansibuddy@users.noreply.github.com"
           git config --global url."https://${{ secrets.ANSIBUDDY_BOT_PAT }}@github.com/".insteadOf "https://github.com/"
           cd ansible-devspaces-demo
           git checkout -b update-devspaces-image-${{ github.event.release.tag_name }}
