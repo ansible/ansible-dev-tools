@@ -177,7 +177,7 @@ jobs:
           git add devfile.yaml
           git commit -m "Update devspaces container image SHA"
           git remote -v
-          git push origin update-devspaces-image-${{ github.event.release.tag_name }}
+          git push -f origin update-devspaces-image-${{ github.event.release.tag_name }}
 
       - name: Create a pull request
         env:
@@ -187,7 +187,7 @@ jobs:
           gh pr create \
             --title "Update ansible-devspaces container image" \
             --body "This PR updates the ansible-devspaces container image SHA to the latest." \
-            --head "update-devspaces-image-'${{ github.event.release.tag_name }}'" \
+            --head "update-devspaces-image-" \
             --base "main" \
             --repo "github.com/redhat-developer-demos/ansible-devspaces-demo"
 
