@@ -181,7 +181,7 @@ jobs:
           gh pr create \
             --title "Update ansible-devspaces container image" \
             --body "This PR updates the ansible-devspaces container image SHA to the latest." \
-            --head "update-devspaces-image-" \
+            --head "ansibuddy:update-devspaces-image-" \
             --base "main" \
             --repo "github.com/redhat-developer-demos/ansible-devspaces-demo"
 
