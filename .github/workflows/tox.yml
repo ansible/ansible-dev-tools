@@ -146,6 +146,30 @@ jobs:
             --base "main" \
             --repo "github.com/redhat-developer-demos/ansible-devspaces-demo"
 
+  update-devspaces-sha:
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Fork and Clone the target repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
+        run: |
+          gh repo fork git@github.com:redhat-developer-demos/ansible-devspaces-demo.git --clone
+          cd ansible-devspaces-demo
+      - name: Create a new branch, update the file
+        env:
+          GITHUB_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
+        run: |
+          git config --global user.name "ansibuddy"
+          git config --global user.email "ansibuddy@users.noreply.github.com"
+          git config --global url."https://${{ secrets.ANSIBUDDY_BOT_PAT }}@github.com/".insteadOf "https://github.com/"
+          cd ansible-devspaces-demo
+          git checkout -b update-devspaces-image-${{ github.event.release.tag_name }}
+          export SHA=$(docker manifest inspect -v ghcr.io/ansible/ansible-devspaces:latest | jq -r '[.Descriptor.digest][0]')
+          echo "Resolved SHA: $SHA"
+          sed -i "s|image:.*|image: ghcr.io/ansible/ansible-devspaces@${SHA}|" devfile.yaml
+          cat devfile.yaml | grep image
+
   publish-wheel:
     needs:
       - codeql
