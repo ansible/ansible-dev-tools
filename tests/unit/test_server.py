@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     import pytest
 
-    from ansible_dev_tools.subcommands.server import Server
+    from ansible_dev_tools.subcommands.subcmd_server import Server
 
 
 def test_server_debug_options(monkeypatch: pytest.MonkeyPatch, adt_server: Server) -> None:
