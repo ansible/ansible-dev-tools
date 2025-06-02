@@ -1,4 +1,4 @@
-# Ansible Workspace Environment Reference Image for Openshift DevSpaces
+# Ansible Workspace Environment Reference Image for OpenShift Dev Spaces
 
 An OpenShift Dev Spaces image specifically for Ansible development.
 
