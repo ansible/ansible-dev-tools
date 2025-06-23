@@ -21,6 +21,9 @@ def test_error_v2(server_url: str, resource: str) -> None:
     Args:
         server_url: The server URL.
         resource: The resource to test.
+
+    Raises:
+        AssertionError: If response status or text does not match expected values.
     """
     response = requests.post(f"{server_url}/v2/creator/{resource}", timeout=10)
     assert response.status_code == requests.codes.get("bad_request")
@@ -50,6 +53,9 @@ def test_playbook_v2(server_url: str, tmp_path: Path) -> None:
     Args:
         server_url: The server URL.
         tmp_path: Pytest tmp_path fixture.
+
+    Raises:
+        AssertionError: If response status, headers, or content does not match expected values.
     """
     response = requests.post(
         f"{server_url}/v2/creator/playbook",
@@ -79,6 +85,9 @@ def test_collection_v2(server_url: str, tmp_path: Path) -> None:
     Args:
         server_url: The server URL.
         tmp_path: Pytest tmp_path fixture.
+
+    Raises:
+        AssertionError: If response status, headers, or content does not match expected values.
     """
     response = requests.post(
         f"{server_url}/v2/creator/collection",

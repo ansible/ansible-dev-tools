@@ -34,6 +34,9 @@ def test_versions(exec_container: Callable[[str], subprocess.CompletedProcess[st
 
     Args:
         exec_container: The container executor.
+
+    Raises:
+        AssertionError: If package versions are not found in output.
     """
     versions = exec_container("adt --version")
     for pkg in PKGS:
@@ -46,6 +49,9 @@ def test_podman(exec_container: Callable[[str], subprocess.CompletedProcess[str]
 
     Args:
         exec_container: The container executor.
+
+    Raises:
+        AssertionError: If podman command fails.
     """
     result = exec_container("podman run hello")
     assert result.returncode == 0, "podman command failed"
@@ -61,6 +67,9 @@ def test_cinc(
     Args:
         infrastructure: The testing infrastructure.
         exec_container: The container executor.
+
+    Raises:
+        AssertionError: If container operations or path access fails.
     """
     # We do not want to accidentally pull here because we expected to load
     # the tar image into the container. Our scope is to test the image we did
@@ -113,6 +122,9 @@ def test_app(
         exec_container: The container executor.
         app: The app to test.
         command: Command used to test tool version and or presence.
+
+    Raises:
+        AssertionError: If app command fails or returns non-zero exit code.
     """
     result = exec_container(command if command else f"{app} --version")
     assert result.returncode == 0, f"{app} command failed"
@@ -124,6 +136,9 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
 
     Args:
         exec_container: The container executor.
+
+    Raises:
+        AssertionError: If zsh is not found in /etc/passwd.
     """
     result = exec_container("cat /etc/passwd | grep root | grep zsh")
     assert result.returncode == 0, "zsh not found in /etc/passwd"
@@ -143,6 +158,9 @@ def test_navigator_2_c_in_c(
         test_fixture_dir_container: The test fixture directory.
         tmp_path: The temporary directory.
         infrastructure: The testing infrastructure.
+
+    Raises:
+        AssertionError: If playbook execution does not show expected success output.
     """
     playbook = test_fixture_dir_container / "site.yml"
     result = exec_container(
@@ -171,6 +189,9 @@ def test_navigator_1(
         infrastructure: The testing infrastructure
         test_fixture_dir: The test fixture directory.
         tmp_path: The temporary directory.
+
+    Raises:
+        AssertionError: If command execution fails or does not show expected success output.
     """
     playbook = test_fixture_dir / "site.yml"
     cmd = (
@@ -242,6 +263,9 @@ def test_nav_collections(
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
         infrastructure: The testing infrastructure
+
+    Raises:
+        AssertionError: If expected collections are not found in output.
     """
     cmd = (
         f"ansible-navigator collections --lf {tmp_path}/navigator.log"
@@ -267,6 +291,9 @@ def test_nav_images(
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
         infrastructure: The testing infrastructure
+
+    Raises:
+        AssertionError: If expected images are not found in output.
     """
     cmd = (
         f"ansible-navigator images --lf {tmp_path}/nav.log"
@@ -289,6 +316,9 @@ def test_nav_playbook(
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
         infrastructure: The testing infrastructure
+
+    Raises:
+        AssertionError: If playbook creation or execution does not show expected output.
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
     stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=15)
@@ -310,6 +340,9 @@ def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     Args:
         container_tmux: A tmux session attached to the container.
         tmp_path: The temporary directory
+
+    Raises:
+        AssertionError: If collection creation or navigation does not show expected output.
     """
     namespace = "test_ns"
     name = "test_name"
@@ -337,6 +370,9 @@ def test_builder(
         exec_container: The container executor.
         test_fixture_dir_container: The test fixture directory.
         tmp_path: The temporary directory.
+
+    Raises:
+        AssertionError: If ansible-builder does not complete successfully.
     """
     ee_file = test_fixture_dir_container / "execution-environment.yml"
     result = exec_container(f"ANSIBLE_NOCOLOR=1 ansible-builder build -f {ee_file} -c {tmp_path}")

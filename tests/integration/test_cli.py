@@ -19,6 +19,9 @@ def test_version(
     Args:
         monkeypatch: Pytest monkeypatch fixture.
         capsys: Pytest capsys fixture.
+
+    Raises:
+        AssertionError: If package versions are not found in output.
     """
     monkeypatch.setattr("sys.argv", ["adt", "--version"])
     with pytest.raises(SystemExit):
@@ -37,6 +40,9 @@ def test_server_fail_no_deps(
     Args:
         monkeypatch: Pytest monkeypatch fixture.
         capsys: Pytest capsys fixture.
+
+    Raises:
+        AssertionError: If expected error message is not found in output.
     """
     monkeypatch.setattr("sys.argv", ["adt", "server"])
 

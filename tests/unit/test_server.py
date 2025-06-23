@@ -17,6 +17,9 @@ def test_server_debug_options(monkeypatch: pytest.MonkeyPatch, adt_server: Serve
     Args:
         monkeypatch: pytest fixture for patching.
         adt_server: The server instance.
+
+    Raises:
+        AssertionError: If server options or call status do not match expected values.
     """
     called = False
     options = {}
