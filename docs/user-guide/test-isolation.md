@@ -37,7 +37,6 @@ following predictable behaviors:
 ## Isolated mode (default)
 
 - First folder that is not read-only from the list below will be used as cache directory and also :
-
   - `$VIRTUAL_ENV/.ansible` for anything but collections, those will be inside `lib/python3.*/site-packages/ansible_collections` because this makes them available to ansible-core without any additional configuration.
   - `$PROJECT_ROOT/.ansible`
   - `$TMPDIR/.ansible-<sha256>` for temporary installations

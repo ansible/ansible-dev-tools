@@ -84,12 +84,10 @@ jobs:
 The repo that is being released must have the following environments created:
 
 - **Name: release**
-
   - `AH_TOKEN`
   - `ANSIBLE_GALAXY_API_KEY`
 
 - **Name: push**
-
   - `BOT_PAT`
 
 - `refresh_ah_token`: Make sure this workflow in netcommon has run successfully in the previous run. If not, it must be triggered to re-run and ensure it is successfully executed.
