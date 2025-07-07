@@ -31,7 +31,7 @@ NOTE: For a more detailed explanation about using Ansible Creator in the VS Code
 - Navigate to the collection directory and run:
 
 ```console
-$ ade install -e .
+$ ade install --im cfg -e .
 ```
 
 - This installation method adds the collection to the system paths so that Ansible knows about it. Additionally, it enhances the development process by allowing on-the-go changes to the module code.
