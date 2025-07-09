@@ -39,7 +39,7 @@ import requests
 
 import ansible_dev_tools  # noqa: F401
 
-from ansible_dev_tools.subcommands.server import Server
+from ansible_dev_tools.subcommands.subcmd_server import Server
 
 
 if TYPE_CHECKING:

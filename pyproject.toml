@@ -30,7 +30,7 @@ license = {text = "GPL-3.0-only"}
 maintainers = [{"email" = "info@ansible.com", "name" = "Ansible by Red Hat"}]
 name = "ansible-dev-tools"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 [project.scripts]
 adt = "ansible_dev_tools.cli:main"
@@ -375,6 +375,7 @@ optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
 # 'lock' will work only if you use a python version supported by the latest
 # release of ansible-core, otherwise installation will fail
 optional-dependencies.lock = {file = [".config/requirements-lock.txt"]}
+optional-dependencies.mcp = {file = [".config/requirements-mcp.in"]}
 optional-dependencies.server = {file = [".config/requirements-server.in"]}
 optional-dependencies.test = {file = [".config/requirements-test.in"]}
 

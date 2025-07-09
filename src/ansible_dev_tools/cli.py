@@ -32,7 +32,7 @@ class Cli:
         Args:
             subcommand: The subcommand to run.
         """
-        subcommand_module = f"ansible_dev_tools.subcommands.{subcommand}"
+        subcommand_module = f"ansible_dev_tools.subcommands.subcmd_{subcommand}"
         subcommand_cls_name = f"{subcommand}".capitalize()
         subcommand_cls = getattr(import_module(subcommand_module), subcommand_cls_name)
         subcommand_cls(**self.args).run()

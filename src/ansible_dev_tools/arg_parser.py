@@ -55,4 +55,10 @@ def parse() -> argparse.Namespace:
         help="Run Ansible Devtools server with debug logging enabled.",
     )
 
+    _mcp_command_parser = subparsers.add_parser(
+        "mcp",
+        help="Start the Ansible devtools MCP server.",
+        description=("Starts the Ansible devtools MCP server."),
+    )
+
     return parser.parse_args()
