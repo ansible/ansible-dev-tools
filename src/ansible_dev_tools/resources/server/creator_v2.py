@@ -281,7 +281,7 @@ class CreatorBackend:
             resource_type="pattern",
             overwrite=True,
         )
-        Add(config).run()
+        Add(config, skip_collection_check=True).run()
         tar_file = self.tmp_dir / f"{pattern_name}.tar"
         create_tar_file(add_path, tar_file)
         return tar_file
