@@ -118,6 +118,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /v2/creator/pattern:
+    post:
+      summary: Add a pattern to an existing collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatorPattern"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/tar:
+              schema:
+                AnyValue: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -141,6 +163,12 @@ components:
         collection:
           type: string
         project:
+          type: string
+    CreatorPattern:
+      type: object
+      additionalProperties: false
+      properties:
+        pattern_name:
           type: string
     CreatorPlaybook:
       type: object
