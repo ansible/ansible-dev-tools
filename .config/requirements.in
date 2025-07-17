@@ -1,6 +1,6 @@
 ansible-builder
 ansible-compat>=25.1.4
-ansible-creator>=24.10.1
+ansible-creator>=25.7.0
 ansible-dev-environment
 ansible-lint>=25.1.3
 ansible-navigator
