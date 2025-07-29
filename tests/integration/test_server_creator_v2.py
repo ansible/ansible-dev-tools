@@ -121,3 +121,28 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./devfile.yaml" in file.getnames()
+
+
+def test_pattern_v2(server_url: str, tmp_path: Path) -> None:
+    """Test the pattern creation.
+
+    Args:
+        server_url: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
+    pattern_name = "foo"
+    response = requests.post(
+        f"{server_url}/v2/creator/pattern",
+        json={
+            "pattern_name": pattern_name,
+        },
+        timeout=10,
+    )
+    assert response.status_code == requests.codes.get("created")
+    assert response.headers["Content-Disposition"] == f'attachment; filename="{pattern_name}.tar"'
+    assert response.headers["Content-Type"] == "application/tar"
+    dest_file = tmp_path / f"{pattern_name}.tar"
+    with dest_file.open(mode="wb") as tar_file:
+        tar_file.write(response.content)
+    with tarfile.open(dest_file) as file:
+        assert "./extensions" in file.getnames()
