@@ -138,6 +138,9 @@ def test_pattern_v2(server_url: str, tmp_path: Path) -> None:
     Args:
         server_url: The server URL.
         tmp_path: Pytest tmp_path fixture.
+
+    Raises:
+        AssertionError: If the test assertions fail (e.g., response status code or tar content).
     """
     pattern_name = "foo"
     response = requests.post(
