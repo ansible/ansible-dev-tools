@@ -99,7 +99,7 @@ repos:
         args:
           - --output-format=colorized
         additional_dependencies:
-          - ansible-creator
+          - ansible-creator>=25.7.0
           - ansible-navigator
           - django
           - gunicorn
@@ -113,7 +113,7 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
-          - ansible-creator
+          - ansible-creator>=25.7.0
           - ansible-navigator
           - django-stubs
           - jinja2
