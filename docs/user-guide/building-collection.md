@@ -10,11 +10,11 @@ This guide illustrates a comprehensive Ansible development workflow that showcas
 
 ## Scaffolding a collection using ansible-creator
 
-- Open VS Code and click the Ansible icon in the activity bar to access Ansible Creator section. Click on "Get Started" under that section to open the menu page of Ansible Creator in VS Code.
+- Open VS Code and click the Ansible icon in the activity bar to access Ansible Creator section. Click on "Getting Started" under that section to open the menu page of Ansible Creator in VS Code.
 
 - Check system requirements and install ansible-creator if needed. Ensure all requirements in the `system requirements` box have green ticks.
 
-- Click "Initialize a collection" to open the "Init" interface. Fill the form with the collection name, initialization path, verbosity, and logging options. Click "Create" to scaffold the collection in the desired location. You have the open to review the logs or open the log file in VS Code editor for details.
+- Click "New collection project" to open the "Init" interface. Fill the form with the "Namespace", "Collection", "Init path", verbosity, and logging options. Click "Create" to scaffold the collection in the desired location. You have the open to review the logs or open the log file in VS Code editor for details.
 
 - Click on `Open collection` button to add the collection folder to the workspace.
 
