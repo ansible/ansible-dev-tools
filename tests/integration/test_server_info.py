@@ -10,6 +10,9 @@ def test_metadata(server_url: str) -> None:
 
     Args:
         server_url: The server URL.
+
+    Raises:
+        AssertionError: If response status, headers, or content does not match expected values.
     """
     endpoint = f"{server_url}/metadata"
 
