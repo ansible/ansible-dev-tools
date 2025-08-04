@@ -43,7 +43,7 @@ repos:
           )$
 
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: shellcheck
 
@@ -63,12 +63,12 @@ repos:
       - id: toml-sort-fix
 
   - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.5.0
+    rev: 1.6.0
     hooks:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.2
+    rev: v0.12.7
     hooks:
       - id: ruff
         args:
@@ -79,7 +79,7 @@ repos:
         types_or: [python, pyi]
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v9.0.1
+    rev: v9.2.0
     hooks:
       - id: cspell
         name: Spell check with cspell
@@ -109,7 +109,7 @@ repos:
           - pyyaml
 
   - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.16.1
+    rev: v1.17.1
     hooks:
       - id: mypy
         additional_dependencies:
