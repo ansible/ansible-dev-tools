@@ -43,6 +43,9 @@ def test_validate_request_pass(collection_request: HttpRequest) -> None:
 
     Args:
         collection_request: A Django request object
+
+    Raises:
+        AssertionError: If validation fails or returns unexpected results.
     """
     result = validate_request(collection_request)
     assert isinstance(result, RequestUnmarshalResult)
@@ -51,7 +54,11 @@ def test_validate_request_pass(collection_request: HttpRequest) -> None:
 
 
 def test_validate_request_fail() -> None:
-    """Test the validate_request function for failure."""
+    """Test the validate_request function for failure.
+
+    Raises:
+        AssertionError: If validation passes when it should fail.
+    """
     rf = RequestFactory()
     request = rf.get("/hello/")
     result = validate_request(request)
@@ -64,6 +71,9 @@ def test_validate_response_pass(collection_request: HttpRequest) -> None:
 
     Args:
         collection_request: A Django request object
+
+    Raises:
+        AssertionError: If validation fails or returns unexpected status code.
     """
     response = HttpResponse()
     response["Content-Type"] = "application/tar"
@@ -80,6 +90,9 @@ def test_validate_response_fail(collection_request: HttpRequest) -> None:
 
     Args:
         collection_request: A Django request object
+
+    Raises:
+        AssertionError: If validation passes when it should fail.
     """
     response = HttpResponse()
     response["Content-Type"] = "application/tar"

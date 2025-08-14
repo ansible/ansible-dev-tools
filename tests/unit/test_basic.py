@@ -11,6 +11,9 @@ def test_main() -> None:
     """Test the main entry point.
 
     Gives an error message due to missing subcommand.
+
+    Raises:
+        AssertionError: If the expected error code is not returned.
     """
     with pytest.raises(SystemExit) as exc:
         runpy.run_module("ansible_dev_tools.__main__", run_name="__main__")
@@ -22,6 +25,9 @@ def test_cli_main() -> None:
     """Test the main entry point.
 
     Gives an error message due to missing subcommand.
+
+    Raises:
+        AssertionError: If the expected error code is not returned.
     """
     with pytest.raises(SystemExit) as exc:
         runpy.run_module("ansible_dev_tools.cli", run_name="__main__")
