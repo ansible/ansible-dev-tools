@@ -31,8 +31,10 @@ pytest --only-container --container-engine="${ADT_CONTAINER_ENGINE}" --container
 if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
     $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}"
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
+    set +x  # Disable echo for lines with GITHUB_TOKEN
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
         echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
     fi
+    set -x
     $ADT_CONTAINER_ENGINE push "ghcr.io/ansible/ansible-devspaces-tmp:${GITHUB_SHA}"
 fi
