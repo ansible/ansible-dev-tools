@@ -4,7 +4,7 @@ ansible-builder==3.1.0
 ansible-compat==25.8.1
 ansible-core==2.18.7
 ansible-creator==25.7.0
-ansible-dev-environment==25.5.0
+ansible-dev-environment==25.8.0
 ansible-lint==25.5.0
 ansible-navigator==25.5.0
 ansible-runner==2.4.1
