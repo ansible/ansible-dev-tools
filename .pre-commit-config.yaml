@@ -23,7 +23,7 @@ repos:
   #   hooks:
   #     - id: actionlint
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-merge-conflict
@@ -68,7 +68,7 @@ repos:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.7
+    rev: v0.12.9
     hooks:
       - id: ruff
         args:
@@ -85,7 +85,7 @@ repos:
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.6.7"
+    rev: "0.6.10"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
@@ -93,7 +93,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/pycqa/pylint.git
-    rev: v3.3.7
+    rev: v3.3.8
     hooks:
       - id: pylint
         args:
