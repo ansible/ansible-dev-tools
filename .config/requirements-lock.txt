@@ -6,7 +6,7 @@ ansible-core==2.18.7
 ansible-creator==25.8.0
 ansible-dev-environment==25.8.0
 ansible-lint==25.8.2
-ansible-navigator==25.5.0
+ansible-navigator==25.8.0
 ansible-runner==2.4.1
 ansible-sign==0.1.2
 attrs==25.3.0
@@ -49,7 +49,7 @@ pycparser==2.22
 pygments==2.19.2
 pyproject-api==1.9.1
 pytest==8.4.1
-pytest-ansible==25.5.0
+pytest-ansible==25.8.0
 pytest-plus==0.8.1
 pytest-sugar==1.1.0
 pytest-xdist==3.8.0
