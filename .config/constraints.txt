@@ -142,7 +142,7 @@ tinycss2==1.4.0
 toml-sort==0.24.2
 tomlkit==0.13.3
 tox==4.28.4
-tox-ansible==25.5.0
+tox-ansible==25.8.0
 types-pyyaml==6.0.12.20250809
 types-requests==2.32.4.20250809
 tzdata==2025.2
