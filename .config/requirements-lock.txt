@@ -34,7 +34,7 @@ lockfile==0.12.2
 markdown-it-py==4.0.0
 markupsafe==3.0.2
 mdurl==0.1.2
-molecule==25.5.0
+molecule==25.7.0
 mypy-extensions==1.1.0
 onigurumacffi==1.4.1
 packaging==25.0
