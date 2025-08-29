@@ -18,6 +18,7 @@ fi
 rm -f devspaces/context/*.whl
 ln -f dist/*.whl devspaces/context
 ln -f tools/setup-image.sh devspaces/context
+ln -f .ohmyposh.omp.json devspaces/context
 
 # we force use of linux/amd64 platform because source image supports only this
 # platform and without it, it will fail to cross-build when task runs on arm64.

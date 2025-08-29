@@ -22,32 +22,34 @@ microdnf remove -y subscription-manager dnf-plugin-subscription-manager
 # gcc: for ansible-pylibssh, onigurumacffi/arm64
 # ncurses: for ansible-navigator
 # oniguruma-devel: onigurumacffi/arm64 (does not have binary)
+# unzip: oh-my-posh installer
 microdnf install -q -y \
-tar \
-echo \
-podman \
-fuse-overlayfs \
-openssh-clients \
-zsh \
-util-linux-user \
-which \
-git \
-nano \
-vim \
 dumb-init \
+echo \
+fuse-overlayfs \
 gcc \
+git \
 git-core \
 libssh-devel \
-python3-markupsafe \
+nano \
 ncurses \
 oniguruma-devel \
+openssh-clients \
+podman \
 python3-bcrypt \
 python3-cffi \
 python3-devel \
+python3-markupsafe \
 python3-pip \
 python3-pyyaml \
 python3-ruamel-yaml \
 python3-wheel \
+tar \
+unzip \
+util-linux-user \
+vim \
+which \
+zsh \
 --exclude container-selinux
 
 microdnf -q clean all
