@@ -163,7 +163,7 @@ jobs:
       TOX_EXTRA_BINDEP: 0
     steps:
       - name: Switch to using Python 3.11 by default
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
