@@ -101,7 +101,7 @@ for file in /home/runner/.ansible/galaxy_token /etc/passwd /etc/group; do
 done
 
 # this must run as user root
-find "$DIR/dist/" -iname '*.whl' -maxdepth 1 -exec python3 -m pip install --no-cache-dir '{}[server,lock]' \;
+find "$DIR/dist/" -iname '*.whl' -maxdepth 1 -exec python3 -m pip install --no-cache-dir '{}[server]' \;
 
 mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles
 git config --system --add safe.directory /

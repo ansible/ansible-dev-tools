@@ -2,4 +2,10 @@
 # cspell: ignore exuo
 set -exuo pipefail
 
-sed -i '/GITHUB_TOKEN/d' .tox/*/log/*.log
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX sed
+    sed -i '' '/GITHUB_TOKEN/d' .tox/*/log/*.log
+else
+    # GNU sed
+    sed -i'' '/GITHUB_TOKEN/d' .tox/*/log/*.log
+fi

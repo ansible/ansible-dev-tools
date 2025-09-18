@@ -5,12 +5,55 @@ requires = [
   "setuptools_scm[toml] >= 7.0.5" # required for "no-local-version" scheme
 ]
 
+[dependency-groups]
+dev = [
+  "ansible-dev-tools[server]",
+  "black>=25.1.0",
+  "coverage[toml]>=7.10.5",
+  "django-stubs>=5.2.2",
+  "libtmux>=0.46.2",
+  "mypy>=1.17.1",
+  "pip>=25.2",
+  "pre-commit>=4.3.0",
+  "pydoclint>=0.6.10",
+  "pylint>=3.3.8",
+  "pytest>=8.4.1",
+  "pytest-instafail>=0.5.0",
+  "pytest-xdist>=3.8.0",
+  "requests>=2.32.5",
+  "ruff>=0.12.11",
+  "toml-sort>=0.24.2",
+  "tox>=4.28.4",
+  "types-pyyaml>=6.0.12.20250822",
+  "types-requests>=2.32.4.20250809"
+]
+docs = [
+  "mkdocs-ansible>=25.5.0",
+  "mkdocs-pymdownx-material-extras>=2.8",
+  "pymdown-extensions>=10.16.1"
+]
+ee = [
+  "ansible-builder>=3.1.0",
+  "build>=1.3.0",
+  "mk>=3.0.0",
+  "setuptools>=80.9.0"
+]
+lint = [
+  "pre-commit-uv>=4.1.4",
+  "pre-commit>=4.1"
+]
+pkg = [
+  "build>=0.9",
+  "pip>=25.2",
+  "pipx>=1.7.1",
+  "twine>=4.0.2"
+]
+
 [project]
 authors = [{"email" = "bthornto@redhat.com", "name" = "Bradley A. Thornton"}]
 classifiers = [
   'Development Status :: 5 - Production/Stable',
   'Intended Audience :: Developers',
-  'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
   'Operating System :: OS Independent',
   'Programming Language :: Python :: 3 :: Only',
   'Programming Language :: Python :: 3',
@@ -23,14 +66,37 @@ classifiers = [
   'Topic :: Software Development',
   'Topic :: Utilities'
 ]
+dependencies = [
+  "ansible-builder>=3.1.0",
+  "ansible-compat>=25.1.4",
+  "ansible-creator>=25.7.0",
+  "ansible-dev-environment>=25.8.0",
+  "ansible-lint>=25.1.3",
+  "ansible-navigator>=25.8.0",
+  "ansible-sign>=0.1.2",
+  "molecule>=25.3.0",
+  "pytest-ansible>=25.8.0",
+  "setuptools>=80.9.0",
+  "tox-ansible>=25.8.0"
+]
 description = "Ansible Developtment Tools kit bundles all tools needed for content creation and testing."
-dynamic = ["dependencies", "optional-dependencies", "version"]
+dynamic = ["version"]
 keywords = ["ansible"]
-license = {text = "GPL-3.0-only"}
+license = "GPL-3.0-only"
 maintainers = [{"email" = "info@ansible.com", "name" = "Ansible by Red Hat"}]
 name = "ansible-dev-tools"
 readme = "README.md"
 requires-python = ">=3.10"
+
+[project.optional-dependencies]
+container = [
+  "ansible-pylibssh==1.2.2"
+]
+server = [
+  "django>4.1,<5.2",
+  "gunicorn>=23.0.0",
+  "openapi-core>=0.19.1"
+]
 
 [project.scripts]
 adt = "ansible_dev_tools.cli:main"
@@ -60,7 +126,7 @@ branch = false # https://github.com/nedbat/coveragepy/issues/605
 concurrency = ["multiprocessing", "thread"]
 omit = ["_version.py"]
 parallel = true
-source_pkgs = ["ansible_dev_tools"]
+source = ["src"]
 
 [tool.mypy]
 cache_dir = "./.cache/.mypy"
@@ -369,15 +435,6 @@ required-imports = ["from __future__ import annotations"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.setuptools.dynamic]
-dependencies = {file = [".config/requirements.in"]}
-optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
-# 'lock' will work only if you use a python version supported by the latest
-# release of ansible-core, otherwise installation will fail
-optional-dependencies.lock = {file = [".config/requirements-lock.txt"]}
-optional-dependencies.server = {file = [".config/requirements-server.in"]}
-optional-dependencies.test = {file = [".config/requirements-test.in"]}
-
 [tool.setuptools_scm]
 # To prevent accidental pick of mobile version tags such 'v6'
 git_describe_command = [
@@ -390,7 +447,7 @@ git_describe_command = [
   "v*.*"
 ]
 local_scheme = "no-local-version"
-write_to = "src/ansible_dev_tools/_version.py"
+version_file = "src/ansible_dev_tools/_version.py"
 
 [tool.tomlsort]
 in_place = true
@@ -401,8 +458,5 @@ sort_table_keys = true
 # incompatible with Windows
 environments = ["platform_system != 'Windows'"]
 
-[tool.uv.pip]
-# annotation-style = "line"
-custom-compile-command = "tox run -e deps"
-no-annotate = true
-no-emit-package = ["pip", "resolvelib", "typing_extensions", "uv", "pip", "distribute", "setuptools"]
+[tool.uv.sources]
+ansible-dev-tools = {workspace = true}
