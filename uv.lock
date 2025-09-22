@@ -138,7 +138,6 @@ server = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "ansible-dev-tools", extra = ["server"], marker = "sys_platform != 'win32'" },
     { name = "black", marker = "sys_platform != 'win32'" },
     { name = "coverage", extra = ["toml"], marker = "sys_platform != 'win32'" },
     { name = "django-stubs", marker = "sys_platform != 'win32'" },
@@ -203,7 +202,6 @@ provides-extras = ["container", "server"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "ansible-dev-tools", extras = ["server"], editable = "." },
     { name = "black", specifier = ">=25.1.0" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.10.5" },
     { name = "django-stubs", specifier = ">=5.2.2" },
