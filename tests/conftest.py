@@ -443,29 +443,35 @@ def _start_server() -> None:
     if bin_path is None:
         msg = "adt not found in $PATH"
         raise RuntimeError(msg)
-    INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
-        [bin_path, "server", "-p", "8000"],
-        env=os.environ,
-    )
-    tries = 0
-    timeout = 2
-    max_tries = 15  # GHA macos runner showed occasional failures with 10s
-    msg = "Could not start the server."
-    while tries < max_tries:
-        try:
-            # timeout increased to 2s due to observed GHA macos failures
-            res = requests.get("http://localhost:8000", timeout=timeout)
-            if res.status_code == requests.codes.get("not_found"):
-                return
-        except (requests.exceptions.ConnectionError, requests.RequestException):  # noqa: PERF203
-            tries += 1
-            time.sleep(1)
-    INFRASTRUCTURE.proc.terminate()
-    stdout, stderr = INFRASTRUCTURE.proc.communicate()
-    msg += (
-        f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
-        f" Server stdout:\n{stdout.decode()}\nServer stderr:\n{stderr.decode()}"
-    )
+    server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / "server.log"
+    server_log_file.parent.mkdir(parents=True, exist_ok=True)
+    LOGGER.warning("Starting adt server with log file at %s", server_log_file)
+    with server_log_file.open("w") as log_file:
+        INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
+            [bin_path, "server", "-p", "8000", "--debug"],
+            env=os.environ,
+            stdout=log_file,
+            stderr=subprocess.STDOUT,
+        )
+        tries = 0
+        timeout = 2
+        max_tries = 15  # GHA macos runner showed occasional failures with 10s
+        msg = "Could not start the server."
+        while tries < max_tries:
+            try:
+                # timeout increased to 2s due to observed GHA macos failures
+                res = requests.get("http://localhost:8000", timeout=timeout)
+                if res.status_code == requests.codes.get("not_found"):
+                    return
+            except (requests.exceptions.ConnectionError, requests.RequestException):  # noqa: PERF203
+                tries += 1
+                time.sleep(1)
+        INFRASTRUCTURE.proc.terminate()
+        stdout, stderr = INFRASTRUCTURE.proc.communicate()
+        msg += (
+            f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
+            f" Server stdout:\n{stdout.decode()}\nServer stderr:\n{stderr.decode()}"
+        )
     raise RuntimeError(msg)
 
 

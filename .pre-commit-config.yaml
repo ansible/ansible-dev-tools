@@ -14,11 +14,20 @@ repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.15
+    hooks:
+      - id: uv-sync
+      - id: uv-lock
+        name: "deps: upgrade via uv sync --upgrade"
+        alias: deps
+        args: ["--upgrade"]
+        stages: [manual]
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.7.3
   #   hooks:
   #     - id: actionlint
-  - repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
@@ -57,22 +66,15 @@ repos:
     rev: v0.24.3
     hooks:
       - id: toml-sort-fix
-
-  - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.6.0
-    hooks:
-      - id: tox-ini-fmt
+        alias: toml
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.13.1
     hooks:
-      - id: ruff
-        args:
-          - --fix
-          - --exit-non-zero-on-fix
-        types_or: [python, pyi]
-      - id: ruff-format # must be after ruff
-        types_or: [python, pyi]
+      - id: ruff-format
+        alias: ruff
+      - id: ruff-check
+        alias: ruff
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v9.2.0
