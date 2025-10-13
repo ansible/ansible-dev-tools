@@ -111,9 +111,6 @@ enable-unstable-feature = ["string_processing"]
 line-length = 100
 preview = true
 
-[tool.coverage.paths]
-source = ["src", "tests", ".tox/*/site-packages"]
-
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "pragma: no cover"]
 fail_under = 95
@@ -128,6 +125,7 @@ branch = true
 concurrency = ["multiprocessing", "thread"]
 omit = ["_version.py"]
 parallel = true
+relative_files = true
 source = ["src"]
 
 [tool.mypy]
