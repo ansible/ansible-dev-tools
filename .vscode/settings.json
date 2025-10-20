@@ -13,6 +13,9 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true
   },
+  "[toml]": {
+    "editor.defaultFormatter": "tombi-toml.tombi"
+  },
   "ansible.ansible.useFullyQualifiedCollectionNames": true,
   "ansible.completion.provideModuleOptionAliases": true,
   "ansible.completion.provideRedirectModules": true,

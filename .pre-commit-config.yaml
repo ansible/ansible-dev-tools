@@ -5,6 +5,7 @@ ci:
   autoupdate_schedule: quarterly
   skip:
     - shellcheck # no docker support on pre-commit.ci
+    - toml
 default_language_version:
   # minimal version we support officially as this will impact mypy, pylint
   # minimal version determined by minimal version required by ansible-core, but
@@ -14,6 +15,12 @@ repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
+
+  - repo: https://github.com/ansible/actions
+    rev: v0.2.1
+    hooks:
+      - id: toml
+
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.9.3
     hooks:
@@ -58,12 +65,6 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
-
-  - repo: https://github.com/pappasam/toml-sort
-    rev: v0.24.3
-    hooks:
-      - id: toml-sort-fix
-        alias: toml
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.1

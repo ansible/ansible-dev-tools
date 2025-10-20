@@ -10,9 +10,9 @@
     "ms-python.python",
     "redhat.ansible",
     "redhat.vscode-openshift-connector",
-    "sonarsource.sonarlint-vscode",
     "streetsidesoftware.code-spell-checker",
-    "timonwong.shellcheck"
+    "timonwong.shellcheck",
+    "tombi-toml.tombi"
   ],
   "unwantedRecommendations": [
     "esbenp.prettier-vscode",
