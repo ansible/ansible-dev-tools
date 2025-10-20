@@ -1,6 +1,9 @@
 {
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[python]": {
     "editor.codeActionsOnSave": {
@@ -14,6 +17,9 @@
   "ansible.completion.provideModuleOptionAliases": true,
   "ansible.completion.provideRedirectModules": true,
   "ansible.validation.lint.enabled": true,
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "node"
+  },
   "markiscodecoverage.searchCriteria": ".cache/.coverage/lcov.info",
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
   "mypy-type-checker.importStrategy": "fromEnvironment",

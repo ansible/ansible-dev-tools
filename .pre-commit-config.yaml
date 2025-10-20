@@ -27,6 +27,13 @@ repos:
   #   rev: v1.7.3
   #   hooks:
   #     - id: actionlint
+  - repo: https://github.com/biomejs/pre-commit
+    rev: "v2.2.5"
+    hooks:
+      - id: biome-check
+        name: biome
+        alias: biome
+        args: [--unsafe]
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
@@ -51,16 +58,6 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
-
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
-    hooks:
-      - id: prettier
-        always_run: true
-        additional_dependencies:
-          - prettier
-          - prettier-plugin-toml
-          - prettier-plugin-sort-json
 
   - repo: https://github.com/pappasam/toml-sort
     rev: v0.24.3
