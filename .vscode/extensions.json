@@ -1,7 +1,7 @@
 {
   "recommendations": [
+    "biomejs.biome",
     "charliermarsh.ruff",
-    "esbenp.prettier-vscode",
     "gruntfuggly.triggertaskonsave",
     "markis.code-coverage",
     "ms-python.debugpy",
@@ -13,5 +13,9 @@
     "sonarsource.sonarlint-vscode",
     "streetsidesoftware.code-spell-checker",
     "timonwong.shellcheck"
+  ],
+  "unwantedRecommendations": [
+    "esbenp.prettier-vscode",
+    "tamasfe.even-better-toml"
   ]
 }
