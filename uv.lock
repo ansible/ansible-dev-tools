@@ -130,7 +130,7 @@ dependencies = [
 
 [package.optional-dependencies]
 container = [
-    { name = "ansible-pylibssh", marker = "sys_platform != 'win32'" },
+    { name = "ansible-pylibssh", marker = "sys_platform == 'linux'" },
 ]
 server = [
     { name = "django", marker = "sys_platform != 'win32'" },
@@ -191,7 +191,7 @@ requires-dist = [
     { name = "ansible-dev-environment", specifier = ">=25.8.0" },
     { name = "ansible-lint", specifier = ">=25.1.3" },
     { name = "ansible-navigator", specifier = ">=25.8.0" },
-    { name = "ansible-pylibssh", marker = "extra == 'container'", specifier = "==1.3.0" },
+    { name = "ansible-pylibssh", marker = "sys_platform == 'linux' and extra == 'container'", specifier = "==1.3.0" },
     { name = "ansible-sign", specifier = ">=0.1.2" },
     { name = "django", marker = "extra == 'server'", specifier = ">5.2,<6" },
     { name = "gunicorn", marker = "extra == 'server'", specifier = ">=23.0.0" },
@@ -303,17 +303,14 @@ version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/68/6d/93b13182acd29632ef3ab58650fc5727936942e2ad642a48f6a5e12aebb4/ansible-pylibssh-1.3.0.tar.gz", hash = "sha256:243ea1b0962b0b6b1e717ac0e69dac9636e61ec65b37260c317b2360c6e30ca7", size = 151535, upload-time = "2025-10-12T01:09:16.699Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b5/2e/0591e3f88b7cf9a3ad77147c93cd6eaa2fc4a801f07efbb215e748c061db/ansible_pylibssh-1.3.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:fe5231259d23eaedf92c50836bcca2033270f8a753e86293cec472d8bc2b78c3", size = 2489774, upload-time = "2025-10-12T01:08:39.331Z" },
     { url = "https://files.pythonhosted.org/packages/42/c0/cb997bc56a08c7a688e8c441ba72e856ae685ffc9609057b183808a6df2d/ansible_pylibssh-1.3.0-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:206adcc43d638fdd2c71de180fcb3a5f4e6523278022b182c2d85624fe368823", size = 2361425, upload-time = "2025-10-12T01:08:41.609Z" },
     { url = "https://files.pythonhosted.org/packages/36/27/7cd6296958de769bcc9a1597678821098a3a0d063f4afb3531c04665f781/ansible_pylibssh-1.3.0-cp310-cp310-manylinux_2_27_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:ddddb5bdafa0f01f6290e75ed8764b62610528e28c7b964f4f9acad8c88c9ac1", size = 2714233, upload-time = "2025-10-12T01:08:43.507Z" },
     { url = "https://files.pythonhosted.org/packages/30/fd/79c2cf8001dc5f27d56855a53e53da2edadeac981e4ab1e1b6cbf9e51a17/ansible_pylibssh-1.3.0-cp310-cp310-manylinux_2_27_s390x.manylinux_2_28_s390x.whl", hash = "sha256:ba088dcdb81bbc3c378b3bb1f847df1ab69bf99c8a7e5e0b052e3c5a9183adcc", size = 2194959, upload-time = "2025-10-12T01:08:45.881Z" },
     { url = "https://files.pythonhosted.org/packages/33/b4/befaa1f0ddb22dd3849d8466154bd6f3fd5e70fb3eb82cecb9e9ad62f9b0/ansible_pylibssh-1.3.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:196ff3ed8a6f54e809703209f6a1096b2d85031b7eb2ceb0c6af1ab549a71acd", size = 2589618, upload-time = "2025-10-12T01:08:47.755Z" },
-    { url = "https://files.pythonhosted.org/packages/0c/8b/a9803748b30b4f2e6594440fd976ad20626ab02de334f2fc874428794977/ansible_pylibssh-1.3.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:248f9fc4687e07818942d618ba3133aa155402be9c0e31fb4df0d9c5504e1b64", size = 2490652, upload-time = "2025-10-12T01:08:49.434Z" },
     { url = "https://files.pythonhosted.org/packages/de/0e/19916cd0b7d626910ad6a4dc2ed88d9744a1bd1cda5672eac19d1bda4bab/ansible_pylibssh-1.3.0-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3a6ad801fd94be7782abaa86ae0421b99c55586eb2f583b113a5b75964c823d7", size = 2357722, upload-time = "2025-10-12T01:08:51.293Z" },
     { url = "https://files.pythonhosted.org/packages/e6/57/3a79733b74fdb2e28000dcfdcfacda918d2c0e1812a683691bc0dab26878/ansible_pylibssh-1.3.0-cp311-cp311-manylinux_2_27_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:f720e6b1f50d99698e52cb6e41f05dfbb1f033a1d852f1ea5b1005055cf968e8", size = 2712675, upload-time = "2025-10-12T01:08:53.207Z" },
     { url = "https://files.pythonhosted.org/packages/71/53/f5742f1ef3da34e067a29466aac88f179ae3ebadf02bfa4ce92e4b004918/ansible_pylibssh-1.3.0-cp311-cp311-manylinux_2_27_s390x.manylinux_2_28_s390x.whl", hash = "sha256:f613dfd50a1336019cb1a8a28098d3212fb163cc5e47da620c54ab0fe9af9a4e", size = 2188483, upload-time = "2025-10-12T01:08:54.946Z" },
     { url = "https://files.pythonhosted.org/packages/10/5b/3bec950215581bce7eb547256a3da053ad71fde72b31d11a76a86c64b52b/ansible_pylibssh-1.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:daeae1c936fc8145beb5843e365a314819b5ec0905500b795db945b64a3614ac", size = 2582419, upload-time = "2025-10-12T01:08:56.629Z" },
-    { url = "https://files.pythonhosted.org/packages/f3/e9/78b565e80b9354c4ff2f65a3e21ad7d6ce93d64197c531671d50988b214c/ansible_pylibssh-1.3.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:0fadea3027fadd23feb5dbf6db3c2617ee69978e8521a6c47877947b4327c349", size = 2493133, upload-time = "2025-10-12T01:08:58.608Z" },
     { url = "https://files.pythonhosted.org/packages/42/93/095252bdd4961feba9b02591c0cf68036cc5cb7e517fa58cf4829f02a976/ansible_pylibssh-1.3.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e7b38fb5fe94417b4f8348e499a8728a36599ec5c1b7c7ba79e424bf69794071", size = 2386366, upload-time = "2025-10-12T01:09:00.183Z" },
     { url = "https://files.pythonhosted.org/packages/ab/43/c6a1e3fb75c79b309ddb1e8ca79e00d5ca0ff10f3d46e66282f9d0085b79/ansible_pylibssh-1.3.0-cp312-cp312-manylinux_2_27_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:1fab4f5e1b49782cd53765fc4bf239d92dc236550a9775de238d306452bf2cba", size = 2738851, upload-time = "2025-10-12T01:09:01.949Z" },
     { url = "https://files.pythonhosted.org/packages/b3/4a/63d915984ff32d638ea6e2df390074d8f7f4e9efe34e27f96f392f50f087/ansible_pylibssh-1.3.0-cp312-cp312-manylinux_2_27_s390x.manylinux_2_28_s390x.whl", hash = "sha256:8d1804c71ad5d7f5d03cc97447ed91ba1bdfde7fe72ba9d03478bb5220ff3d04", size = 2219773, upload-time = "2025-10-12T01:09:03.795Z" },

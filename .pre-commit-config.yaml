@@ -5,6 +5,10 @@ ci:
   autoupdate_schedule: quarterly
   skip:
     - shellcheck # no docker support on pre-commit.ci
+    # uv not present on pre-commit.ci
+    - mypy
+    - pylint
+    - ruff
     - toml
 default_language_version:
   # minimal version we support officially as this will impact mypy, pylint
@@ -20,6 +24,9 @@ repos:
     rev: v0.2.1
     hooks:
       - id: toml
+      - id: ruff
+      - id: mypy
+      - id: pylint
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.9.3
@@ -66,14 +73,6 @@ repos:
     hooks:
       - id: shellcheck
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.1
-    hooks:
-      - id: ruff-format
-        alias: ruff
-      - id: ruff-check
-        alias: ruff
-
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v9.2.0
     hooks:
@@ -87,37 +86,3 @@ repos:
         # This allows automatic reduction of the baseline file when needed.
         entry: sh -ec "pydoclint -q . && pydoclint --generate-baseline=1 ."
         pass_filenames: false
-
-  - repo: https://github.com/pycqa/pylint.git
-    rev: v4.0.1
-    hooks:
-      - id: pylint
-        args:
-          - --output-format=colorized
-        additional_dependencies:
-          - ansible-creator>=25.7.0
-          - ansible-navigator
-          - django
-          - gunicorn
-          - libtmux
-          - openapi_core
-          - pytest
-          - pyyaml
-
-  - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.18.2
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - ansible-creator>=25.7.0
-          - ansible-navigator
-          - django-stubs
-          - jinja2
-          - libtmux
-          - openapi-core>=0.19.1
-          - pytest
-          - types-pyyaml
-          - types-requests
-          - types-setuptools
-        # Override default pre-commit '--ignore-missing-imports'
-        args: [--strict]

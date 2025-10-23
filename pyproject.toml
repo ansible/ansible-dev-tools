@@ -47,7 +47,8 @@ repository = "https://github.com/ansible/ansible-dev-tools"
 adt = "ansible_dev_tools.cli:main"
 
 [project.optional-dependencies]
-container = ["ansible-pylibssh==1.3.0"]
+# https://github.com/ansible/pylibssh/issues/699
+container = ["ansible-pylibssh==1.3.0; platform_system == 'Linux'"]
 server = ["django>5.2,<6", "gunicorn>=23.0.0", "openapi-core>=0.19.1"]
 
 [dependency-groups]
@@ -121,6 +122,7 @@ source = ["src"]
 [tool.mypy]
 cache_dir = "./.cache/.mypy"
 files = ["src", "tests"]
+exclude = ["collections", "context/_build", "build", ".tox"]
 strict = true
 
 [[tool.mypy.overrides]]
@@ -146,6 +148,18 @@ max-line-length = 100
 good-names = "i,j,k,ex,Run,_,f,fh"
 ignore = [
   "_version.py",  # built by setuptools_scm
+]
+# apparently pylint does not know to respect .gitignore files
+ignore-paths = [
+  ".cache/",
+  ".tox/",
+  ".venv/",
+  "_readthedocs/",
+  "build/",
+  "collections/",
+  "context/_build",
+  "packages/",
+  "site",
 ]
 jobs = 0
 no-docstring-rgx = "__.*__"
