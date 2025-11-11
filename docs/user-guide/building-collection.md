@@ -48,7 +48,7 @@ $ ansible-galaxy collection list
 
 - Due to its installation method using pip4a, you can change module code dynamically and observe the effects during playbook execution.
 
-NOTE: for details regarding the module development, refer to the [ansible module development docs](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html).
+NOTE: for details regarding the module development, refer to the [ansible module development docs](https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_modules_general.html).
 
 ## Using ansible-lint to check module syntax in the playbook
 

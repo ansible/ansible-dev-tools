@@ -28,13 +28,13 @@ The curated list of tools installed as part of the Ansible automation developer 
 
 ## Communication
 
-Refer to our [Communication guide](https://ansible.readthedocs.io/projects/dev-tools/contributor-guide/#talk-to-us) for details.
+Refer to our [Communication guide](https://docs.ansible.com/projects/dev-tools/contributor-guide/#talk-to-us) for details.
 
 ## Installation
 
 `python3 -m pip install ansible-dev-tools`
 
-A VsCode compatible devcontainer is also available which is a great way to develop ansible content. The image name is [community-ansible-dev-tools](https://ansible.readthedocs.io/projects/dev-tools/container/).
+A VsCode compatible devcontainer is also available which is a great way to develop ansible content. The image name is [community-ansible-dev-tools](https://docs.ansible.com/projects/dev-tools/container/).
 
 ## Usage
 
@@ -77,4 +77,4 @@ $ podman logs -f ansible-devtools-server
 
 ## Documentation
 
-For more information, please visit our [documentation](https://ansible.readthedocs.io/projects/dev-tools/) page.
+For more information, please visit our [documentation](https://docs.ansible.com/projects/dev-tools/) page.
