@@ -187,3 +187,4 @@ devspaces/context/setup-image.sh
 final/context/setup-image.sh
 final/setup-image.sh
 image.tar
+final/.ohmyposh.omp.json

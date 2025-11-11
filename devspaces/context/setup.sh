@@ -24,6 +24,7 @@ dnf install -y -q \
     "python${PYV}-pyyaml" \
     "python${PYV}-wheel" \
     tar \
+    unzip \
     util-linux-user \
     which \
     zsh \
