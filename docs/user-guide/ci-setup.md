@@ -61,5 +61,5 @@ The workflow uses tox-ansible, pytest-ansible to generate the matrix, which is u
 
 Refer to the [tox-ansible documentation] to see more options.
 
-[pytest-ansible]: https://ansible.readthedocs.io/projects/pytest-ansible/
-[tox-ansible documentation]: https://ansible.readthedocs.io/projects/tox-ansible/
+[pytest-ansible]: https://docs.ansible.com/projects/pytest-ansible/
+[tox-ansible documentation]: https://docs.ansible.com/projects/tox-ansible/
