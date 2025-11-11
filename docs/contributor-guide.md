@@ -75,18 +75,18 @@ At this moment the devspaces container is not tested by the CI, so it is importa
   - [Posts tagged with 'devtools'](https://forum.ansible.com/tag/devtools): subscribe to participate in project-related conversations.
   - [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
   - [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
-  - [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn): used to announce releases and important changes.
+  - [Bullhorn newsletter](https://docs.ansible.com/projects/ansible/devel/community/communication.html#the-bullhorn): used to announce releases and important changes.
 
 - We are also available on Matrix in the [#devtools:ansible.com](https://matrix.to/#/#devtools:ansible.com) room.
 
 Possible security bugs should be reported via email to
 <mailto:security@ansible.com>.
 
-For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
+For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/projects/ansible/devel/community/communication.html).
 
 ## Code of Conduct
 
 Please see the official [Ansible Community Code of Conduct].
 
-[Ansible Community Code of Conduct]: https://docs.ansible.com/ansible/latest/community/code_of_conduct.html
+[Ansible Community Code of Conduct]: https://docs.ansible.com/projects/ansible/latest/community/code_of_conduct.html
 [creating your fork on github]: https://docs.github.com/en/get-started/quickstart/contributing-to-projects

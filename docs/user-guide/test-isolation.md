@@ -77,6 +77,6 @@ the responsibility to pre-install these before running the tools.
 
 ---
 
-[moleclue]: https://ansible.readthedocs.io/projects/molecule/
-[ansible-lint]: https://ansible.readthedocs.io/projects/lint/
-[ansible-dev-environment]: https://ansible.readthedocs.io/projects/dev-environment/
+[moleclue]: https://docs.ansible.com/projects/molecule/
+[ansible-lint]: https://docs.ansible.com/projects/lint/
+[ansible-dev-environment]: https://docs.ansible.com/projects/dev-environment/
