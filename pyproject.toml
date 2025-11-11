@@ -537,7 +537,11 @@ set_env.TERM = "dump"
 
 [tool.tox.env.ee]
 commands = [["python", "-m", "build", "--version"], ["./tools/ee.sh"]]
-commands_post = [["./tools/cleanup.sh"]]
+commands_post = [
+  ["podman", "system", "df"],
+  ["df", "-h"],
+  ["./tools/cleanup.sh"]
+]
 commands_pre = []
 dependency_groups = ["ee", "dev"]
 description = "Build the ee container image"
@@ -587,12 +591,14 @@ skip_install = true
 
 [tool.tox.env_run_base]
 allowlist_externals = [
-  "git",
-  "rm",
-  "sh",
   "./tools/cleanup.sh",
   "./tools/devspaces.sh",
-  "./tools/ee.sh"
+  "./tools/ee.sh",
+  "df",
+  "git",
+  "podman",
+  "rm",
+  "sh",
 ]
 commands = [
   ["sh", "-c", "ansible --version | head -n 1"],
