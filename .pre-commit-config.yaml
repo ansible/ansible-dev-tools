@@ -21,7 +21,7 @@ repos:
       - id: check-useless-excludes
 
   - repo: https://github.com/ansible/actions
-    rev: v0.2.1
+    rev: v0.3.1
     hooks:
       - id: toml
       - id: ruff
@@ -29,7 +29,7 @@ repos:
       - id: pylint
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.3
+    rev: 0.9.9
     hooks:
       - id: uv-sync
       - id: uv-lock
@@ -42,7 +42,7 @@ repos:
   #   hooks:
   #     - id: actionlint
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v2.2.5"
+    rev: "v2.3.5"
     hooks:
       - id: biome-check
         name: biome
@@ -74,13 +74,13 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v9.2.0
+    rev: v9.3.1
     hooks:
       - id: cspell
         name: Spell check with cspell
 
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.7.3"
+    rev: "0.8.1"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
