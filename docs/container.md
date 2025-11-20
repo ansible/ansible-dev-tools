@@ -29,18 +29,18 @@ You can simply copy over the `.devcontainer` directory to your Ansible project a
 
 To use this image with [Github Codespaces](https://docs.github.com/en/codespaces/overview), copy the [`devcontainer.json`](https://github.com/ansible/ansible-dev-tools/blob/main/.devcontainer/devcontainer.json) in this repo to your project and push to Github.
 
-**Note:** If you are planning to start writing a new Ansible playbook project or collection, use [Ansible Creator](https://ansible.readthedocs.io/projects/creator) to scaffold it for you and your project/collection will already have all the `.devcontainer` files ready.
+**Note:** If you are planning to start writing a new Ansible playbook project or collection, use [Ansible Creator](https://docs.ansible.com/projects/creator/) to scaffold it for you and your project/collection will already have all the `.devcontainer` files ready.
 
 ### Using this image as an EE
 
-This image can also be used as an Ansible Execution Environment (EE). If you're not familiar with what an EE is, checkout the documentation in [Getting started with EE](https://docs.ansible.com/ansible/devel/getting_started_ee/index.html). It is shipped with the following Ansible collections:
+This image can also be used as an Ansible Execution Environment (EE). If you're not familiar with what an EE is, checkout the documentation in [Getting started with EE](https://docs.ansible.com/projects/ansible/devel/getting_started_ee/index.html). It is shipped with the following Ansible collections:
 
 - ansible.netcommon
 - ansible.posix
 - ansible.scm
 - ansible.utils
 
-You can also create a new EE based on this with more Ansible collections (or Python/System packages) of your choice by using Ansible Builder. Read this [documentation](https://ansible.readthedocs.io/projects/builder/en/latest/) to know about ansible-builder.
+You can also create a new EE based on this with more Ansible collections (or Python/System packages) of your choice by using Ansible Builder. Read this [documentation](https://docs.ansible.com/projects/builder/en/latest/) to know about ansible-builder.
 
 The below example shows how to make a custom EE that adds the `amazon.aws` and `cisco.nxos` collections as well as the `ansible-pylibssh` python package to this image.
 
@@ -62,7 +62,7 @@ The below example shows how to make a custom EE that adds the `amazon.aws` and `
 ansible-builder build -t custom-ee:latest --prune-images -v3
 ```
 
-Once this image is built, you can use [`ansible-navigator`](https://ansible.readthedocs.io/projects/navigator/) to reference this image and run your playbooks!
+Once this image is built, you can use [`ansible-navigator`](https://docs.ansible.com/projects/navigator/) to reference this image and run your playbooks!
 
 ### Using with podman from the command-line
 

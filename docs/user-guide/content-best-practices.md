@@ -64,4 +64,4 @@ tox -e sanity-py3.11-2.14,sanity-py3.11-devel --ansible --conf tox-ansible.ini
 
 Refer to the [tox-ansible documentation] to see more options.
 
-[tox-ansible documentation]: https://ansible.readthedocs.io/projects/tox-ansible/
+[tox-ansible documentation]: https://docs.ansible.com/projects/tox-ansible/
