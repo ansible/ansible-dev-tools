@@ -463,7 +463,7 @@ def _start_server() -> None:
                 res = requests.get("http://localhost:8000", timeout=timeout)
                 if res.status_code == requests.codes.get("not_found"):
                     return
-            except (requests.exceptions.ConnectionError, requests.RequestException):  # noqa: PERF203
+            except (requests.exceptions.ConnectionError, requests.RequestException):
                 tries += 1
                 time.sleep(1)
         INFRASTRUCTURE.proc.terminate()
@@ -575,7 +575,7 @@ def _cmd_in_tty(  # noqa: C901
                 for file_d in ready:
                     try:
                         data = os.read(file_d, 512)
-                    except OSError as exc:  # noqa: PERF203
+                    except OSError as exc:
                         if exc.errno != errno.EIO:
                             raise
                         # EIO means EOF on some systems
