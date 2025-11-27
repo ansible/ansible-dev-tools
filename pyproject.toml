@@ -2,7 +2,7 @@
 name = "ansible-dev-tools"
 description = "Ansible Developtment Tools kit bundles all tools needed for content creation and testing."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = "GPL-3.0-only"
 authors = [{ "name" = "Bradley A. Thornton", "email" = "bthornto@redhat.com" }]
 maintainers = [{ "name" = "Ansible by Red Hat", "email" = "info@ansible.com" }]
@@ -14,7 +14,6 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -23,17 +22,17 @@ classifiers = [
   "Topic :: Utilities"
 ]
 dependencies = [
-  "ansible-builder>=3.1.0",
-  "ansible-compat>=25.8.2",
-  "ansible-creator>=25.10.0",
-  "ansible-dev-environment>=25.8.0",
-  "ansible-lint>=25.9.2",
-  "ansible-navigator>=25.9.0",
-  "ansible-sign>=0.1.2",
-  "molecule>=25.9.0",
-  "pytest-ansible>=25.8.0",
+  "ansible-builder>=3.1.1",
+  "ansible-compat>=25.11.0",
+  "ansible-creator>=25.11.0",
+  "ansible-dev-environment>=25.11.0",
+  "ansible-lint>=25.11.1",
+  "ansible-navigator>=25.11.0",
+  "ansible-sign>=0.1.3",
+  "molecule>=25.11.1",
+  "pytest-ansible>=25.11.1",
   "setuptools>=80.9.0",
-  "tox-ansible>=25.8.0",
+  "tox-ansible>=25.11.1",
 ]
 dynamic = ["version"]
 
@@ -405,7 +404,7 @@ cache-dir = "./.cache/.ruff"
 fix = true
 line-length = 100
 required-version = ">=0.7.1"
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 external = [

@@ -34,6 +34,7 @@ jobs:
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
     with:
       run_pre: ./tools/test-setup.sh
+      min_python: "3.11"
       max_python: "3.13"
       default_python: "3.12" # min version of `devel`
       jobs_producing_coverage: 9
