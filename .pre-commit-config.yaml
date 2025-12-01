@@ -87,6 +87,6 @@ repos:
         entry: sh -ec "pydoclint -q . && pydoclint --generate-baseline=1 ."
         pass_filenames: false
   - repo: https://github.com/ansible/team-devtools
-    rev: v25.12.5
+    rev: v25.12.6
     hooks:
       - id: check-platform-constraints
