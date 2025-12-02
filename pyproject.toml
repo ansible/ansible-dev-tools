@@ -31,7 +31,7 @@ dependencies = [
   "ansible-sign>=0.1.3",
   "molecule>=25.11.1",
   "pytest-ansible>=25.11.1",
-  "setuptools>=80.9.0",
+  "setuptools>=65.5.1",
   "tox-ansible>=25.11.1",
 ]
 dynamic = ["version"]
@@ -48,7 +48,7 @@ adt = "ansible_dev_tools.cli:main"
 [project.optional-dependencies]
 # https://github.com/ansible/pylibssh/issues/699
 container = ["ansible-pylibssh==1.3.0; platform_system == 'Linux'"]
-server = ["django>5.2,<6", "gunicorn>=23.0.0", "openapi-core>=0.19.1"]
+server = ["django>4.1,<5.2", "gunicorn>=23.0.0", "openapi-core>=0.19.1"]
 
 [dependency-groups]
 dev = [
@@ -80,7 +80,7 @@ ee = [
   "ansible-builder>=3.1.0",
   "build>=1.3.0",
   "mk>=3.0.0",
-  "setuptools>=80.9.0"
+  "setuptools>=65.5.1"
 ]
 lint = [
   "pre-commit>=4.1",
