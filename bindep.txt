@@ -1,3 +1,4 @@
 python3-devel [platform:redhat]
 oniguruma-devel [test platform:rpm]
 libonig-dev [test platform:dpkg]
+unzip [platform:redhat]
