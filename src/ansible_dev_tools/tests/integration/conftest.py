@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
     from libtmux import Pane, Session
 
-    from tests.conftest import Infrastructure
+    from ansible_dev_tools.tests.conftest import Infrastructure
 
 
 @pytest.fixture

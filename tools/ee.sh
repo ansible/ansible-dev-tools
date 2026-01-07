@@ -76,7 +76,7 @@ $ADT_CONTAINER_ENGINE save $IMAGE_NAME > image.tar
 # Check container size and layers
 mk containers check "$IMAGE_NAME" --engine="${ADT_CONTAINER_ENGINE}" --max-size=1500 --max-layers=22
 
-pytest -v --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
+pytest -v src/ansible_dev_tools/tests --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
 ansible-builder build --container-runtime="${ADT_CONTAINER_ENGINE}"

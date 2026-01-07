@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
 
-    from tests.conftest import Infrastructure
+    from ansible_dev_tools.tests.conftest import Infrastructure
 
     from .conftest import ContainerTmux
 
