@@ -32,9 +32,6 @@ def test_error_devfile_v2(server_url: str) -> None:
 
     Args:
         server_url: The server URL.
-
-    Raises:
-        AssertionError: If the test assertions fail (e.g., response status code or tar content).
     """
     # To simulate an error, we are sending the request with the get method as the api works with empty request body as well.
     response = requests.get(f"{server_url}/v2/creator/devfile", timeout=10)
@@ -104,9 +101,6 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
     Args:
         server_url: The server URL.
         tmp_path: Pytest tmp_path fixture.
-
-    Raises:
-        AssertionError: If the test assertions fail (e.g., response status code or tar content).
     """
     response = requests.post(
         f"{server_url}/v2/creator/devfile",

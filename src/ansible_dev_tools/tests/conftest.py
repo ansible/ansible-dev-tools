@@ -43,7 +43,7 @@ from ansible_dev_tools.subcommands.server import Server
 
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Generator
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -113,7 +113,7 @@ class Infrastructure:
             self.server = True
 
 
-INFRASTRUCTURE: Infrastructure
+INFRASTRUCTURE: Infrastructure | None = None
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -189,13 +189,57 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 
 
 @pytest.fixture(scope="session")
-def server_url() -> str:
-    """Run the server.
+def server_url() -> Generator[str, None, None]:
+    """Start the server and provide its URL.
 
-    Returns:
+    If the server is already running (e.g., started by pytest_sessionstart hook
+    when running from source), this fixture will use it. Otherwise, it starts
+    the server itself. This allows tests to work both when running from source
+    and when running from an installed package via args.
+
+    Yields:
         str: The server URL.
     """
-    return "http://localhost:8000"
+    url = "http://localhost:8000"
+
+    # Check if server is already running (started by hook when running from source)
+    try:
+        res = requests.get(url, timeout=1)
+        if res.status_code == requests.codes.get("not_found"):
+            LOGGER.info("Server already running at %s", url)
+            yield url
+            return
+    except requests.exceptions.ConnectionError:
+        pass  # Server not running, we'll start it
+
+    # Start server ourselves
+    bin_path = shutil.which("adt")
+    if bin_path is None:
+        pytest.fail("adt not found in $PATH")
+
+    proc = subprocess.Popen(  # noqa: S603
+        [bin_path, "server", "-p", "8000"],
+        env=os.environ,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    # Wait for server to be ready
+    for _ in range(10):
+        try:
+            res = requests.get(url, timeout=0.5)
+            if res.status_code == requests.codes.get("not_found"):
+                break
+        except requests.exceptions.ConnectionError:
+            time.sleep(0.5)
+    else:
+        proc.terminate()
+        pytest.fail("Could not start the server")
+
+    yield url
+
+    proc.terminate()
+    proc.wait()
 
 
 @pytest.fixture(scope="session")
@@ -239,6 +283,8 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     if session.config.option.collectonly:
         return
     if os.environ.get("PYTEST_XDIST_WORKER"):
+        return
+    if INFRASTRUCTURE is None:
         return
 
     if INFRASTRUCTURE.container:
@@ -289,6 +335,7 @@ def _start_container() -> None:
     Raises:
         ValueError: If the container engine is not podman or docker.
     """
+    assert INFRASTRUCTURE is not None
     engine = INFRASTRUCTURE.container_engine
     cmd = (
         f'{engine} ps -q --filter "name={INFRASTRUCTURE.container_name}" | xargs -r {engine} stop;'
@@ -364,6 +411,7 @@ def nav_default_ee() -> str:
 
 def _stop_container() -> None:
     """Stop the container."""
+    assert INFRASTRUCTURE is not None
     cmd = [
         INFRASTRUCTURE.container_engine,
         "stop",
@@ -399,6 +447,7 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
+    assert INFRASTRUCTURE is not None
     cmd = shlex.join(
         [
             INFRASTRUCTURE.container_engine,
@@ -439,6 +488,7 @@ def _start_server() -> None:
     Raises:
         RuntimeError: If the server could not be started.
     """
+    assert INFRASTRUCTURE is not None
     bin_path = shutil.which("adt")
     if bin_path is None:
         msg = "adt not found in $PATH"
@@ -481,6 +531,7 @@ def _stop_server() -> None:
     Raises:
         RuntimeError: If the server is not running.
     """
+    assert INFRASTRUCTURE is not None
     if INFRASTRUCTURE.proc is None:
         msg = "The server is not running."
         raise RuntimeError(msg)
@@ -512,7 +563,7 @@ def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
     Returns:
         Path: The test fixture directory within the container.
     """
-    return Path("/workdir/tests/fixtures") / request.path.relative_to(
+    return Path("/workdir/src/ansible_dev_tools/tests/fixtures") / request.path.relative_to(
         Path(__file__).parent,
     ).with_suffix("")
 
@@ -524,6 +575,7 @@ def infrastructure() -> Infrastructure:
     Returns:
         Infrastructure: The infrastructure.
     """
+    assert INFRASTRUCTURE is not None
     return INFRASTRUCTURE
 
 
