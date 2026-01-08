@@ -191,24 +191,24 @@ pkg = [
 [package.metadata]
 requires-dist = [
     { name = "ansible-builder", specifier = ">=3.1.1" },
-    { name = "ansible-compat", specifier = ">=25.11.0" },
-    { name = "ansible-creator", specifier = ">=25.11.0" },
-    { name = "ansible-dev-environment", specifier = ">=25.11.0" },
+    { name = "ansible-compat", specifier = ">=25.12.0" },
+    { name = "ansible-creator", specifier = ">=25.12.0" },
+    { name = "ansible-dev-environment", specifier = ">=25.12.2" },
     { name = "ansible-dev-tools", extras = ["server"], marker = "extra == 'test'", editable = "." },
-    { name = "ansible-lint", specifier = ">=25.11.1" },
-    { name = "ansible-navigator", specifier = ">=25.11.0" },
+    { name = "ansible-lint", specifier = ">=26.1.0" },
+    { name = "ansible-navigator", specifier = ">=26.1.0" },
     { name = "ansible-pylibssh", marker = "sys_platform == 'linux' and extra == 'container'", specifier = "==1.3.0" },
     { name = "ansible-sign", specifier = ">=0.1.3" },
     { name = "django", marker = "extra == 'server'", specifier = ">4.1,<5.2" },
     { name = "gunicorn", marker = "extra == 'server'", specifier = ">=23.0.0" },
     { name = "libtmux", marker = "extra == 'test'", specifier = ">=0.46.0" },
-    { name = "molecule", specifier = ">=25.11.1" },
+    { name = "molecule", specifier = ">=25.12.0" },
     { name = "openapi-core", marker = "extra == 'server'", specifier = ">=0.19.1" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0.0" },
-    { name = "pytest-ansible", specifier = ">=25.11.1" },
+    { name = "pytest-ansible", specifier = ">=25.12.0" },
     { name = "requests", marker = "extra == 'test'", specifier = ">=2.32.0" },
     { name = "setuptools", specifier = ">=65.5.1" },
-    { name = "tox-ansible", specifier = ">=25.11.1" },
+    { name = "tox-ansible", specifier = ">=25.12.0" },
 ]
 provides-extras = ["container", "server", "test"]
 
@@ -258,7 +258,7 @@ pkg = [
 
 [[package]]
 name = "ansible-lint"
-version = "25.12.2"
+version = "26.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat", marker = "sys_platform != 'win32'" },
@@ -280,14 +280,14 @@ dependencies = [
     { name = "wcmatch", marker = "sys_platform != 'win32'" },
     { name = "yamllint", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0a/b1/cbbe86f424d76bb621461d131506e5778556ddf6f5eba0cf7c41db829208/ansible_lint-25.12.2.tar.gz", hash = "sha256:d4dbf2905c868d6f7b330941efc586f19a5e2b3b6826fd6a2edf0d5080329e46", size = 725323, upload-time = "2025-12-22T17:01:20.433Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/1f/8999d6dd04352cbc73ca43c046aac4f0f75f2991b86f2fcafcee150203d6/ansible_lint-26.1.0.tar.gz", hash = "sha256:ca5c968d1bbcc0c9447ededd3a754ccc936df91b2647755ca92c44d2ba91b805", size = 730518, upload-time = "2026-01-08T14:23:07.992Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/ea/d5620576753c7424a41b9d97ea050297ec2d7cc1e4fa12e44c27289726a2/ansible_lint-25.12.2-py3-none-any.whl", hash = "sha256:cafcd991c9ddfd9a13e5b56e5a4f1d9997973e0c0d6a0f6eb2b148d39f42e2c3", size = 323017, upload-time = "2025-12-22T17:01:18.698Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/21/9a7e8c5d0ea5a92c9abcb5011739c76449da6ccfcdb1c2355edc7debfa67/ansible_lint-26.1.0-py3-none-any.whl", hash = "sha256:1fbba73e59247c70d460fbc71097fc86d475f2acef2a3314b7a4d817310538d5", size = 324607, upload-time = "2026-01-08T14:23:06.032Z" },
 ]
 
 [[package]]
 name = "ansible-navigator"
-version = "25.12.0"
+version = "26.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-builder", marker = "sys_platform != 'win32'" },
@@ -300,9 +300,9 @@ dependencies = [
     { name = "setuptools", marker = "sys_platform != 'win32'" },
     { name = "tzdata", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/15/2d/cb11b8a82b67c80b763ac9bbdf6b3dc654ce90e50a320fa2585fd48796f4/ansible_navigator-25.12.0.tar.gz", hash = "sha256:8bacb0dbcd8d594682641b40622deb42c2e4f861b2a7c407caa062ee7c30225a", size = 393942, upload-time = "2025-12-02T16:58:13.169Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/59/34/4fbfcb87de2b9212acad560a8329fba3cc0eec4daf73a4eff856628ac766/ansible_navigator-26.1.0.tar.gz", hash = "sha256:134a0c8eaaf88b4e109a95fe3f9863bad6dc852d76b9996cc36ed0c6947113c5", size = 394313, upload-time = "2026-01-08T14:25:11.719Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c7/08/53d897d64d659d74ae70b871ab312517bea45865b7146097ccf42211c2a5/ansible_navigator-25.12.0-py3-none-any.whl", hash = "sha256:6628a5cc1b5a7c2a0ad86ca3df43df7432e51ee9b1fa44f2c443d60eb90f4463", size = 304430, upload-time = "2025-12-02T16:58:11.598Z" },
+    { url = "https://files.pythonhosted.org/packages/25/01/09abf3697247832ee7a020783af579fd0d6747fcada4fbc33c87b2707e4c/ansible_navigator-26.1.0-py3-none-any.whl", hash = "sha256:95ebd166566de3ff967df4a68ce9e755b12d3fedb2298897787d9324032f4b20", size = 304815, upload-time = "2026-01-08T14:25:09.949Z" },
 ]
 
 [[package]]
