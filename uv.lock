@@ -196,7 +196,7 @@ requires-dist = [
     { name = "ansible-dev-environment", specifier = ">=25.12.2" },
     { name = "ansible-dev-tools", extras = ["server"], marker = "extra == 'test'", editable = "." },
     { name = "ansible-lint", specifier = ">=26.1.0" },
-    { name = "ansible-navigator", specifier = ">=26.1.0" },
+    { name = "ansible-navigator", specifier = ">=26.1.1" },
     { name = "ansible-pylibssh", marker = "sys_platform == 'linux' and extra == 'container'", specifier = "==1.3.0" },
     { name = "ansible-sign", specifier = ">=0.1.3" },
     { name = "django", marker = "extra == 'server'", specifier = ">4.1,<6.0" },
@@ -287,7 +287,7 @@ wheels = [
 
 [[package]]
 name = "ansible-navigator"
-version = "26.1.0"
+version = "26.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-builder", marker = "sys_platform != 'win32'" },
@@ -300,9 +300,9 @@ dependencies = [
     { name = "setuptools", marker = "sys_platform != 'win32'" },
     { name = "tzdata", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/34/4fbfcb87de2b9212acad560a8329fba3cc0eec4daf73a4eff856628ac766/ansible_navigator-26.1.0.tar.gz", hash = "sha256:134a0c8eaaf88b4e109a95fe3f9863bad6dc852d76b9996cc36ed0c6947113c5", size = 394313, upload-time = "2026-01-08T14:25:11.719Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ac/80/80cda52799f56a8b7a6bac90dbc6743cd0cfe053df90e4814bc38523f0ad/ansible_navigator-26.1.1.tar.gz", hash = "sha256:b016536f1b0d9236cfbf04dc23a9476a5c3be85dfe333bf85f9a9a71870bea7f", size = 394305, upload-time = "2026-01-08T19:41:36.406Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/01/09abf3697247832ee7a020783af579fd0d6747fcada4fbc33c87b2707e4c/ansible_navigator-26.1.0-py3-none-any.whl", hash = "sha256:95ebd166566de3ff967df4a68ce9e755b12d3fedb2298897787d9324032f4b20", size = 304815, upload-time = "2026-01-08T14:25:09.949Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/6c/5fff33d8bbafa216c0daa712af50b95c19ae4277af54e26de96e29ef3623/ansible_navigator-26.1.1-py3-none-any.whl", hash = "sha256:60ecbff10b938929773a8093d7e9f07532cd3c96ebf1bfa509bd56de24a8d4dd", size = 304815, upload-time = "2026-01-08T19:41:34.771Z" },
 ]
 
 [[package]]
