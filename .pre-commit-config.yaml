@@ -29,7 +29,7 @@ repos:
       - id: pylint
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.21
+    rev: 0.9.24
     hooks:
       - id: uv-sync
       - id: uv-lock
@@ -42,7 +42,7 @@ repos:
   #   hooks:
   #     - id: actionlint
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v2.3.10"
+    rev: "v2.3.11"
     hooks:
       - id: biome-check
         name: biome
