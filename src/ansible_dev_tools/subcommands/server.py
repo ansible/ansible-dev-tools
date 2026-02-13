@@ -12,6 +12,7 @@ from django.core.wsgi import get_wsgi_application
 from django.urls import path
 from gunicorn.app.base import BaseApplication
 
+from ansible_dev_tools.resources.server.creator_dynamic import CreatorDynamic
 from ansible_dev_tools.resources.server.creator_v1 import CreatorFrontendV1
 from ansible_dev_tools.resources.server.creator_v2 import CreatorFrontendV2
 from ansible_dev_tools.resources.server.server_info import GetMetadata
@@ -29,6 +30,9 @@ urlpatterns = (
     path(route="v2/creator/collection", view=CreatorFrontendV2().collection),
     path(route="v2/creator/devfile", view=CreatorFrontendV2().devfile),
     path(route="v2/creator/ee_project", view=CreatorFrontendV2().ee_project),
+    path(route="v2/creator/capabilities", view=CreatorDynamic().capabilities),
+    path(route="v2/creator/schema", view=CreatorDynamic().schema),
+    path(route="v2/creator/scaffold", view=CreatorDynamic().scaffold),
 )
 
 
