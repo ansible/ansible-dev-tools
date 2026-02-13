@@ -15,5 +15,13 @@ oc version --client=true
 # ubi9 image but not on fedora one.
 touch ~/.zshrc
 
-# Install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+# Install our oh-my-posh theme
+mkdir -p ~/.poshthemes/
+cp -f /final/.ohmyposh.omp.json ~/.poshthemes/ansible.omp.json
+
+# Install oh-my-posh
+curl -s https://ohmyposh.dev/install.sh | bash -s
+cat >> ~/.zshrc <<'EOF'
+export PATH=$PATH:$HOME/.local/bin
+eval "$(oh-my-posh init zsh --config ~/.poshthemes/ansible.omp.json)"
+EOF
