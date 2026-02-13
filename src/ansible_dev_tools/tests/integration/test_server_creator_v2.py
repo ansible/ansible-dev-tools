@@ -115,3 +115,38 @@ def test_devfile_v2(server_url: str, tmp_path: Path) -> None:
         tar_file.write(response.content)
     with tarfile.open(dest_file) as file:
         assert "./devfile.yaml" in file.getnames()
+
+
+def test_error_ee_project_v2(server_url: str) -> None:
+    """Test the error response when a GET request is sent to the ee_project endpoint.
+
+    Args:
+        server_url: The server URL.
+    """
+    response = requests.get(f"{server_url}/v2/creator/ee_project", timeout=10)
+    assert response.status_code == requests.codes.get("bad_request"), (
+        f"Expected 400 but got {response.status_code}"
+    )
+    assert response.text == "Operation get not found for " + f"{server_url}/v2/creator/ee_project"
+
+
+def test_ee_project_v2(server_url: str, tmp_path: Path) -> None:
+    """Test the execution environment project creation.
+
+    Args:
+        server_url: The server URL.
+        tmp_path: Pytest tmp_path fixture.
+    """
+    response = requests.post(
+        f"{server_url}/v2/creator/ee_project",
+        json={},
+        timeout=10,
+    )
+    assert response.status_code == requests.codes.get("created")
+    assert response.headers["Content-Disposition"] == 'attachment; filename="ee_project.tar"'
+    assert response.headers["Content-Type"] == "application/tar"
+    dest_file = tmp_path / "ee_project.tar"
+    with dest_file.open(mode="wb") as tar_file:
+        tar_file.write(response.content)
+    with tarfile.open(dest_file) as file:
+        assert "./execution-environment.yml" in file.getnames()

@@ -129,6 +129,30 @@ class CreatorFrontendV2:
             response=response,
         )
 
+    def ee_project(
+        self,
+        request: HttpRequest,
+    ) -> FileResponse | HttpResponse:
+        """Create a new execution environment project.
+
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
+        """
+        result = validate_request(request)
+        if isinstance(result, HttpResponse):
+            return result
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_file = CreatorBackend(Path(tmp_dir)).ee_project()
+            response = self._response_from_tar(tar_file)
+
+        return validate_response(
+            request=request,
+            response=response,
+        )
+
 
 class CreatorOutput(Output):
     """The creator output."""
@@ -237,4 +261,23 @@ class CreatorBackend:
         Add(config).run()
         tar_file = self.tmp_dir / "devfile.tar"
         create_tar_file(add_path, tar_file)
+        return tar_file
+
+    def ee_project(self) -> Path:
+        """Scaffold an execution environment project.
+
+        Returns:
+            The tar file path.
+        """
+        init_path = self.tmp_dir / "ee_project"
+        config = Config(
+            creator_version=creator_version,
+            init_path=str(init_path),
+            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            project="execution_env",
+            subcommand="init",
+        )
+        Init(config).run()
+        tar_file = self.tmp_dir / "ee_project.tar"
+        create_tar_file(init_path, tar_file)
         return tar_file
