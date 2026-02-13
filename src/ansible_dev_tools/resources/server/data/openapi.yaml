@@ -118,6 +118,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /v2/creator/ee_project:
+    post:
+      summary: Create a new execution environment project
+      responses:
+        "201":
+          description: Created
+          content:
+            application/tar:
+              schema:
+                AnyValue: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
