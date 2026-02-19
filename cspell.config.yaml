@@ -13,6 +13,8 @@ dictionaries:
   - "!backwards-compatibility"
   - "!cryptocurrencies"
   - "!cpp"
+enabled: true
+useGitignore: true
 ignorePaths:
   - .config/requirements*
   - \.*
