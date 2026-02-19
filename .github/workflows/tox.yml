@@ -42,7 +42,10 @@ jobs:
         devspaces
         devel
         ee-amd64:tox -e ee:runner=devtools-multiarch-builder
-        ee-arm64:tox -e ee:runner=ubuntu-24.04-arm64-2core
+        ee-arm64:tox -e ee:runner=ubuntu-24.04-arm
+        selenium-amd64:tox -e selenium:runner=devtools-multiarch-builder
+        selenium-arm64:tox -e selenium:runner=ubuntu-24.04-arm
+    # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
     secrets: inherit # needed for logging to the ghcr.io registry
 
   codeql:
@@ -82,9 +85,17 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  publish-ee:
+  publish-image:
     # environment: release # approval
     runs-on: ubuntu-24.04
+    name: publish-${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - ee
+          - selenium
+
     needs:
       - tox
     if: github.ref == 'refs/heads/main' || (github.event_name == 'release' && github.event.action == 'published')
@@ -97,7 +108,7 @@ jobs:
       - name: pull-merge-push for the the two arch images under a single manifest
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: ./tools/ee.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
+        run: ./tools/${{ matrix.image }}.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
 
   publish-devspaces:
     runs-on: ubuntu-24.04
@@ -189,7 +200,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     needs:
       - publish-wheel
-      - publish-ee
+      - publish-image
       - publish-devspaces
     runs-on: ubuntu-24.04
 

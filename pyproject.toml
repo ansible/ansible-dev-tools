@@ -556,6 +556,16 @@ editable = true
 extras = ["server"]
 skip_install = false
 
+[tool.tox.env.selenium]
+commands = [["python", "-m", "build", "--version"], ["./tools/selenium.sh"]]
+commands_post = [["./tools/cleanup.sh"]]
+commands_pre = []
+dependency_groups = ["ee", "dev"]
+description = "Build the selenium-adt container image"
+editable = true
+extras = ["server"]
+skip_install = false
+
 [tool.tox.env.lint]
 commands = [["pre-commit", "run", "--all-files", "--show-diff-on-failure"]]
 commands_post = []
@@ -603,7 +613,8 @@ allowlist_externals = [
   "sh",
   "./tools/cleanup.sh",
   "./tools/devspaces.sh",
-  "./tools/ee.sh"
+  "./tools/ee.sh",
+  "./tools/selenium.sh"
 ]
 commands = [
   ["sh", "-c", "ansible --version | head -n 1"],

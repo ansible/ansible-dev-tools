@@ -21,6 +21,7 @@ endgroup
 gunicorn
 libera
 libonig
+lightspeed
 microdnf
 mknod
 modifyitems
