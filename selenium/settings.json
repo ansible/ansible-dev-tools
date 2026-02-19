@@ -1,0 +1,6 @@
+{
+  "ansible.lightspeed.enabled": true,
+  "ansible.lightspeed.suggestions.enabled": true,
+  "ansible.lightspeed.URL": "https://stage.ai.ansible.redhat.com",
+  "security.workspace.trust.enabled": false
+}

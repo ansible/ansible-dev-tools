@@ -20,6 +20,8 @@ ignorePaths:
   - mkdocs.yml
   - pyproject.toml
   - tox.ini
+  - selenium/Containerfile
+  - selenium/init.go
 
 languageSettings:
   - languageId: python
