@@ -10,6 +10,7 @@ from pathlib import Path
 from ansible_creator._version import version as creator_version
 from ansible_creator.config import Config
 from ansible_creator.output import Output
+from ansible_creator.subcommands.add import Add
 from ansible_creator.subcommands.init import Init
 from ansible_creator.utils import TermFeatures
 from django.core.files.storage import FileSystemStorage
@@ -104,6 +105,54 @@ class CreatorFrontendV2:
             response=response,
         )
 
+    def devfile(
+        self,
+        request: HttpRequest,
+    ) -> FileResponse | HttpResponse:
+        """Add a devfile.
+
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
+        """
+        result = validate_request(request)
+        if isinstance(result, HttpResponse):
+            return result
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_file = CreatorBackend(Path(tmp_dir)).devfile()
+            response = self._response_from_tar(tar_file)
+
+        return validate_response(
+            request=request,
+            response=response,
+        )
+
+    def ee_project(
+        self,
+        request: HttpRequest,
+    ) -> FileResponse | HttpResponse:
+        """Create a new execution environment project.
+
+        Args:
+            request: HttpRequest object.
+
+        Returns:
+            File or error response.
+        """
+        result = validate_request(request)
+        if isinstance(result, HttpResponse):
+            return result
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tar_file = CreatorBackend(Path(tmp_dir)).ee_project()
+            response = self._response_from_tar(tar_file)
+
+        return validate_response(
+            request=request,
+            response=response,
+        )
+
 
 class CreatorOutput(Output):
     """The creator output."""
@@ -188,5 +237,47 @@ class CreatorBackend:
         )
         Init(config).run()
         tar_file = self.tmp_dir / f"{namespace}-{collection_name}.tar"
+        create_tar_file(init_path, tar_file)
+        return tar_file
+
+    def devfile(self) -> Path:
+        """Scaffold a devfile.
+
+        Returns:
+            The tar file path.
+        """
+        # Path where the devfile is going to be added
+        add_path = self.tmp_dir / "devfile"
+        add_path.mkdir(parents=True, exist_ok=True)
+
+        config = Config(
+            resource_type="devfile",
+            creator_version=creator_version,
+            path=str(add_path),
+            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            subcommand="add",
+            overwrite=True,
+        )
+        Add(config).run()
+        tar_file = self.tmp_dir / "devfile.tar"
+        create_tar_file(add_path, tar_file)
+        return tar_file
+
+    def ee_project(self) -> Path:
+        """Scaffold an execution environment project.
+
+        Returns:
+            The tar file path.
+        """
+        init_path = self.tmp_dir / "ee_project"
+        config = Config(
+            creator_version=creator_version,
+            init_path=str(init_path),
+            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            project="execution_env",
+            subcommand="init",
+        )
+        Init(config).run()
+        tar_file = self.tmp_dir / "ee_project.tar"
         create_tar_file(init_path, tar_file)
         return tar_file

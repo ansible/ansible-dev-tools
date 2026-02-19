@@ -1,148 +1,82 @@
 ---
 ci:
-  # format compatible with commitlint
-  autoupdate_commit_msg: "chore: pre-commit autoupdate"
-  autoupdate_schedule: monthly
-  autofix_commit_msg: "chore: auto fixes from pre-commit.com hooks"
+  # We rely on renovate to update it but there is no way to fully disable it
+  # https://github.com/pre-commit-ci/issues/issues/83
+  autoupdate_schedule: quarterly
   skip:
+    - cspell # missing uv
+    - codecov # missing uv
     - shellcheck # no docker support on pre-commit.ci
-    - deps
+    # uv not present on pre-commit.ci
+    - mypy
+    - pylint
+    - ruff
+    - toml
 default_language_version:
-  # minimal version we support officially as this will impact mypy, pylint and
-  # pip-tools in undesirable ways.
+  # minimal version we support officially as this will impact mypy, pylint
   # minimal version determined by minimal version required by ansible-core, but
-  # we might keep a backwards compatibility version for older ones, but the
-  # lock extra will not be usable those.
+  # we might keep a backwards compatibility version for older ones
   python: "3.11"
 repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
-  # - repo: https://github.com/rhysd/actionlint
-  #   rev: v1.7.3
-  #   hooks:
-  #     - id: actionlint
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+        priority: 0
+  - repo: https://github.com/ansible/actions
+    rev: v0.5.1
+    hooks:
+      - id: toml
+        priority: 0
+      - id: mypy
+        priority: 2
+      - id: ruff
+        priority: 1
+      - id: cspell
+        priority: 0
+      - id: pylint
+        priority: 5
+      - id: codecov
+        priority: 0
+      - id: shellcheck
+        priority: 0
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.10.3
+    hooks:
+      - id: uv-sync
+      - id: uv-lock
+        name: "deps: upgrade via uv sync --upgrade"
+        alias: deps
+        args: ["--upgrade"]
+        stages: [manual]
+  - repo: https://github.com/biomejs/pre-commit
+    rev: "v2.4.2"
+    hooks:
+      - id: biome-check
+        name: biome
+        alias: biome
+        args: [--unsafe]
+        priority: 0
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        priority: 0
       - id: check-merge-conflict
       - id: check-symlinks
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: trailing-whitespace
-
-  - repo: https://github.com/Lucas-C/pre-commit-hooks.git
-    rev: v1.5.5
-    hooks:
-      - id: remove-tabs
-        exclude: >
-          (?x)^(
-            .config/pydoclint-baseline.txt
-          )$
-
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
-    hooks:
-      - id: shellcheck
-
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.4.2
-    hooks:
-      - id: prettier
-        always_run: true
-        additional_dependencies:
-          - prettier
-          - prettier-plugin-toml
-          - prettier-plugin-sort-json
-
-  - repo: https://github.com/pappasam/toml-sort
-    rev: v0.24.2
-    hooks:
-      - id: toml-sort-fix
-
-  - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.5.0
-    hooks:
-      - id: tox-ini-fmt
-
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
-    hooks:
-      - id: ruff
-        args:
-          - --fix
-          - --exit-non-zero-on-fix
-        types_or: [python, pyi]
-      - id: ruff-format # must be after ruff
-        types_or: [python, pyi]
-
-  - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.17.2
-    hooks:
-      - id: cspell
-        name: Spell check with cspell
-
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.6.0"
+    rev: "0.8.3"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
         entry: sh -ec "pydoclint -q . && pydoclint --generate-baseline=1 ."
         pass_filenames: false
-
-  - repo: https://github.com/pycqa/pylint.git
-    rev: v3.3.4
+        priority: 6
+  - repo: https://github.com/ansible/team-devtools
+    rev: v26.1.0
     hooks:
-      - id: pylint
-        args:
-          - --output-format=colorized
-        additional_dependencies:
-          - ansible-creator
-          - ansible-navigator
-          - django
-          - gunicorn
-          - libtmux
-          - openapi_core
-          - pytest
-          - pyyaml
-
-  - repo: https://github.com/pre-commit/mirrors-mypy.git
-    rev: v1.15.0
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - ansible-creator
-          - ansible-navigator
-          - django-stubs
-          - jinja2
-          - libtmux
-          - openapi-core>=0.19.1
-          - pytest
-          - types-pyyaml
-          - types-requests
-          - types-setuptools
-        # Override default pre-commit '--ignore-missing-imports'
-        args: [--strict]
-
-  - # keep at bottom as these are slower
-    repo: local
-    hooks:
-      - id: deps
-        alias: deps
-        name: Upgrade constraints files and requirements
-        # files: ^(pyproject\.toml|requirements\.txt)$
-        language: python
-        language_version: "3.11" # minimal required by latest ansible-core
-        # do not use --all-extra because it will include the lock extra which prevents upgrade
-        entry: >
-          bash -c
-          "python3 -m uv pip compile --upgrade -q --extra docs --extra server --extra test --output-file=.config/constraints.txt pyproject.toml;
-          python3 -m uv pip compile -q --upgrade --constraint=.config/constraints.txt --output-file=.config/requirements-lock.txt pyproject.toml --strip-extras
-          "
-        pass_filenames: false
-        stages:
-          - manual
-        additional_dependencies:
-          - uv>=0.5.4
+      - id: check-platform-constraints
+        priority: 0

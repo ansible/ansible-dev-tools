@@ -28,7 +28,6 @@ import select
 import shlex
 import shutil
 import subprocess
-import sys
 import time
 
 from dataclasses import dataclass
@@ -44,7 +43,7 @@ from ansible_dev_tools.subcommands.server import Server
 
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Generator
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -114,7 +113,7 @@ class Infrastructure:
             self.server = True
 
 
-INFRASTRUCTURE: Infrastructure
+INFRASTRUCTURE: Infrastructure | None = None
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -190,13 +189,57 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 
 
 @pytest.fixture(scope="session")
-def server_url() -> str:
-    """Run the server.
+def server_url() -> Generator[str, None, None]:
+    """Start the server and provide its URL.
 
-    Returns:
+    If the server is already running (e.g., started by pytest_sessionstart hook
+    when running from source), this fixture will use it. Otherwise, it starts
+    the server itself. This allows tests to work both when running from source
+    and when running from an installed package via args.
+
+    Yields:
         str: The server URL.
     """
-    return "http://localhost:8000"
+    url = "http://localhost:8000"
+
+    # Check if server is already running (started by hook when running from source)
+    try:
+        res = requests.get(url, timeout=1)
+        if res.status_code == requests.codes.get("not_found"):
+            LOGGER.info("Server already running at %s", url)
+            yield url
+            return
+    except requests.exceptions.ConnectionError:
+        pass  # Server not running, we'll start it
+
+    # Start server ourselves
+    bin_path = shutil.which("adt")
+    if bin_path is None:
+        pytest.fail("adt not found in $PATH")
+
+    proc = subprocess.Popen(  # noqa: S603
+        [bin_path, "server", "-p", "8000"],
+        env=os.environ,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    # Wait for server to be ready
+    for _ in range(10):
+        try:
+            res = requests.get(url, timeout=0.5)
+            if res.status_code == requests.codes.get("not_found"):
+                break
+        except requests.exceptions.ConnectionError:
+            time.sleep(0.5)
+    else:
+        proc.terminate()
+        pytest.fail("Could not start the server")
+
+    yield url
+
+    proc.terminate()
+    proc.wait()
 
 
 @pytest.fixture(scope="session")
@@ -240,6 +283,8 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     if session.config.option.collectonly:
         return
     if os.environ.get("PYTEST_XDIST_WORKER"):
+        return
+    if INFRASTRUCTURE is None:
         return
 
     if INFRASTRUCTURE.container:
@@ -290,6 +335,7 @@ def _start_container() -> None:
     Raises:
         ValueError: If the container engine is not podman or docker.
     """
+    assert INFRASTRUCTURE is not None
     engine = INFRASTRUCTURE.container_engine
     cmd = (
         f'{engine} ps -q --filter "name={INFRASTRUCTURE.container_name}" | xargs -r {engine} stop;'
@@ -365,6 +411,7 @@ def nav_default_ee() -> str:
 
 def _stop_container() -> None:
     """Stop the container."""
+    assert INFRASTRUCTURE is not None
     cmd = [
         INFRASTRUCTURE.container_engine,
         "stop",
@@ -400,6 +447,7 @@ def _exec_container(command: str) -> subprocess.CompletedProcess[str]:
     Returns:
         subprocess.CompletedProcess: The completed process.
     """
+    assert INFRASTRUCTURE is not None
     cmd = shlex.join(
         [
             INFRASTRUCTURE.container_engine,
@@ -440,30 +488,43 @@ def _start_server() -> None:
     Raises:
         RuntimeError: If the server could not be started.
     """
-    bin_path = Path(sys.executable).parent / "adt"
-    INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
-        [bin_path, "server", "-p", "8000"],
-        env=os.environ,
-    )
-    tries = 0
-    timeout = 2
-    max_tries = 15  # GHA macos runner showed occasional failures with 10s
-    msg = "Could not start the server."
-    while tries < max_tries:
-        try:
-            # timeout increased to 2s due to observed GHA macos failures
-            res = requests.get("http://localhost:8000", timeout=timeout)
-            if res.status_code == requests.codes.get("not_found"):
-                return
-        except (requests.exceptions.ConnectionError, requests.RequestException):  # noqa: PERF203
-            tries += 1
-            time.sleep(1)
-    INFRASTRUCTURE.proc.terminate()
-    stdout, stderr = INFRASTRUCTURE.proc.communicate()
-    msg += (
-        f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
-        f" Server stdout:\n{stdout.decode()}\nServer stderr:\n{stderr.decode()}"
-    )
+    assert INFRASTRUCTURE is not None
+    bin_path = shutil.which("adt")
+    if bin_path is None:
+        msg = "adt not found in $PATH"
+        raise RuntimeError(msg)
+    server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / "server.log"
+    server_log_file.parent.mkdir(parents=True, exist_ok=True)
+    LOGGER.warning("Starting adt server with log file at %s", server_log_file)
+    with server_log_file.open("w") as log_file:
+        INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
+            [bin_path, "server", "-p", "8000", "--debug"],
+            env=os.environ,
+            stdout=log_file,
+            stderr=subprocess.STDOUT,
+        )
+        tries = 0
+        timeout = 2
+        max_tries = 15  # GHA macos runner showed occasional failures with 10s
+        msg = "Could not start the server."
+        while tries < max_tries:
+            try:
+                # timeout increased to 2s due to observed GHA macos failures
+                res = requests.get("http://localhost:8000", timeout=timeout)
+                if res.status_code == requests.codes.get("not_found"):
+                    return
+            except (requests.exceptions.ConnectionError, requests.RequestException):
+                tries += 1
+                time.sleep(1)
+        INFRASTRUCTURE.proc.terminate()
+        stdout_bytes, stderr_bytes = INFRASTRUCTURE.proc.communicate()
+        # apparently communicate can also return None in addition to bytes
+        stdout = stdout_bytes.decode() if stdout_bytes else ""
+        stderr = stderr_bytes.decode() if stderr_bytes else ""
+        msg += (
+            f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
+            f" Server stdout:\n{stdout}\nServer stderr:\n{stderr}"
+        )
     raise RuntimeError(msg)
 
 
@@ -473,6 +534,7 @@ def _stop_server() -> None:
     Raises:
         RuntimeError: If the server is not running.
     """
+    assert INFRASTRUCTURE is not None
     if INFRASTRUCTURE.proc is None:
         msg = "The server is not running."
         raise RuntimeError(msg)
@@ -504,7 +566,7 @@ def test_fixture_dir_container(request: pytest.FixtureRequest) -> Path:
     Returns:
         Path: The test fixture directory within the container.
     """
-    return Path("/workdir/tests/fixtures") / request.path.relative_to(
+    return Path("/workdir/src/ansible_dev_tools/tests/fixtures") / request.path.relative_to(
         Path(__file__).parent,
     ).with_suffix("")
 
@@ -516,6 +578,7 @@ def infrastructure() -> Infrastructure:
     Returns:
         Infrastructure: The infrastructure.
     """
+    assert INFRASTRUCTURE is not None
     return INFRASTRUCTURE
 
 
@@ -567,7 +630,7 @@ def _cmd_in_tty(  # noqa: C901
                 for file_d in ready:
                     try:
                         data = os.read(file_d, 512)
-                    except OSError as exc:  # noqa: PERF203
+                    except OSError as exc:
                         if exc.errno != errno.EIO:
                             raise
                         # EIO means EOF on some systems

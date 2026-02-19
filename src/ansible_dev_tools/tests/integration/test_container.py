@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
 
-    from tests.conftest import Infrastructure
+    from ansible_dev_tools.tests.conftest import Infrastructure
 
     from .conftest import ContainerTmux
 
@@ -114,7 +114,7 @@ def test_app(
         app: The app to test.
         command: Command used to test tool version and or presence.
     """
-    result = exec_container(command if command else f"{app} --version")
+    result = exec_container(command or f"{app} --version")
     assert result.returncode == 0, f"{app} command failed"
 
 

@@ -1,6 +1,6 @@
 ---
 site_name: Ansible Development Tools Documentation
-site_url: https://ansible.readthedocs.io/projects/dev-tools/
+site_url: https://docs.ansible.com/projects/dev-tools/
 repo_url: https://github.com/ansible/ansible-dev-tools
 edit_uri: blob/main/docs/
 copyright: Copyright © Red Hat, Inc.
@@ -59,13 +59,13 @@ extra:
       name: GitHub
   alternate:
     - name: ansible-dev-tools
-      link: https://ansible.readthedocs.io/projects/dev-tools/
+      link: https://docs.ansible.com/projects/dev-tools/
     - name: ansible-lint
-      link: https://ansible.readthedocs.io/projects/lint/
+      link: https://docs.ansible.com/projects/lint/
     - name: ansible-navigator
-      link: https://ansible.readthedocs.io/projects/navigator/
+      link: https://docs.ansible.com/projects/navigator/
     - name: molecule
-      link: https://ansible.readthedocs.io/projects/molecule/
+      link: https://docs.ansible.com/projects/molecule/
     - name: vscode-ansible (github marketplace)
       link: https://marketplace.visualstudio.com/items?itemName=redhat.ansible
     - name: creator-ee (github)
@@ -73,7 +73,7 @@ extra:
     - name: pytest-ansible
       link: https://github.com/ansible-community/pytest-molecule
     - name: tox-ansible
-      link: https://ansible.readthedocs.io/projects/tox-ansible/
+      link: https://docs.ansible.com/projects/tox-ansible/
     - name: creator
       linke: https://github.com/ansible/ansible-creator
     - name: ansible-compat
@@ -118,8 +118,8 @@ plugins:
             docstring_style: sphinx
             merge_init_into_class: yes
             show_submodules: yes
-          import:
-            - url: https://docs.ansible.com/ansible/latest/objects.inv
+          inventories:
+            - url: https://docs.ansible.com/projects/ansible/latest/objects.inv
               domains: [py, std]
 
 markdown_extensions:

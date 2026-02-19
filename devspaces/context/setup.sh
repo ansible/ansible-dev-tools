@@ -27,11 +27,12 @@ dnf install -y -q \
     util-linux-user \
     which \
     zsh \
+    pinentry \
     --exclude container-selinux
 #     python${PYV}-ruamel-yaml \
 dnf -y -q clean all
 
-"/usr/bin/python${PYV}" -m pip install --root-user-action=ignore "$(ls -1 ./*.whl)[server,lock]" -r requirements.txt
+"/usr/bin/python${PYV}" -m pip install --root-user-action=ignore "$(ls -1 ./*.whl)[server]" -r requirements.txt
 
 ansible-galaxy collection install -r requirements.yml
 

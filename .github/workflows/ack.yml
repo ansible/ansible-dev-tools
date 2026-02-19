@@ -1,3 +1,4 @@
+---
 # See https://github.com/ansible/team-devtools/blob/main/.github/workflows/ack.yml
 name: ack
 
@@ -6,10 +7,11 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  merge_group:
   pull_request_target:
     types: [opened, labeled, unlabeled, synchronize]
 
 jobs:
   ack:
-    uses: ansible/team-devtools/.github/workflows/ack.yml@token_revised
+    uses: ansible/team-devtools/.github/workflows/ack.yml@main
     secrets: inherit

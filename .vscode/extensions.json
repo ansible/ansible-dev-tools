@@ -1,7 +1,7 @@
 {
   "recommendations": [
+    "biomejs.biome",
     "charliermarsh.ruff",
-    "esbenp.prettier-vscode",
     "gruntfuggly.triggertaskonsave",
     "markis.code-coverage",
     "ms-python.debugpy",
@@ -10,8 +10,12 @@
     "ms-python.python",
     "redhat.ansible",
     "redhat.vscode-openshift-connector",
-    "sonarsource.sonarlint-vscode",
     "streetsidesoftware.code-spell-checker",
-    "timonwong.shellcheck"
+    "timonwong.shellcheck",
+    "tombi-toml.tombi"
+  ],
+  "unwantedRecommendations": [
+    "esbenp.prettier-vscode",
+    "tamasfe.even-better-toml"
   ]
 }

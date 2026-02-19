@@ -1,7 +1,12 @@
 {
-  "name": "ansible-dev-container-podman",
-  "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
   "containerUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": ["redhat.ansible"]
+    }
+  },
+  "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
+  "name": "ansible-dev-container-podman",
   "runArgs": [
     "--cap-add=CAP_MKNOD",
     "--cap-add=NET_ADMIN",
@@ -19,10 +24,5 @@
     "unmask=/sys/fs/cgroup",
     "--userns=host",
     "--hostname=ansible-dev-container"
-  ],
-  "customizations": {
-    "vscode": {
-      "extensions": ["redhat.ansible"]
-    }
-  }
+  ]
 }

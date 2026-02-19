@@ -1,17 +1,17 @@
 {
-  "name": "ansible-dev-container-docker",
-  "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
   "containerUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": ["redhat.ansible"]
+    }
+  },
+  "image": "ghcr.io/ansible/community-ansible-dev-tools:latest",
+  "name": "ansible-dev-container-docker",
   "runArgs": [
     "--privileged",
     "--device",
     "/dev/fuse",
     "--hostname=ansible-dev-container"
   ],
-  "updateRemoteUserUID": true,
-  "customizations": {
-    "vscode": {
-      "extensions": ["redhat.ansible"]
-    }
-  }
+  "updateRemoteUserUID": true
 }

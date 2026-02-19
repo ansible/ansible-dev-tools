@@ -130,5 +130,5 @@ This will avoid running tests with either of ansible-core 2.9 or devel.
 
 Refer to the [tox-ansible documentation] to see more options.
 
-[pytest-ansible documentation]: https://ansible.readthedocs.io/projects/pytest-ansible/
-[tox-ansible documentation]: https://ansible.readthedocs.io/projects/tox-ansible/
+[pytest-ansible documentation]: https://docs.ansible.com/projects/pytest-ansible/
+[tox-ansible documentation]: https://docs.ansible.com/projects/tox-ansible/

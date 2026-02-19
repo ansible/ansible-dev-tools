@@ -13,6 +13,8 @@ dictionaries:
   - "!backwards-compatibility"
   - "!cryptocurrencies"
   - "!cpp"
+enabled: true
+useGitignore: true
 ignorePaths:
   - .config/requirements*
   - \.*
@@ -20,6 +22,8 @@ ignorePaths:
   - mkdocs.yml
   - pyproject.toml
   - tox.ini
+  - selenium/Containerfile
+  - selenium/init.go
 
 languageSettings:
   - languageId: python

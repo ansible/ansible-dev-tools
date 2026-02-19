@@ -15,10 +15,10 @@ env_list = lint
 
 [testenv:lint]
 deps =
-    pre-commit
+    prek
     # Add other linters as needed
 commands =
-    pre-commit run --show-diff-on-failure --all-files
+    prek run --show-diff-on-failure --all-files
 ```
 
 2. Update your CI configuration file (for example `.github/workflows/main.yml` for GitHub Actions) to include the tox command with the linting environment.
@@ -64,4 +64,4 @@ tox -e sanity-py3.11-2.14,sanity-py3.11-devel --ansible --conf tox-ansible.ini
 
 Refer to the [tox-ansible documentation] to see more options.
 
-[tox-ansible documentation]: https://ansible.readthedocs.io/projects/tox-ansible/
+[tox-ansible documentation]: https://docs.ansible.com/projects/tox-ansible/
