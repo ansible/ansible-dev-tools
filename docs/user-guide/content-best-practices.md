@@ -15,10 +15,10 @@ env_list = lint
 
 [testenv:lint]
 deps =
-    pre-commit
+    prek
     # Add other linters as needed
 commands =
-    pre-commit run --show-diff-on-failure --all-files
+    prek run --show-diff-on-failure --all-files
 ```
 
 2. Update your CI configuration file (for example `.github/workflows/main.yml` for GitHub Actions) to include the tox command with the linting environment.

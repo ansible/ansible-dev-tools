@@ -517,10 +517,13 @@ def _start_server() -> None:
                 tries += 1
                 time.sleep(1)
         INFRASTRUCTURE.proc.terminate()
-        stdout, stderr = INFRASTRUCTURE.proc.communicate()
+        stdout_bytes, stderr_bytes = INFRASTRUCTURE.proc.communicate()
+        # apparently communicate can also return None in addition to bytes
+        stdout = stdout_bytes.decode() if stdout_bytes else ""
+        stderr = stderr_bytes.decode() if stderr_bytes else ""
         msg += (
             f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
-            f" Server stdout:\n{stdout.decode()}\nServer stderr:\n{stderr.decode()}"
+            f" Server stdout:\n{stdout}\nServer stderr:\n{stderr}"
         )
     raise RuntimeError(msg)
 
