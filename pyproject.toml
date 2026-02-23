@@ -520,13 +520,16 @@ uv_sync_locked = false
 
 [tool.tox.env.devspaces]
 commands = [
-  [
-    "./tools/devspaces.sh",
-    { default = [], extend = true, replace = "posargs" }
-  ]
+  { extend = true, replace = "ref", of = [
+    "tool",
+    "tox",
+    "env",
+    "pkg",
+    "commands"
+  ] },
+  ["./tools/devspaces.sh"],
 ]
 commands_post = [["./tools/cleanup.sh"]]
-commands_pre = []
 dependency_groups = ["ee", "dev"]
 description = "Build devspaces container image for current architecture"
 extras = ["server"]
@@ -589,14 +592,7 @@ uv_sync_locked = false
 [tool.tox.env.pkg]
 commands = [
   ["rm", "-rf", "{tox_root}/dist/"],
-  [
-    "python",
-    "-m",
-    "build",
-    "--outdir",
-    "{tox_root}/dist/",
-    "{tox_root}"
-  ],
+  ["uv", "build", "--out-dir={tox_root}/dist/", "{tox_root}"],
   ["sh", "-c", "python -m twine check --strict {tox_root}/dist/*"]
 ]
 commands_post = []

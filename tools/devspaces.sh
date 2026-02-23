@@ -4,11 +4,6 @@ set -euxo pipefail
 ADT_CONTAINER_ENGINE=${ADT_CONTAINER_ENGINE:-docker}
 IMAGE_NAME=ansible/ansible-workspace-env-reference:test
 
-mkdir -p out dist
-# Ensure that we packaged the code first
-# shellcheck disable=SC2207
-rm -f dist/*.*
-tox -e pkg
 # shellcheck disable=SC2207
 WHEELS=($(find dist -name '*.whl' -maxdepth 1 -execdir echo '{}' ';'))
 if [ ${#WHEELS[@]} -ne 1 ]; then
