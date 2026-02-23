@@ -4,8 +4,6 @@ ci:
   # https://github.com/pre-commit-ci/issues/issues/83
   autoupdate_schedule: quarterly
   skip:
-    - cspell # missing uv
-    - codecov # missing uv
     - shellcheck # no docker support on pre-commit.ci
     # uv not present on pre-commit.ci
     - mypy
@@ -21,26 +19,17 @@ repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
-        priority: 0
+
   - repo: https://github.com/ansible/actions
-    rev: v0.5.1
+    rev: v0.3.1
     hooks:
       - id: toml
-        priority: 0
-      - id: mypy
-        priority: 2
       - id: ruff
-        priority: 1
-      - id: cspell
-        priority: 0
+      - id: mypy
       - id: pylint
-        priority: 5
-      - id: codecov
-        priority: 0
-      - id: shellcheck
-        priority: 0
+
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.3
+    rev: 0.9.28
     hooks:
       - id: uv-sync
       - id: uv-lock
@@ -48,25 +37,48 @@ repos:
         alias: deps
         args: ["--upgrade"]
         stages: [manual]
+  # - repo: https://github.com/rhysd/actionlint
+  #   rev: v1.7.3
+  #   hooks:
+  #     - id: actionlint
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v2.4.2"
+    rev: "v2.3.13"
     hooks:
       - id: biome-check
         name: biome
         alias: biome
         args: [--unsafe]
-        priority: 0
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
-        priority: 0
       - id: check-merge-conflict
       - id: check-symlinks
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: trailing-whitespace
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks.git
+    rev: v1.5.6
+    hooks:
+      - id: remove-tabs
+        exclude: >
+          (?x)^(
+            .config/pydoclint-baseline.txt
+          )$
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/streetsidesoftware/cspell-cli
+    rev: v9.6.0
+    hooks:
+      - id: cspell
+        name: Spell check with cspell
+
   - repo: https://github.com/jsh9/pydoclint
     rev: "0.8.3"
     hooks:
@@ -74,9 +86,7 @@ repos:
         # This allows automatic reduction of the baseline file when needed.
         entry: sh -ec "pydoclint -q . && pydoclint --generate-baseline=1 ."
         pass_filenames: false
-        priority: 6
   - repo: https://github.com/ansible/team-devtools
     rev: v26.1.0
     hooks:
       - id: check-platform-constraints
-        priority: 0
