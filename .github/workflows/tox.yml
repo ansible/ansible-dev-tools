@@ -39,12 +39,7 @@ jobs:
       default_python: "3.12" # min version of `devel`
       jobs_producing_coverage: 9
       other_names_also: |
-        devspaces
-        devel
-        ee-amd64:tox -e ee:runner=devtools-multiarch-builder
-        ee-arm64:tox -e ee:runner=ubuntu-24.04-arm
-        selenium-amd64:tox -e selenium:runner=devtools-multiarch-builder
-        selenium-arm64:tox -e selenium:runner=ubuntu-24.04-arm
+        py312-devel
     # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
     secrets: inherit # needed for logging to the ghcr.io registry
 
