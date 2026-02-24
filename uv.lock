@@ -120,6 +120,7 @@ dependencies = [
     { name = "ansible-lint", marker = "sys_platform != 'win32'" },
     { name = "ansible-navigator", marker = "sys_platform != 'win32'" },
     { name = "ansible-sign", marker = "sys_platform != 'win32'" },
+    { name = "chardet", marker = "sys_platform != 'win32'" },
     { name = "molecule", marker = "sys_platform != 'win32'" },
     { name = "pytest-ansible", marker = "sys_platform != 'win32'" },
     { name = "setuptools", marker = "sys_platform != 'win32'" },
@@ -207,6 +208,7 @@ requires-dist = [
     { name = "ansible-navigator", specifier = ">=26.1.1" },
     { name = "ansible-pylibssh", marker = "sys_platform == 'linux' and extra == 'container'", specifier = "==1.3.0" },
     { name = "ansible-sign", specifier = ">=0.1.3" },
+    { name = "chardet", specifier = "<6.0.0" },
     { name = "django", marker = "extra == 'server'", specifier = ">4.1,<6.0" },
     { name = "gunicorn", marker = "extra == 'server'", specifier = ">=23.0.0" },
     { name = "libtmux", marker = "extra == 'test'", specifier = ">=0.46.0" },
@@ -216,7 +218,7 @@ requires-dist = [
     { name = "pytest-ansible", specifier = ">=25.12.0" },
     { name = "requests", marker = "extra == 'test'", specifier = ">=2.32.0" },
     { name = "setuptools", specifier = ">=65.5.1" },
-    { name = "tox-ansible", specifier = ">=25.12.0" },
+    { name = "tox-ansible", specifier = ">=26.2.1" },
 ]
 provides-extras = ["container", "full", "server", "test"]
 
@@ -2878,18 +2880,19 @@ wheels = [
 
 [[package]]
 name = "tox-ansible"
-version = "26.1.0"
+version = "26.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "chardet", marker = "sys_platform != 'win32'" },
     { name = "pytest", marker = "sys_platform != 'win32'" },
     { name = "pytest-ansible", marker = "sys_platform != 'win32'" },
     { name = "pytest-xdist", marker = "sys_platform != 'win32'" },
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
     { name = "tox", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0b/7f/c89c28601ae7062809c1b96e2ea693d3e1a20dca0ef05dc75b8f24a5a5b9/tox_ansible-26.1.0.tar.gz", hash = "sha256:029620950f38c08677454493ddc9259b5135fead82926073555bea8ac55174fa", size = 160714, upload-time = "2026-01-15T05:51:33.495Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/67/8fb25436d23ff9fa5e4a0329b1660c836cd8166104282cc8d9cd0a83e991/tox_ansible-26.2.1.tar.gz", hash = "sha256:5dd085c6fa3427c45217faa4781ed61e86ee54f989807e45d4ca5cd3e7aa1d49", size = 168662, upload-time = "2026-02-24T16:36:17.372Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/5c/5db8aa9fc7bb49a23118272dce76b38cc6eb44536ccf091ee575015477a8/tox_ansible-26.1.0-py3-none-any.whl", hash = "sha256:b362aafaadd04d70642cba44f28cf43d15f8a3927c030a71d14b6849c4871375", size = 10918, upload-time = "2026-01-15T05:51:32.178Z" },
+    { url = "https://files.pythonhosted.org/packages/01/a6/105922215825ca48d15f32294971e856891dc4e0e5900194d750753e4a52/tox_ansible-26.2.1-py3-none-any.whl", hash = "sha256:d6ded79bf6ee3bba4feb8c6c9efa413194927b90b8509a12cdf6025aed9b09d0", size = 11217, upload-time = "2026-02-24T16:36:16.226Z" },
 ]
 
 [[package]]
@@ -3001,16 +3004,16 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "20.36.1"
+version = "20.39.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib", marker = "sys_platform != 'win32'" },
     { name = "filelock", marker = "sys_platform != 'win32'" },
     { name = "platformdirs", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/aa/a3/4d310fa5f00863544e1d0f4de93bddec248499ccf97d4791bc3122c9d4f3/virtualenv-20.36.1.tar.gz", hash = "sha256:8befb5c81842c641f8ee658481e42641c68b5eab3521d8e092d18320902466ba", size = 6032239, upload-time = "2026-01-09T18:21:01.296Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ed/54/809199edc537dbace273495ac0884d13df26436e910a5ed4d0ec0a69806b/virtualenv-20.39.0.tar.gz", hash = "sha256:a15f0cebd00d50074fd336a169d53422436a12dfe15149efec7072cfe817df8b", size = 5869141, upload-time = "2026-02-23T18:09:13.349Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/2a/dc2228b2888f51192c7dc766106cd475f1b768c10caaf9727659726f7391/virtualenv-20.36.1-py3-none-any.whl", hash = "sha256:575a8d6b124ef88f6f51d56d656132389f961062a9177016a50e4f507bbcc19f", size = 6008258, upload-time = "2026-01-09T18:20:59.425Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/b4/8268da45f26f4fe84f6eae80a6ca1485ffb490a926afecff75fc48f61979/virtualenv-20.39.0-py3-none-any.whl", hash = "sha256:44888bba3775990a152ea1f73f8e5f566d49f11bbd1de61d426fd7732770043e", size = 5839121, upload-time = "2026-02-23T18:09:11.173Z" },
 ]
 
 [[package]]
