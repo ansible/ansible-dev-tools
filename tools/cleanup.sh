@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # cspell: ignore exuo
-set -exuo pipefail
+set -euo pipefail
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX sed
