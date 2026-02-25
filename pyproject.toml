@@ -23,15 +23,15 @@ classifiers = [
 ]
 dependencies = [
   "ansible-builder>=3.1.1",
-  "ansible-compat>=25.12.0",
-  "ansible-creator>=25.12.0",
-  "ansible-dev-environment>=25.12.2",
-  "ansible-lint>=26.1.0",
-  "ansible-navigator>=26.1.1",
-  "ansible-sign>=0.1.3",
+  "ansible-compat>=25.12.1",
+  "ansible-creator>=26.2.0",
+  "ansible-dev-environment>=26.2.0",
+  "ansible-lint>=26.2.0",
+  "ansible-navigator>=26.1.3",
+  "ansible-sign>=0.1.5",
   "chardet<6.0.0",  # https://github.com/chardet/chardet/issues/321 (indirect via tox)
-  "molecule>=25.12.0",
-  "pytest-ansible>=25.12.0",
+  "molecule>=26.2.0",
+  "pytest-ansible>=26.2.0",
   "setuptools>=65.5.1",
   "tox-ansible>=26.2.1",  # hhttps://github.com/ansible/tox-ansible/pull/531
 ]
@@ -66,19 +66,12 @@ dev = [
   "coverage[toml]>=7.10.5",
   "django-stubs>=5.2.2",
   "libtmux>=0.46.2",
-  "mypy>=1.17.1",
   "pip>=25.2",
-  "pydoclint>=0.6.10",
-  "pylint>=3.3.8",
   "pytest>=8.4.1",
   "pytest-instafail>=0.5.0",
   "pytest-xdist>=3.8.0",
   "requests>=2.32.5",
-  "ruff>=0.12.11",
-  "toml-sort>=0.24.2",
   "tox>=4.28.4",
-  "types-pyyaml>=6.0.12.20250822",
-  "types-requests>=2.32.4.20250809"
 ]
 docs = [
   "mkdocs-ansible>=25.5.0",
@@ -92,8 +85,14 @@ ee = [
   "setuptools>=65.5.1"
 ]
 lint = [
+  "mypy>=1.17.1",
   "prek>=0.3.3",
+  "pydoclint>=0.6.10",
+  "pylint>=3.3.8",
+  "ruff>=0.12.11",
   "tombi>=0.6.35",
+  "types-pyyaml>=6.0.12.20250822",
+  "types-requests>=2.32.4.20250809",
 ]
 pkg = ["build>=0.9", "pip>=25.2", "pipx>=1.7.1", "twine>=4.0.2"]
 
@@ -103,11 +102,6 @@ requires = [
   "setuptools >= 65.3.0",  # required by pyproject+setuptools_scm integration and editable installs
 ]
 build-backend = "setuptools.build_meta"
-
-[tool.black]
-enable-unstable-feature = ["string_processing"]
-line-length = 100
-preview = true
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "pragma: no cover"]
