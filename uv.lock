@@ -249,7 +249,7 @@ docs = [
     { name = "pymdown-extensions", specifier = ">=10.16.1" },
 ]
 ee = [
-    { name = "ansible-builder", specifier = ">=3.1.0" },
+    { name = "ansible-builder", specifier = ">=3.1.1" },
     { name = "build", specifier = ">=1.3.0" },
     { name = "mk", specifier = ">=3.0.0" },
     { name = "setuptools", specifier = ">=65.5.1" },
