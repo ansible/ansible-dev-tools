@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:43 AS selenium-atd
+FROM registry.fedoraproject.org/fedora:45 AS selenium-atd
 LABEL maintainer="ansible-devtools@redhat.com"
 
 COPY init.go .

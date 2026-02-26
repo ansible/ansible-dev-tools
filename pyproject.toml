@@ -29,7 +29,7 @@ dependencies = [
   "ansible-lint>=26.2.0",
   "ansible-navigator>=26.1.3",
   "ansible-sign>=0.1.5",
-  "chardet<6.0.0",  # https://github.com/chardet/chardet/issues/321 (indirect via tox)
+  "chardet<6.0.1",  # https://github.com/chardet/chardet/issues/321 (indirect via tox)
   "molecule>=26.2.0",
   "pytest-ansible>=26.2.0",
   "setuptools>=65.5.1",

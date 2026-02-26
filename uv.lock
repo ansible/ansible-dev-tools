@@ -217,7 +217,7 @@ requires-dist = [
     { name = "ansible-navigator", specifier = ">=26.1.3" },
     { name = "ansible-pylibssh", marker = "sys_platform == 'linux' and extra == 'container'", specifier = "==1.3.0" },
     { name = "ansible-sign", specifier = ">=0.1.5" },
-    { name = "chardet", specifier = "<6.0.0" },
+    { name = "chardet", specifier = "<6.0.1" },
     { name = "django", marker = "extra == 'server'", specifier = ">4.1,<6.0" },
     { name = "gunicorn", marker = "extra == 'server'", specifier = ">=23.0.0" },
     { name = "libtmux", marker = "extra == 'test'", specifier = ">=0.46.0" },
