@@ -100,9 +100,11 @@ class Server:
 
     def run(self) -> None:
         """Start the server."""
-        options = {"bind": f"0.0.0.0:{self.port}"}
+        options: dict[str, str | bool] = {
+            "bind": f"0.0.0.0:{self.port}",
+            "control_socket_disable": True,
+        }
         if self.debug:
-            # set log level to debug and write access logs to stdout
             options.update({"loglevel": "debug", "accesslog": "-"})
 
         AdtServerApp(app=self.application, options=options).run()
