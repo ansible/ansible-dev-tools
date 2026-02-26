@@ -23,7 +23,7 @@ repos:
       - id: check-useless-excludes
         priority: 0
   - repo: https://github.com/ansible/actions
-    rev: v0.5.1
+    rev: v1.0.0
     hooks:
       - id: toml
         priority: 0
@@ -62,11 +62,17 @@ repos:
       - id: check-added-large-files
         priority: 0
       - id: check-merge-conflict
+        priority: 0
       - id: check-symlinks
+        priority: 0
       - id: debug-statements
+        priority: 0
       - id: detect-private-key
+        priority: 0
       - id: end-of-file-fixer
+        priority: 1
       - id: trailing-whitespace
+        priority: 1
   - repo: https://github.com/jsh9/pydoclint
     rev: "0.8.3"
     hooks:
