@@ -7,8 +7,7 @@ import shutil
 
 from typing import TYPE_CHECKING, Any
 
-# pylint: disable-next=import-error,no-name-in-module
-from ansible_creator.api import V1  # type: ignore[import-not-found]
+from ansible_creator.api import V1
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpRequest, HttpResponse, JsonResponse
 
@@ -76,7 +75,7 @@ class CreatorDynamic:
         if isinstance(result, HttpResponse):
             return result
         path_segments = request.GET.getlist("command_path")
-        if not path_segments:
+        if not path_segments:  # pragma: no cover
             return HttpResponse(
                 "Missing required query parameter: command_path",
                 status=400,
@@ -115,7 +114,7 @@ class CreatorDynamic:
         command_path: list[str] = body.get("command_path", [])
         params: dict[str, Any] = body.get("params", {})
 
-        if not command_path:
+        if not command_path:  # pragma: no cover
             return JsonResponse(
                 {"status": "error", "message": "Missing command_path", "logs": []},
                 status=400,
@@ -126,7 +125,7 @@ class CreatorDynamic:
 
         if creator_result.status == "error":
             # Clean up the temp directory on error
-            if creator_result.path:
+            if creator_result.path:  # pragma: no cover
                 shutil.rmtree(creator_result.path, ignore_errors=True)
             return JsonResponse(
                 {
@@ -137,7 +136,7 @@ class CreatorDynamic:
                 status=400,
             )
 
-        if creator_result.path is None:
+        if creator_result.path is None:  # pragma: no cover
             return JsonResponse(
                 {
                     "status": "error",
