@@ -268,10 +268,13 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
     INFRASTRUCTURE = Infrastructure(session)
 
-    if INFRASTRUCTURE.container:
-        _start_container()
-    if INFRASTRUCTURE.server:
-        _start_server()
+    try:
+        if INFRASTRUCTURE.container:
+            _start_container()
+        if INFRASTRUCTURE.server:
+            _start_server()
+    except RuntimeError as exc:
+        pytest.exit(str(exc), 2)
 
 
 def pytest_sessionfinish(session: pytest.Session) -> None:
@@ -496,6 +499,7 @@ def _start_server() -> None:
     server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / "server.log"
     server_log_file.parent.mkdir(parents=True, exist_ok=True)
     LOGGER.warning("Starting adt server with log file at %s", server_log_file)
+    start_time = time.time()
     with server_log_file.open("w") as log_file:
         INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
             [bin_path, "server", "-p", "8000", "--debug"],
@@ -504,9 +508,9 @@ def _start_server() -> None:
             stderr=subprocess.STDOUT,
         )
         tries = 0
-        timeout = 2
-        max_tries = 15  # GHA macos runner showed occasional failures with 10s
-        msg = "Could not start the server."
+        timeout = 3
+        max_tries = 15
+        # GHA macos runner showed occasional failures with 30s
         while tries < max_tries:
             try:
                 # timeout increased to 2s due to observed GHA macos failures
@@ -514,17 +518,18 @@ def _start_server() -> None:
                 if res.status_code == requests.codes.get("not_found"):
                     return
             except (requests.exceptions.ConnectionError, requests.RequestException):
-                tries += 1
-                time.sleep(1)
+                time.sleep(timeout)
+            tries += 1
+
         INFRASTRUCTURE.proc.terminate()
-        stdout_bytes, stderr_bytes = INFRASTRUCTURE.proc.communicate()
+        stdout_bytes, _ = INFRASTRUCTURE.proc.communicate()
         # apparently communicate can also return None in addition to bytes
         stdout = stdout_bytes.decode() if stdout_bytes else ""
-        stderr = stderr_bytes.decode() if stderr_bytes else ""
-        msg += (
-            f"Could not start the server after {tries} tries with a timeout of {timeout} seconds each."
-            f" Server stdout:\n{stdout}\nServer stderr:\n{stderr}"
-        )
+        total_time = int(time.time() - start_time)
+        msg = f"Could not start the server after {tries} retries, total time ({total_time}s).\n{stdout}"
+        log = server_log_file.read_text()
+        if log:
+            msg += f"\n{log}"
     raise RuntimeError(msg)
 
 
