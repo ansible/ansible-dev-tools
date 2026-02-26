@@ -100,9 +100,9 @@ class Server:
 
     def run(self) -> None:
         """Start the server."""
-        options: dict[str, str | bool] = {
+        options: dict[str, str] = {
             "bind": f"0.0.0.0:{self.port}",
-            "control_socket_disable": True,
+            "control_socket_disable": "true",
         }
         if self.debug:
             options.update({"loglevel": "debug", "accesslog": "-"})
