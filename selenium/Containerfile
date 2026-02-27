@@ -30,9 +30,7 @@ VNC_GEOMETRY="1600x900" \
 SELENIUM_VERSION=${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.${SELENIUM_PATCH_VERSION} \
 SELENIUM_PATH=${SELENIUM_HOME}/selenium-server/selenium-server-standalone.jar \
 SELENIUM_HTTP_JDK_CLIENT_PATH=${SELENIUM_HOME}/selenium-server/selenium-http-jdk-client.jar \
-PATH=${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH} \
-JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-# ^ disable SVE instructions to avoid "Illegal instruction" error on aarch64
+PATH=${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH}
 
 EXPOSE ${SELENIUM_PORT} ${VNC_PORT} ${API_PORT}
 
@@ -160,6 +158,7 @@ code-server --version && \
 Xvnc -version && \
 fluxbox --version && \
 java -version && \
+if [ "$(arch)" = "aarch64" ]; then export JAVA_TOOL_OPTIONS=-XX:UseSVE=0; fi && \
 java -Dwebdriver.http.factory=jdk-http-client -jar ${SELENIUM_PATH} -ext ${SELENIUM_HTTP_JDK_CLIENT_PATH} info
 
 USER 1001
