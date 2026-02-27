@@ -136,7 +136,7 @@ curl -sS -L -C - https://github.com/SeleniumHQ/selenium/releases/download/seleni
 -o ${SELENIUM_PATH} && \
 curl -sS -L -C - https://repo1.maven.org/maven2/org/seleniumhq/selenium/selenium-http-jdk-client/${SELENIUM_VERSION}/selenium-http-jdk-client-${SELENIUM_VERSION}.jar \
 -o ${SELENIUM_HTTP_JDK_CLIENT_PATH} && \
-curl -sS -L -C - https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-$(arch)/en-US/firefox-140.7.0esr.tar.xz -o firefox.tar.xz && tar --xz -x -f firefox.tar.xz && rm firefox.tar.xz && \
+curl -sS -L https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-$(arch)/en-US/firefox-140.7.0esr.tar.xz -o firefox.tar.xz && tar --xz -x -f firefox.tar.xz && rm firefox.tar.xz && \
 curl -sS -LO -C - https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
 tar -C /usr/bin/ -xvf geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
 cd ${SELENIUM_HOME} && \
