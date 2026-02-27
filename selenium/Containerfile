@@ -5,46 +5,40 @@ COPY init.go .
 
 COPY settings.json /home/selenium/.local/share/code-server/User/settings.json
 
-# Firefox releases
-# https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-ARG FIREFOX_URL="https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-x86_64/en-US/firefox-140.7.0esr.tar.xz"
 # Gecko driver releases
 # https://github.com/mozilla/geckodriver/releases
-ARG GECKODRIVER_VERSION="v0.36.0"
 # Chrome versions
 # https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable
-ARG CHROME_VERSION="144.0.7559.59-1"
-
-ARG SELENIUM_MAJOR_VERSION=4
-
-ARG SELENIUM_MINOR_VERSION=39
-
-ARG SELENIUM_PATCH_VERSION=0
+ARG \
+GECKODRIVER_VERSION="v0.36.0" \
+CHROME_VERSION="144.0.7559.59-1" \
+SELENIUM_MAJOR_VERSION=4 \
+SELENIUM_MINOR_VERSION=39 \
+SELENIUM_PATCH_VERSION=0
 
 ENV SELENIUM_HOME=/home/selenium
 
-ENV SELENIUM_PORT=4444 \
-    SELENIUM_SESSION_TIMEOUT=1800 \
-    VNC_PORT=5999 \
-    API_PORT=8000 \
-    DISPLAY=:99 \
-    DBUS_SESSION_BUS_ADDRESS=/dev/null \
-    HOME=${SELENIUM_HOME} \
-    VNC_GEOMETRY="1600x900" \
-    SELENIUM_VERSION=${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.${SELENIUM_PATCH_VERSION} \
-    SELENIUM_PATH=${SELENIUM_HOME}/selenium-server/selenium-server-standalone.jar \
-    SELENIUM_HTTP_JDK_CLIENT_PATH=${SELENIUM_HOME}/selenium-server/selenium-http-jdk-client.jar \
-    PATH=${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH}
+ENV \
+SELENIUM_PORT=4444 \
+SELENIUM_SESSION_TIMEOUT=1800 \
+VNC_PORT=5999 \
+API_PORT=8000 \
+DISPLAY=:99 \
+DBUS_SESSION_BUS_ADDRESS=/dev/null \
+HOME=${SELENIUM_HOME} \
+VNC_GEOMETRY="1600x900" \
+SELENIUM_VERSION=${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.${SELENIUM_PATCH_VERSION} \
+SELENIUM_PATH=${SELENIUM_HOME}/selenium-server/selenium-server-standalone.jar \
+SELENIUM_HTTP_JDK_CLIENT_PATH=${SELENIUM_HOME}/selenium-server/selenium-http-jdk-client.jar \
+PATH=${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH} \
+JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+# ^ disable SVE instructions to avoid "Illegal instruction" error on aarch64
 
-EXPOSE ${SELENIUM_PORT}
-
-EXPOSE ${VNC_PORT}
-
-EXPOSE ${API_PORT}
+EXPOSE ${SELENIUM_PORT} ${VNC_PORT} ${API_PORT}
 
 WORKDIR ${SELENIUM_HOME}
 
-RUN PACKAGES="\
+RUN --mount=type=cache,dst=/var/cache/dnf PACKAGES="\
 alsa-lib \
 at-spi2-atk \
 at-spi2-core \
@@ -136,26 +130,37 @@ xkeyboard-config" && \
 microdnf -q -y install ${PACKAGES} >/dev/null
 # ^ https://github.com/rpm-software-management/dnf5/issues/570
 
-RUN mkdir -p .cache/dconf .mozilla/plugins .vnc/ .fluxbox/ && \
+RUN --mount=type=cache,target=/.cache --mount=type=cache,target=/home/selenium/.cache/code-server \
+GECKODRIVER_ARCH=$([ "$(arch)" = "aarch64" ] && echo aarch64 || echo linux64) && \
+mkdir -p ${SELENIUM_HOME}/selenium-server && \
+cd /.cache && \
+curl -sS -L -C - https://github.com/SeleniumHQ/selenium/releases/download/selenium-${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.0/selenium-server-${SELENIUM_VERSION}.jar \
+-o ${SELENIUM_PATH} && \
+curl -sS -L -C - https://repo1.maven.org/maven2/org/seleniumhq/selenium/selenium-http-jdk-client/${SELENIUM_VERSION}/selenium-http-jdk-client-${SELENIUM_VERSION}.jar \
+-o ${SELENIUM_HTTP_JDK_CLIENT_PATH} && \
+curl -sS -L -C - https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-$(arch)/en-US/firefox-140.7.0esr.tar.xz|tar --xz -x && \
+curl -sS -LO -C - https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
+tar -C /usr/bin/ -xvf geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
+cd ${SELENIUM_HOME} && \
+mkdir -p .cache/dconf .mozilla/plugins .vnc/ .fluxbox/ && \
 echo "session.screen0.toolbar.autoHide: true" > .fluxbox/init && \
 touch .Xauthority .vnc/config && \
-mkdir -p ${SELENIUM_HOME}/selenium-server && \
-curl -L https://github.com/SeleniumHQ/selenium/releases/download/selenium-${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.0/selenium-server-${SELENIUM_VERSION}.jar \
--o ${SELENIUM_PATH} && \
-curl -L https://repo1.maven.org/maven2/org/seleniumhq/selenium/selenium-http-jdk-client/${SELENIUM_VERSION}/selenium-http-jdk-client-${SELENIUM_VERSION}.jar \
--o ${SELENIUM_HTTP_JDK_CLIENT_PATH} && \
-curl -L https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-x86_64/en-US/firefox-140.7.0esr.tar.xz|tar --xz -x && \
-curl -LO https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz && \
-tar -C /usr/bin/ -xvf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz && \
-rm -f geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz && \
-curl -fsSL https://code-server.dev/install.sh | sh && \
+curl -fsSL https://code-server.dev/install.sh | sh
+
+RUN \
 code-server --install-extension ms-python.vscode-python-envs --install-extension redhat.vscode-yaml --install-extension redhat.vscode-redhat-account && \
 mkdir -p workspace && touch workspace/playbook.yaml && \
 modutil -fips true -dbdir /etc/pki/nssdb -force && \
 chown -R 0:0 /etc/pki/nssdb && \
 chmod 644 /etc/pki/nssdb/* && \
 chown -R 1001:0 ${SELENIUM_HOME} && \
-chmod -R g=u ${SELENIUM_HOME}
+chmod -R g=u ${SELENIUM_HOME} && \
+geckodriver --version && \
+code-server --version && \
+Xvnc -version && \
+fluxbox --version && \
+java -version && \
+java -Dwebdriver.http.factory=jdk-http-client -jar ${SELENIUM_PATH} -ext ${SELENIUM_HTTP_JDK_CLIENT_PATH} info
 
 USER 1001
 
