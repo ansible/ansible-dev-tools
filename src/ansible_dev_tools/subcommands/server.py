@@ -104,7 +104,7 @@ class Server:
             "bind": f"0.0.0.0:{self.port}",
             "control_socket_disable": "true",
         }
-        if self.debug:
+        if self.debug:  # pragma: no cover
             options.update({"loglevel": "debug", "accesslog": "-"})
 
         AdtServerApp(app=self.application, options=options).run()

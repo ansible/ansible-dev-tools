@@ -18,19 +18,6 @@ if TYPE_CHECKING:
     from ansible_dev_tools.tests.conftest import Infrastructure
 
 
-@pytest.fixture
-def session_params() -> dict[str, int]:
-    """Set the tmux session parameters.
-
-    Returns:
-        dict: The tmux session parameters.
-    """
-    return {
-        "x": 132,
-        "y": 24,
-    }
-
-
 class ContainerTmux:
     """A tmux session attached to the container."""
 

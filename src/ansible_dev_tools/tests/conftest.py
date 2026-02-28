@@ -37,8 +37,6 @@ from typing import TYPE_CHECKING
 import pytest
 import requests
 
-import ansible_dev_tools  # noqa: F401
-
 from ansible_dev_tools.subcommands.server import Server
 
 
