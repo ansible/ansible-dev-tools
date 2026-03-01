@@ -108,7 +108,7 @@ jobs:
       - name: pull-merge-push for the the two arch images under a single manifest
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: ./tools/${{ matrix.image }}.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') || '--dry' }}"
+        run: ./tools/${{ matrix.image }}.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') && 'latest' || 'main' }}"
 
   publish-devspaces:
     runs-on: ubuntu-24.04
