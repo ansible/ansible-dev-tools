@@ -57,6 +57,26 @@ fi
 
 $BUILD_CMD -f selenium/Containerfile selenium/ --tag "${IMAGE_NAME}"
 
+# Verify the container starts and Selenium server comes up; run for 1 minute then stop
+CONTAINER_NAME="selenium-adt-verify-$$"
+cleanup_verify_container() {
+    ${ADT_CONTAINER_ENGINE} rm -f "${CONTAINER_NAME}" 2>/dev/null || true
+}
+trap cleanup_verify_container EXIT
+
+echo "Starting container to verify Selenium server..."
+SELENIUM_PORT=4444
+${ADT_CONTAINER_ENGINE} run -d -p ${SELENIUM_PORT}:${SELENIUM_PORT} --name "${CONTAINER_NAME}" "${IMAGE_NAME}"
+
+# Wait for Selenium to be ready (status endpoint on port 4444) using curl retries
+echo "Waiting for Selenium server to be ready..."
+if ! curl -sSf -o /dev/null --retry-all-errors --retry 30 --retry-delay 2 --connect-timeout 2 "http://localhost:${SELENIUM_PORT}/status"; then
+    echo "Selenium server did not become ready in time."
+    ${ADT_CONTAINER_ENGINE} logs "${CONTAINER_NAME}"
+    exit 1
+fi
+echo "Selenium server is ready."
+
 if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
     FQ_IMAGE_NAME="ghcr.io/ansible/selenium-adt-tmp:${GITHUB_SHA}-$ARCH"
     $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "${FQ_IMAGE_NAME}"

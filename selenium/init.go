@@ -68,6 +68,7 @@ func printSeleniumCombinedOutput(seleniumStdout io.ReadCloser) {
 
 func startSelenium() *exec.Cmd {
     fmt.Println("Starting selenium standalone")
+    configPath := os.Getenv("SELENIUM_HOME") + "/selenium-node.toml"
     selenium := exec.Command(
         "java",
         "-Dwebdriver.http.factory=jdk-http-client",
@@ -76,10 +77,16 @@ func startSelenium() *exec.Cmd {
         "--ext",
         os.Getenv("SELENIUM_HTTP_JDK_CLIENT_PATH"),
         "standalone",
+        "--allow-cors",
+        "true",
+        "--host",
+        "0.0.0.0", // Allow remote access (containers too)
         "--port",
         os.Getenv("SELENIUM_PORT"),
         "--session-timeout",
         os.Getenv("SELENIUM_SESSION_TIMEOUT"),
+        "--config",
+        configPath,
     )
     seleniumStdout, _ := selenium.StdoutPipe()
     selenium.Stderr = selenium.Stdout
