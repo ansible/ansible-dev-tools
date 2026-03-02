@@ -568,7 +568,11 @@ extras = ["server"]
 skip_install = false
 
 [tool.tox.env.selenium]
-commands = [["python", "-m", "build", "--version"], ["./tools/selenium.sh"]]
+commands = [
+  ["rm", "-rf", "selenium/dist/"],
+  ["uv", "build", "--out-dir", "selenium/dist", "--wheel", "-q"],
+  ["./tools/selenium.sh"]
+]
 commands_post = [["./tools/cleanup.sh"]]
 commands_pre = []
 dependency_groups = ["ee", "dev"]
