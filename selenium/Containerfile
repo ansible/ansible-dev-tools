@@ -54,10 +54,11 @@ fluxbox \
 fontconfig \
 freetype \
 fribidi \
+gcc \
 gdk-pixbuf2 \
+go \
 graphite2 \
 gtk3 \
-go \
 harfbuzz \
 imlib2 \
 java-latest-openjdk-headless \
@@ -116,7 +117,17 @@ nss-util \
 nss-tools \
 nss-sysinit \
 pango \
+ncurses \
+oniguruma-devel \
 pixman \
+python3-bcrypt \
+python3-cffi \
+python3-devel \
+python3-markupsafe \
+python3-pip \
+python3-pyyaml \
+python3-ruamel-yaml \
+python3-wheel \
 tar \
 tigervnc-server-minimal \
 tzdata-java \
@@ -128,6 +139,8 @@ xkbcomp \
 xkeyboard-config" && \
 microdnf -q -y install ${PACKAGES} >/dev/null
 # ^ https://github.com/rpm-software-management/dnf5/issues/570
+
+RUN --mount=type=bind,src=dist,dst=/dist python3 -m pip install --no-cache-dir --extra server "$(ls -1 /dist/ansible_dev_tools-*)[server]"
 
 RUN --mount=type=cache,target=/.cache --mount=type=cache,target=/home/selenium/.cache/code-server \
 GECKODRIVER_ARCH=$([ "$(arch)" = "aarch64" ] && echo linux-aarch64 || echo linux64) && \
@@ -149,7 +162,10 @@ curl -fsSL https://code-server.dev/install.sh | sh
 COPY selenium-node.toml /home/selenium/selenium-node.toml
 
 RUN \
-code-server --install-extension ms-python.vscode-python-envs --install-extension redhat.vscode-yaml --install-extension redhat.vscode-redhat-account && \
+code-server --install-extension ms-python.vscode-python-envs \
+--install-extension ms-python.python \
+--install-extension redhat.vscode-yaml \
+--install-extension redhat.vscode-redhat-account && \
 mkdir -p workspace && touch workspace/playbook.yaml && \
 modutil -fips true -dbdir /etc/pki/nssdb -force && \
 chown -R 0:0 /etc/pki/nssdb && \
