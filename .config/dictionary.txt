@@ -15,6 +15,7 @@ collectonly
 confest
 devfile
 devspaces
+geckodriver
 kubedock
 libonig
 lightspeed

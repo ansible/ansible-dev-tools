@@ -1,0 +1,10 @@
+# Explicit driver configuration so the node finds geckodriver and Firefox
+# without relying on PATH detection (which can fail in container env).
+[node]
+detect-drivers = false
+
+[[node.driver-configuration]]
+display-name = "firefox"
+max-sessions = 4
+webdriver-executable = "/usr/bin/geckodriver"
+stereotype = '{"browserName": "firefox", "platformName": "Linux", "moz:firefoxOptions": {"binary": "/home/selenium/firefox/firefox"}}'

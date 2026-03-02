@@ -137,7 +137,7 @@ curl -sSfL -C - https://github.com/SeleniumHQ/selenium/releases/download/seleniu
 -o ${SELENIUM_PATH} && \
 curl -sSfL -C - https://repo1.maven.org/maven2/org/seleniumhq/selenium/selenium-http-jdk-client/${SELENIUM_HTTP_JDK_CLIENT_VERSION}/selenium-http-jdk-client-${SELENIUM_HTTP_JDK_CLIENT_VERSION}.jar \
 -o ${SELENIUM_HTTP_JDK_CLIENT_PATH} && \
-curl -sSfL https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-$(arch)/en-US/firefox-140.7.0esr.tar.xz -o firefox.tar.xz && tar --xz -x -f firefox.tar.xz && rm firefox.tar.xz && \
+curl -sSfL https://download-installer.cdn.mozilla.net/pub/firefox/releases/140.7.0esr/linux-$(arch)/en-US/firefox-140.7.0esr.tar.xz -o firefox.tar.xz && tar --xz -x -f firefox.tar.xz -C ${SELENIUM_HOME} && \
 curl -sSfL -C - -O https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
 tar -C /usr/bin/ -xvf geckodriver-${GECKODRIVER_VERSION}-${GECKODRIVER_ARCH}.tar.gz && \
 cd ${SELENIUM_HOME} && \
@@ -145,6 +145,8 @@ mkdir -p .cache/dconf .mozilla/plugins .vnc/ .fluxbox/ && \
 echo "session.screen0.toolbar.autoHide: true" > .fluxbox/init && \
 touch .Xauthority .vnc/config && \
 curl -fsSL https://code-server.dev/install.sh | sh
+
+COPY selenium-node.toml /home/selenium/selenium-node.toml
 
 RUN \
 code-server --install-extension ms-python.vscode-python-envs --install-extension redhat.vscode-yaml --install-extension redhat.vscode-redhat-account && \
@@ -159,8 +161,9 @@ code-server --version && \
 Xvnc -version && \
 fluxbox --version && \
 java -version && \
+firefox --version && \
 if [ "$(arch)" = "aarch64" ]; then export JAVA_TOOL_OPTIONS=-XX:UseSVE=0; fi && \
-java -Dwebdriver.http.factory=jdk-http-client -jar ${SELENIUM_PATH} -ext ${SELENIUM_HTTP_JDK_CLIENT_PATH} info
+java -Dwebdriver.http.factory=jdk-http-client -jar ${SELENIUM_PATH} --ext ${SELENIUM_HTTP_JDK_CLIENT_PATH} info
 
 USER 1001
 
