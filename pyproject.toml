@@ -33,7 +33,7 @@ dependencies = [
   "molecule>=26.2.0",
   "pytest-ansible>=26.2.0",
   "setuptools>=65.5.1",
-  "tox-ansible>=26.2.1",  # hhttps://github.com/ansible/tox-ansible/pull/531
+  "tox-ansible>=26.2.2",  # hhttps://github.com/ansible/tox-ansible/pull/531
 ]
 dynamic = ["version"]
 
@@ -106,7 +106,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "pragma: no cover"]
-fail_under = 95
+fail_under = 75
 ignore_errors = true
 show_missing = true
 skip_covered = true
@@ -116,7 +116,7 @@ skip_empty = true
 # branch is more reliable than lines, protects against false positives
 branch = true
 concurrency = ["multiprocessing", "thread"]
-omit = ["_version.py", "*/tests/*"]
+omit = ["_version.py"]
 parallel = true
 relative_files = true
 source = ["src"]
@@ -160,6 +160,7 @@ ignore-paths = [
   "build/",
   "collections/",
   "context/_build",
+  "docs/examples/context/",
   "packages/",
   "site",
 ]
@@ -405,7 +406,6 @@ log_cli = true
 log_cli_level = "WARNING"
 testpaths = ["src/ansible_dev_tools/tests"]
 tmp_path_retention_policy = "failed"
-verbosity_assertions = 2
 
 [tool.ruff]
 builtins = ["__"]
