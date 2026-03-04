@@ -60,7 +60,3 @@ def main() -> None:
     cli = Cli()
     cli.parse_args()
     cli.run()
-
-
-if __name__ == "__main__":
-    main()
