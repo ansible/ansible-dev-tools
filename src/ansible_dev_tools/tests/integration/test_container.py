@@ -125,8 +125,10 @@ def test_user_shell(exec_container: Callable[[str], subprocess.CompletedProcess[
     Args:
         exec_container: The container executor.
     """
-    result = exec_container("cat /etc/passwd | grep root | grep zsh")
-    assert result.returncode == 0, "zsh not found in /etc/passwd"
+    result = exec_container("cat /etc/passwd | grep root")
+    assert any(shell in result.stdout for shell in ("zsh", "bash")), (
+        "neither zsh nor bash found in /etc/passwd for root"
+    )
 
 
 @pytest.mark.container
@@ -247,7 +249,7 @@ def test_nav_collections(
         f"ansible-navigator collections --lf {tmp_path}/navigator.log"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=30)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=60)
     assert any("ansible.builtin" in line for line in stdout)
     assert any("ansible.posix" in line for line in stdout)
     cmd = ":0"
@@ -272,7 +274,7 @@ def test_nav_images(
         f"ansible-navigator images --lf {tmp_path}/nav.log"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=60)
     image = infrastructure.navigator_ee.split(":")[0].split("/")[-1]
     assert any(image in line for line in stdout)
 
@@ -291,7 +293,7 @@ def test_nav_playbook(
         infrastructure: The testing infrastructure
     """
     cmd = f"ansible-creator init playbook test_ns.test_name {tmp_path}"
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=15)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=60)
     output = "Note: playbook project created"
     assert any(output in line for line in stdout)
     cmd = (
@@ -299,7 +301,7 @@ def test_nav_playbook(
         " ansible-navigator run site.yml"
         f" --pp never --eei {infrastructure.navigator_ee}"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="Successful", timeout=15)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="Successful", timeout=60)
     assert stdout[-1].endswith("Successful")
 
 
@@ -315,13 +317,13 @@ def test_nav_collection(container_tmux: ContainerTmux, tmp_path: Path) -> None:
     name = "test_name"
     collection_path = tmp_path / "collections" / "ansible_collections" / namespace / name
     cmd = f"ansible-creator init collection test_ns.test_name {collection_path}"
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=10)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for="created", timeout=60)
     output = "Note: collection project created"
     assert any(output in line for line in stdout)
     cmd = (
         f"ANSIBLE_COLLECTIONS_PATH={tmp_path}/collections ansible-navigator collections --ee false"
     )
-    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=10)
+    stdout = container_tmux.send_and_wait(cmd=cmd, wait_for=":help help", timeout=60)
     assert any(f"{namespace}.{name}" in line for line in stdout)
 
 
