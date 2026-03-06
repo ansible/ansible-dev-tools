@@ -90,23 +90,23 @@ class Infrastructure:
         self.include_container = self.session.config.getoption("--include-container")
         self.only_container = self.session.config.getoption("--only-container")
         if self.only_container or self.include_container:
-            if not self.container_name:
+            if not self.container_name:  # pragma: no cover
                 err = "ADT_CONTAINER_NAME must be set for container tests"
                 raise ValueError(err)
-            if not self.container_engine:
+            if not self.container_engine:  # pragma: no cover
                 err = "No container engine found, required for container tests"
                 raise ValueError(err)
-        elif self.only_container and self.include_container:
+        elif self.only_container and self.include_container:  # pragma: no cover
             err = "Cannot use both --only-container and --include-container"
             raise ValueError(err)
 
-        if self.only_container:
+        if self.only_container:  # pragma: no cover
             self.container = True
             self.server = False
-        elif self.include_container:
+        elif self.include_container:  # pragma: no cover
             self.container = True
             self.server = True
-        else:
+        else:  # pragma: no cover
             self.container = False
             self.server = True
 
@@ -174,12 +174,12 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
         config: The pytest configuration.
         items: The list of items.
     """
-    if config.getoption("--only-container"):
+    if config.getoption("--only-container"):  # pragma: no cover
         skip_container = pytest.mark.skip(reason="--only-container specified")
         for item in items:
             if "container" not in item.keywords:
                 item.add_marker(skip_container)
-    elif not config.getoption("--include-container"):
+    elif not config.getoption("--include-container"):  # pragma: no cover
         skip_container = pytest.mark.skip(reason="need --include-container option to run")
         for item in items:
             if "container" in item.keywords:
@@ -198,7 +198,7 @@ def server_url() -> Generator[str, None, None]:
     Yields:
         str: The server URL.
     """
-    url = "http://localhost:8000"
+    url = f"http://localhost:{ADT_SERVER_PORT}"
 
     # Check if server is already running (started by hook when running from source)
     try:
@@ -207,7 +207,7 @@ def server_url() -> Generator[str, None, None]:
             LOGGER.info("Server already running at %s", url)
             yield url
             return
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError:  # pragma: no cover
         pass  # Server not running, we'll start it
 
     # Start server ourselves
@@ -216,7 +216,7 @@ def server_url() -> Generator[str, None, None]:
         pytest.fail("adt not found in $PATH")
 
     proc = subprocess.Popen(  # noqa: S603
-        [bin_path, "server", "-p", "8000"],
+        [bin_path, "server", "-p", f"{ADT_SERVER_PORT}"],
         env=os.environ,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -247,7 +247,7 @@ def server_in_container_url() -> str:
     Returns:
         str: The server URL.
     """
-    return "http://0.0.0.0:8001"
+    return f"http://0.0.0.0:{ADT_SERVER_CONTAINER_PORT}"
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
@@ -266,13 +266,13 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
     INFRASTRUCTURE = Infrastructure(session)
 
-    try:
-        if INFRASTRUCTURE.container:
-            _start_container()
-        if INFRASTRUCTURE.server:
-            _start_server()
-    except RuntimeError as exc:
-        pytest.exit(str(exc), 2)
+    if INFRASTRUCTURE.container:
+        _start_server(container=True)
+    if INFRASTRUCTURE.server:
+        _start_server(container=False)
+    if not INFRASTRUCTURE.container and not INFRASTRUCTURE.server:  # pragma: no cover
+        err = "Cannot run tests with any server option."
+        pytest.exit(err, 2)
 
 
 def pytest_sessionfinish(session: pytest.Session) -> None:
@@ -294,14 +294,16 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
         _stop_server()
 
 
-BASE_CMD = """{container_engine} run -d --rm
- --device "/dev/fuse"
- -e NO_COLOR=1
- --hostname=ansible-dev-container
- --name={container_name}
- -p 8001:8001
- -v $PWD:/workdir
-"""
+ADT_SERVER_PORT = "8000"
+ADT_SERVER_CONTAINER_PORT = "8001"
+BASE_CMD = "{container_engine} run --rm \
+ --device /dev/fuse \
+ -e NO_COLOR=1 \
+ --hostname=ansible-dev-container \
+ --name={container_name} \
+ -p {ADT_SERVER_CONTAINER_PORT}:{ADT_SERVER_CONTAINER_PORT} \
+ -v $PWD:/workdir \
+"
 
 PODMAN_CMD = """ --user=root
  --cap-add=CAP_MKNOD
@@ -320,11 +322,11 @@ DOCKER_CMD = """ --user=root
 """
 
 END = """ {image_name}
- adt server --port 8001
+ adt server --port {ADT_SERVER_CONTAINER_PORT}
  """
 
 
-def _start_container() -> None:
+def _get_container_cmd() -> str:
     """Start the container.
 
     The default image for navigator is pulled ahead of time.
@@ -332,6 +334,9 @@ def _start_container() -> None:
     starts with localhost, the default ee for navigator is pulled.
     If the image name contains a /, that is used, otherwise the default
     ee for navigator is pulled.
+
+    Returns:
+        str: The container command.
 
     Raises:
         ValueError: If the container engine is not podman or docker.
@@ -350,8 +355,9 @@ def _start_container() -> None:
         auth_mount = f" -v {auth_file}:/run/containers/0/auth.json"
 
     if "podman" in INFRASTRUCTURE.container_engine:
+        if auth_mount:
+            LOGGER.warning("Podman auth mount added: %s", auth_mount)
         cmd = BASE_CMD + PODMAN_CMD + auth_mount + END
-        LOGGER.warning("Podman auth mount added: %s", auth_mount)
     elif "docker" in INFRASTRUCTURE.container_engine:
         cmd = BASE_CMD + DOCKER_CMD + END
     else:
@@ -364,15 +370,10 @@ def _start_container() -> None:
             container_engine=INFRASTRUCTURE.container_engine,
             container_name=INFRASTRUCTURE.container_name,
             image_name=INFRASTRUCTURE.image_name,
+            ADT_SERVER_CONTAINER_PORT=ADT_SERVER_CONTAINER_PORT,
         )
         .replace("  ", " ")
     )
-    LOGGER.warning("Running: %s", cmd)
-    try:
-        subprocess.run(cmd, check=True, capture_output=True, shell=True, text=True)
-    except subprocess.CalledProcessError as exc:
-        err = f"Failed to start container:\ncmd: {cmd}\nstdout: {exc.stdout}\nstderr: {exc.stderr}"
-        pytest.fail(err)
 
     if INFRASTRUCTURE.image_name:
         INFRASTRUCTURE.navigator_ee = INFRASTRUCTURE.image_name
@@ -380,6 +381,7 @@ def _start_container() -> None:
     else:
         nav_ee = get_nav_default_ee_in_container()
         _proc = _exec_container(command=f"podman pull {nav_ee}")
+    return cmd
 
 
 def get_nav_default_ee_in_container() -> str:
@@ -483,8 +485,11 @@ def exec_container() -> Callable[[str], subprocess.CompletedProcess[str]]:
     return _exec_container
 
 
-def _start_server() -> None:
+def _start_server(*, container: bool = False) -> None:
     """Start the server.
+
+    Args:
+        container: Whether to start the server in a container.
 
     Raises:
         RuntimeError: If the server could not be started.
@@ -494,14 +499,21 @@ def _start_server() -> None:
     if bin_path is None:
         msg = "adt not found in $PATH"
         raise RuntimeError(msg)
-    server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / "server.log"
+    log_file_name = "server.log" if not container else "container-server.log"
+    server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / log_file_name
+
     server_log_file.parent.mkdir(parents=True, exist_ok=True)
-    LOGGER.warning("Starting adt server with log file at %s", server_log_file)
+    cmd = (
+        f"{bin_path} server -p {ADT_SERVER_PORT} --debug" if not container else _get_container_cmd()
+    )
+    msg = f"Starting adt server with `{cmd}` and log file at {server_log_file}"
+    LOGGER.warning(msg)
     start_time = time.time()
     with server_log_file.open("w") as log_file:
-        INFRASTRUCTURE.proc = subprocess.Popen(  # noqa: S603
-            [bin_path, "server", "-p", "8000", "--debug"],
+        INFRASTRUCTURE.proc = subprocess.Popen(
+            cmd,
             env=os.environ,
+            shell=True,
             stdout=log_file,
             stderr=subprocess.STDOUT,
         )
@@ -512,7 +524,7 @@ def _start_server() -> None:
         while tries < max_tries:
             try:
                 # timeout increased to 2s due to observed GHA macos failures
-                res = requests.get("http://localhost:8000", timeout=timeout)
+                res = requests.get(f"http://localhost:{ADT_SERVER_PORT}", timeout=timeout)
                 if res.status_code == requests.codes.get("not_found"):
                     return
             except (requests.exceptions.ConnectionError, requests.RequestException):
