@@ -74,9 +74,7 @@ dev = [
   "tox-uv>=1.32.0",
 ]
 docs = [
-  "mkdocs-ansible>=25.5.0",
-  "mkdocs-pymdownx-material-extras>=2.8",
-  "pymdown-extensions>=10.16.1"
+  "mkdocs-ansible>=25.6.2",
 ]
 ee = [
   "ansible-builder>=3.1.1",
@@ -557,6 +555,7 @@ description = "Builds docs"
 skip_install = false
 set_env.NO_COLOR = "1"
 set_env.TERM = "dump"
+set_env.NO_MKDOCS_2_WARNING = "1"
 
 [tool.tox.env.ee]
 commands = [["python", "-m", "build", "--version"], ["./tools/ee.sh"]]

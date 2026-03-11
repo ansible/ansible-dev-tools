@@ -178,8 +178,6 @@ dev = [
 ]
 docs = [
     { name = "mkdocs-ansible", marker = "sys_platform != 'win32'" },
-    { name = "mkdocs-pymdownx-material-extras", marker = "sys_platform != 'win32'" },
-    { name = "pymdown-extensions", marker = "sys_platform != 'win32'" },
 ]
 ee = [
     { name = "ansible-builder", marker = "sys_platform != 'win32'" },
@@ -244,11 +242,7 @@ dev = [
     { name = "tox", specifier = ">=4.46.0" },
     { name = "tox-uv", specifier = ">=1.32.0" },
 ]
-docs = [
-    { name = "mkdocs-ansible", specifier = ">=25.5.0" },
-    { name = "mkdocs-pymdownx-material-extras", specifier = ">=2.8" },
-    { name = "pymdown-extensions", specifier = ">=10.16.1" },
-]
+docs = [{ name = "mkdocs-ansible", specifier = ">=25.6.2" }]
 ee = [
     { name = "ansible-builder", specifier = ">=3.1.1" },
     { name = "build", specifier = ">=1.3.0" },
@@ -1550,7 +1544,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-ansible"
-version = "25.6.1"
+version = "25.6.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cairosvg", marker = "sys_platform != 'win32'" },
@@ -1570,9 +1564,9 @@ dependencies = [
     { name = "pillow", marker = "sys_platform != 'win32'" },
     { name = "pymdown-extensions", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bb/8f/4b387badfc5014989353eec18caf8d7c92ce56cf4640a9037a1e458f67d8/mkdocs_ansible-25.6.1.tar.gz", hash = "sha256:9f8fefde2eb952d24de200eb1a4150a99dda3500ce71839244b9efa670459f8d", size = 147831, upload-time = "2026-02-25T11:38:44.293Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/c4/ff87b15bf94863924b78cc871ad0c0ce9ede577c9808d169ad1ff4c43741/mkdocs_ansible-25.6.2.tar.gz", hash = "sha256:5a0dd69d87190bcc4c866913bef7fd0e89c71d5862cdca73481960683ed03399", size = 154989, upload-time = "2026-03-11T12:06:13.192Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c5/84/d46f3b82dc776fffff409d8fbba5cec88945badfc79b310e109935899aa3/mkdocs_ansible-25.6.1-py3-none-any.whl", hash = "sha256:35a072472378da9a488aa347e5804aec4d42f78de48893c29a8b70257f5a0171", size = 35652, upload-time = "2026-02-25T11:38:42.798Z" },
+    { url = "https://files.pythonhosted.org/packages/42/d6/cdaddb5f61adfcc08c9e208c069564906280f81682f443da2e76e3f308f1/mkdocs_ansible-25.6.2-py3-none-any.whl", hash = "sha256:d42ff92e9dbb374599354b55456c5e93f2b574b654351ae1b635eba0831b2e13", size = 35650, upload-time = "2026-03-11T12:06:10.896Z" },
 ]
 
 [[package]]
@@ -1653,7 +1647,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.7.4"
+version = "9.7.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel", marker = "sys_platform != 'win32'" },
@@ -1668,9 +1662,9 @@ dependencies = [
     { name = "pymdown-extensions", marker = "sys_platform != 'win32'" },
     { name = "requests", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/36/ce/a1cd02ac7448763f0bb56aaf5f23fa2527944ac6df335080c38c2f253165/mkdocs_material-9.7.4.tar.gz", hash = "sha256:711b0ee63aca9a8c7124d4c73e83a25aa996e27e814767c3a3967df1b9e56f32", size = 4097804, upload-time = "2026-03-03T19:57:36.827Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/76/5c202fecdc45d53e83e03a85bae70c48b6c81e9f87f0bc19a9e9c723bdc0/mkdocs_material-9.7.5.tar.gz", hash = "sha256:f76bdab532bad1d9c57ca7187b37eccf64dd12e1586909307f8856db3be384ea", size = 4097749, upload-time = "2026-03-10T15:43:22.809Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e7/94/e3535a9ed078b238df3df75a44694ca0ff5772fd538df4939c658a58c59d/mkdocs_material-9.7.4-py3-none-any.whl", hash = "sha256:6549ad95e4d130ed5099759dfa76ea34c593eefdb9c18c97273605518e99cfbf", size = 9305224, upload-time = "2026-03-03T19:57:34.063Z" },
+    { url = "https://files.pythonhosted.org/packages/45/e1/e8080dcfa95cca267662a6f4afe29237452bdeb5a2a6555ac83646d21915/mkdocs_material-9.7.5-py3-none-any.whl", hash = "sha256:7cf9df2ff121fd098ff6e05c732b0be3699afca9642e2dfe4926c40eb5873eec", size = 9305251, upload-time = "2026-03-10T15:43:19.089Z" },
 ]
 
 [[package]]
@@ -1695,18 +1689,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/52/67/fe4b77e7a8ae7628392e28b14122588beaf6078b53eb91c7ed000fd158ac/mkdocs-minify-plugin-0.8.0.tar.gz", hash = "sha256:bc11b78b8120d79e817308e2b11539d790d21445eb63df831e393f76e52e753d", size = 8366, upload-time = "2024-01-29T16:11:32.982Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1b/cd/2e8d0d92421916e2ea4ff97f10a544a9bd5588eb747556701c983581df13/mkdocs_minify_plugin-0.8.0-py3-none-any.whl", hash = "sha256:5fba1a3f7bd9a2142c9954a6559a57e946587b21f133165ece30ea145c66aee6", size = 6723, upload-time = "2024-01-29T16:11:31.851Z" },
-]
-
-[[package]]
-name = "mkdocs-pymdownx-material-extras"
-version = "2.8"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mkdocs-material", marker = "sys_platform != 'win32'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/f6/5199d1e251e15b3c554f46b5796d02870e129f524dc2f117e828c5444674/mkdocs_pymdownx_material_extras-2.8.tar.gz", hash = "sha256:7b22bb119cd9592f98d6c6d4d269506d9a68d7038355c71525aadc88169ee9fe", size = 26512, upload-time = "2025-03-16T14:24:50.528Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/10/78/0059cb24b62a3dd68293daea38acb2cb75415d5735a62d6d60f752cd00ed/mkdocs_pymdownx_material_extras-2.8-py3-none-any.whl", hash = "sha256:81b68789420c51b9b15514180d0f3ab7136d56ee512c830c998d2edb77ca3d77", size = 28846, upload-time = "2025-03-16T14:24:49.235Z" },
 ]
 
 [[package]]
