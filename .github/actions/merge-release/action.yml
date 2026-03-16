@@ -27,11 +27,11 @@ runs:
         merge-multiple: true
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v4
 
     - name: Docker meta
       id: meta
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: |
           name=${{ inputs.registry }}/${{ inputs.namespace }}/${{ inputs.final_image }}
