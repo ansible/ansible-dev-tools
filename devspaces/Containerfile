@@ -15,9 +15,6 @@ RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=typ
 
 ENV BUILDAH_ISOLATION=chroot
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-
 USER 10001
 
 ENTRYPOINT ["/entrypoint.sh"]

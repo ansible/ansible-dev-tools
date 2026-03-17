@@ -40,7 +40,6 @@ _adt_build_prompt() {
     local red='\[\e[31m\]'
     local green='\[\e[32m\]'
     local blue='\[\e[34m\]'
-    local cyan='\[\e[36m\]'
     local bold='\[\e[1m\]'
     local reset='\[\e[0m\]'
 

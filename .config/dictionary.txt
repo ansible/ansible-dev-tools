@@ -10,9 +10,11 @@ antsibull
 arcname
 autoplay
 autouse
+buildah
 capsys
 collectonly
 confest
+crun
 devfile
 devspaces
 geckodriver
@@ -26,7 +28,10 @@ pinentry
 prek
 pylibssh
 seccomp
+setcap
+setgid
 signingkey
+skopeo
 unmarshal
 unmarshalling
 urandom

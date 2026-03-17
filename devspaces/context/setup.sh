@@ -54,5 +54,9 @@ chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /etc/subuid /etc/subgid 
 cp ansible-prompt.sh /etc/profile.d/ansible-prompt.sh
 chmod +r /etc/profile.d/ansible-prompt.sh
 
+# Install the entrypoint for rootless podman UID mapping
+cp entrypoint.sh /entrypoint.sh
+chmod +x /entrypoint.sh
+
 # shellcheck disable=SC1091
 source "$DIR/setup-image.sh"
