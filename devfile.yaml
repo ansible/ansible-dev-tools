@@ -3,13 +3,22 @@ metadata:
   name: ansible-demo
 components:
   - name: tooling-container
+    attributes:
+      pod-overrides:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.Devices: "/dev/fuse,/dev/net/tun"
+        spec:
+          hostUsers: false
+      container-overrides:
+        securityContext:
+          procMount: Unmasked
     container:
       image: ghcr.io/ansible/ansible-devspaces:latest
       memoryRequest: 256M
       memoryLimit: 6Gi
       cpuRequest: 250m
       cpuLimit: 2000m
-      args: ["tail", "-f", "/dev/null"]
       env:
         - name: "ANSIBLE_COLLECTIONS_PATH"
           value: "~/.ansible/collections:/usr/share/ansible/collections:/projects/ansible-devspaces-demo/collections"
@@ -81,7 +90,8 @@ commands:
         if [ ! -d "$HOME/.cache/ansible-navigator" ]; then
           mkdir -p "$HOME/.cache/ansible-navigator"
         fi
-        cp /usr/local/lib/python3.11/site-packages/ansible_navigator/data/catalog_collections.py $HOME/.cache/ansible-navigator
+        NAVIGATOR_DATA=$(python3 -c "import ansible_navigator.data; import pathlib; print(pathlib.Path(ansible_navigator.data.__file__).parent)")
+        cp "${NAVIGATOR_DATA}/catalog_collections.py" "$HOME/.cache/ansible-navigator"
         ansible-navigator --ee false
       workingDir: ${PROJECTS_ROOT}/ansible-devspaces-demo
       component: tooling-container
