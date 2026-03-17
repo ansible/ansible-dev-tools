@@ -3,6 +3,7 @@
 # Sets up the dynamic UID mapping required for rootless podman
 # with user namespaces (container-in-container without kubedock).
 # cspell: ignore subuid subgid catatonit
+set -euo pipefail
 
 if [ ! -d "${HOME}" ]; then
     mkdir -p "${HOME}"
@@ -11,7 +12,7 @@ fi
 if ! whoami &>/dev/null; then
     if [ -w /etc/passwd ]; then
         echo "${USER_NAME:-user}:x:$(id -u):0:${USER_NAME:-user} user:${HOME}:/bin/bash" >>/etc/passwd
-        echo "${USER_NAME:-user}:x:$(id -u):" >>/etc/group
+        echo "${USER_NAME:-user}:x:$(id -u):0:" >>/etc/group
     else
         echo "ERROR: Cannot resolve user and /etc/passwd is not writable" >&2
         exit 1
@@ -30,13 +31,20 @@ else
     NAMESPACE_SIZE=65536
 fi
 
-END_ID=$(( NAMESPACE_SIZE - START_ID ))
-if [ "${END_ID}" -le 0 ]; then
+SUB_ID_COUNT=$(( NAMESPACE_SIZE - START_ID ))
+if [ "${SUB_ID_COUNT}" -le 0 ]; then
     echo "ERROR: No subordinate IDs available (uid=${CURRENT_UID}, namespace=${NAMESPACE_SIZE})" >&2
     exit 1
 fi
 
-echo "${USER}:${START_ID}:${END_ID}" >/etc/subuid
-echo "${USER}:${START_ID}:${END_ID}" >/etc/subgid
+for f in /etc/subuid /etc/subgid; do
+    if [ ! -w "$f" ]; then
+        echo "ERROR: ${f} is not writable, cannot configure rootless podman" >&2
+        exit 1
+    fi
+done
+
+echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subuid
+echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subgid
 
 exec /usr/libexec/podman/catatonit -- "$@"
