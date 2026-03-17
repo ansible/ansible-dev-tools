@@ -12,7 +12,6 @@ fi
 if ! whoami &>/dev/null; then
     if [ -w /etc/passwd ]; then
         echo "${USER_NAME:-user}:x:$(id -u):0:${USER_NAME:-user} user:${HOME}:/bin/bash" >>/etc/passwd
-        echo "${USER_NAME:-user}:x:$(id -u):0:" >>/etc/group
     else
         echo "ERROR: Cannot resolve user and /etc/passwd is not writable" >&2
         exit 1
