@@ -22,8 +22,8 @@ USER=$(whoami)
 CURRENT_UID=$(id -u)
 START_ID=$(( CURRENT_UID + 1 ))
 
-# Derive the available UID/GID range from the namespace mapping
-# rather than assuming a fixed 65536 window.
+# Derive the available subordinate ID count from the UID namespace mapping
+# (same count used for both subuid and subgid).
 if [ -r /proc/self/uid_map ]; then
     NAMESPACE_SIZE=$(awk '{print $3}' /proc/self/uid_map | head -n1)
 else
