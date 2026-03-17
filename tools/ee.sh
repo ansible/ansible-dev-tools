@@ -50,6 +50,10 @@ if [ "--publish" == "${1:-}" ]; then
     ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-arm64"
     ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-amd64"
 
+    # Re-tag and push arch-specific images to the final repository to avoid
+    # cross-repository blob mounting issues when creating the manifest.
+    # GHCR cannot mount blobs across different repositories, so we must push
+    # the images to the target repository before creating the manifest.
     for IMG_ARCH in amd64 arm64; do
         ${ADT_CONTAINER_ENGINE} tag "${TMP_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}" "${FINAL_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}"
         if [ "${CI:-}" == "true" ]; then
@@ -57,7 +61,12 @@ if [ "--publish" == "${1:-}" ]; then
         fi
     done
 
-    for TAG in ${FINAL_REPO}:${2:-} ${FINAL_REPO}:${3:-}; do
+    TAGS=("${FINAL_REPO}:${2:-}")
+    if [ -n "${3:-}" ]; then
+        TAGS+=("${FINAL_REPO}:${3}")
+    fi
+
+    for TAG in "${TAGS[@]}"; do
         ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-amd64" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
         ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
 
