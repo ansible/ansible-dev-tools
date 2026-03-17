@@ -56,4 +56,9 @@ _adt_build_prompt() {
     PS1="${status_indicator}${prefix}${bold}${green}\u@\h${reset}:${bold}${blue}\w${reset}\$(_adt_git_branch)\$ "
 }
 
-PROMPT_COMMAND="_adt_build_prompt"
+# Preserve any existing PROMPT_COMMAND hooks
+if [[ -n "${PROMPT_COMMAND:-}" ]]; then
+    PROMPT_COMMAND="_adt_build_prompt;${PROMPT_COMMAND}"
+else
+    PROMPT_COMMAND="_adt_build_prompt"
+fi

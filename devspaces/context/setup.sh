@@ -36,7 +36,9 @@ dnf -y -q clean all
 
 # Set python3/pip3 alternatives so they work with or without version suffix
 alternatives --install /usr/bin/python3 python3 "/usr/bin/python${PYV}" 100
+alternatives --set python3 "/usr/bin/python${PYV}"
 alternatives --install /usr/bin/pip3 pip3 "/usr/bin/pip${PYV}" 100
+alternatives --set pip3 "/usr/bin/pip${PYV}"
 
 "/usr/bin/python${PYV}" -m pip install --only-binary :all: --root-user-action=ignore "$(ls -1 ./*.whl)[server]" -r requirements.txt
 
