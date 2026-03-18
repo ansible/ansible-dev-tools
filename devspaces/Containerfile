@@ -1,6 +1,6 @@
 FROM quay.io/devfile/base-developer-image:ubi9-latest
 
-ARG PYV=3.11
+ARG PYV=3.12
 
 LABEL org.opencontainers.image.source=https://github.com/ansible/ansible-dev-tools
 LABEL org.opencontainers.image.authors="Ansible DevTools"
@@ -11,8 +11,11 @@ LABEL org.opencontainers.image.description="An OpenShift Dev Spaces container im
 USER 0
 
 WORKDIR /context
-# install ansible-dev-tools specific packages and dependencies while avoiding
-# adding multiple layers to the image.
 RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip ./setup.sh
 
+ENV BUILDAH_ISOLATION=chroot
+
 USER 10001
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["tail", "-f", "/dev/null"]
