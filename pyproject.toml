@@ -46,7 +46,7 @@ repository = "https://github.com/ansible/ansible-dev-tools"
 adt = "ansible_dev_tools.__main__:main"
 
 [project.optional-dependencies]
-container = ["ansible-pylibssh==1.3.0; platform_system == 'Linux'"]
+container = ["ansible-pylibssh==1.4.0; platform_system == 'Linux'"]
 # https://github.com/ansible/pylibssh/issues/699
 # 'container' not included in all because pylibssh still causes build issues
 full = ["ansible-dev-tools[server,test]"]
