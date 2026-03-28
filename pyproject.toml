@@ -399,6 +399,8 @@ addopts = [
 ]
 cache_dir = "./.cache/.pytest"
 filterwarnings = [
+  # We raise one non critical warning from our own conftest.py:
+  "always::pytest.PytestWarning",
   "error",
 ]
 junit_family = "xunit2"  # see https://docs.codecov.com/docs/test-analytics
