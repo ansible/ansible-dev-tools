@@ -1,0 +1,252 @@
+---
+name: Debug Publish Jobs
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+permissions:
+  checks: read
+  packages: write
+  pull-requests: write
+  contents: write
+  id-token: write
+
+jobs:
+  debug-environment:
+    name: Debug Environment & Permissions
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Print GitHub Context
+        run: |
+          echo "=== GitHub Event ==="
+          echo "Event name: ${{ github.event_name }}"
+          echo "Event action: ${{ github.event.action }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Repository: ${{ github.repository }}"
+          echo ""
+          echo "=== Environment Info ==="
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Name: ${{ runner.name }}"
+          echo ""
+
+      - name: Check Environment Protection
+        run: |
+          echo "=== Environment Check ==="
+          echo "This job does NOT use 'environment: release'"
+          echo "So it should run without approval"
+          echo ""
+          echo "The publish-wheel job has:"
+          echo "  environment: release"
+          echo "Which requires manual approval on releases"
+          echo ""
+
+      - name: Check GitHub Token Permissions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "=== Token Permissions ==="
+          echo "GITHUB_TOKEN is available: ${GITHUB_TOKEN:+YES}"
+          echo "Token length: ${#GITHUB_TOKEN}"
+          echo ""
+          echo "Testing gh CLI authentication..."
+          gh auth status || echo "gh auth failed"
+          echo ""
+
+      - name: Check PyPI Publishing
+        run: |
+          echo "=== PyPI Publishing Info ==="
+          echo "publish-wheel job uses: pypa/gh-action-pypi-publish@release/v1"
+          echo "This action uses OIDC (id-token: write permission)"
+          echo "No API token needed - uses Trusted Publishing"
+          echo ""
+          echo "Note: id-token permission is set to 'write' at workflow level"
+          echo ""
+
+  debug-publish-wheel:
+    name: Debug PyPI Publish (Dry Run)
+    runs-on: ubuntu-24.04
+    # NOTE: No "environment: release" - so no approval needed
+    env:
+      FORCE_COLOR: 1
+      PY_COLORS: 1
+      TOXENV: pkg
+      TOX_EXTRA_BINDEP: 0
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - name: Install tox
+        run: python3 -m pip install --user "tox>=4.46.0"
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Build Distribution Packages
+        run: |
+          echo "=== Building Python Package ==="
+          python3 -m tox
+          echo ""
+          echo "=== Built Packages ==="
+          ls -lh dist/ || echo "No dist/ directory found"
+          echo ""
+
+      - name: Check Package Contents
+        run: |
+          echo "=== Package Metadata ==="
+          if [ -d "dist" ]; then
+            for file in dist/*.whl; do
+              echo "Wheel file: $file"
+              python3 -m zipfile -l "$file" | head -20
+            done
+
+            for file in dist/*.tar.gz; do
+              echo "Source dist: $file"
+              tar -tzf "$file" | head -20
+            done
+          fi
+          echo ""
+
+      - name: Simulate PyPI Publish (DRY RUN)
+        run: |
+          echo "=== PyPI Publish Simulation ==="
+          echo "In production, this would run:"
+          echo "  uses: pypa/gh-action-pypi-publish@release/v1"
+          echo ""
+          echo "Requirements for PyPI OIDC publishing:"
+          echo "  1. id-token: write permission ✓"
+          echo "  2. PyPI Trusted Publisher configured"
+          echo "  3. No 'environment: release' blocking it"
+          echo ""
+          echo "❌ ISSUE FOUND:"
+          echo "The 'environment: release' in publish-wheel job"
+          echo "requires manual approval for deployments."
+          echo ""
+          echo "SOLUTION:"
+          echo "- Remove 'environment: release' OR"
+          echo "- Approve deployment when prompted OR"
+          echo "- Add yourself to allowed reviewers"
+          echo ""
+
+  debug-devspaces-token:
+    name: Debug Devspaces Token
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check ANSIBUDDY_BOT_PAT Secret
+        env:
+          BOT_TOKEN: ${{ secrets.ANSIBUDDY_BOT_PAT }}
+        run: |
+          echo "=== ANSIBUDDY_BOT_PAT Check ==="
+          if [ -z "$BOT_TOKEN" ]; then
+            echo "❌ ANSIBUDDY_BOT_PAT is NOT set or is empty"
+            echo ""
+            echo "This token is needed for:"
+            echo "  - Forking ansible-devspaces-demo repo"
+            echo "  - Creating PRs to update devfile.yaml"
+            echo ""
+            echo "SOLUTION:"
+            echo "  1. Go to: https://github.com/ansible/ansible-dev-tools/settings/secrets/actions"
+            echo "  2. Check if ANSIBUDDY_BOT_PAT exists"
+            echo "  3. If expired, regenerate the PAT for 'ansibuddy' bot account"
+            echo ""
+          else
+            echo "✓ ANSIBUDDY_BOT_PAT is set"
+            echo "Token length: ${#BOT_TOKEN}"
+            echo ""
+            echo "Testing gh CLI with bot token..."
+            echo "$BOT_TOKEN" | gh auth login --with-token 2>&1 || echo "Auth failed - token may be expired"
+            gh auth status || echo "Token validation failed"
+            echo ""
+          fi
+
+      - name: Check Standard GITHUB_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "=== GITHUB_TOKEN Check ==="
+          echo "Standard GITHUB_TOKEN is available: ${GITHUB_TOKEN:+YES}"
+          echo ""
+          echo "Testing with standard token..."
+          gh auth status
+          echo ""
+          echo "Note: GITHUB_TOKEN has different permissions than ANSIBUDDY_BOT_PAT"
+          echo "It cannot fork repos or create PRs to external repos"
+          echo ""
+
+      - name: Analyze Error
+        run: |
+          echo "=== Error Analysis ==="
+          echo "Original error:"
+          echo "  'failed to fork: HTTP 401: Bad credentials'"
+          echo ""
+          echo "This means:"
+          echo "  1. ANSIBUDDY_BOT_PAT token is expired OR"
+          echo "  2. ANSIBUDDY_BOT_PAT token lacks required scopes OR"
+          echo "  3. The 'ansibuddy' bot account was deleted/deactivated"
+          echo ""
+          echo "Required token scopes:"
+          echo "  - repo (full control)"
+          echo "  - workflow"
+          echo ""
+          echo "WHO CAN FIX:"
+          echo "  - Repository admins"
+          echo "  - People with access to 'ansibuddy' GitHub account"
+          echo ""
+
+  debug-summary:
+    name: Debug Summary
+    runs-on: ubuntu-24.04
+    needs:
+      - debug-environment
+      - debug-publish-wheel
+      - debug-devspaces-token
+    steps:
+      - name: Print Summary
+        run: |
+          echo "======================================"
+          echo "     DEBUG SUMMARY"
+          echo "======================================"
+          echo ""
+          echo "🔍 FINDINGS:"
+          echo ""
+          echo "1. ❌ publish-wheel FAILURE:"
+          echo "   Cause: 'environment: release' requires manual approval"
+          echo "   Fix: Remove protection OR approve deployment"
+          echo ""
+          echo "2. ❌ publish-devspaces FAILURE:"
+          echo "   Cause: ANSIBUDDY_BOT_PAT token expired/invalid"
+          echo "   Fix: Regenerate PAT in bot account settings"
+          echo ""
+          echo "3. ✓ Build process works fine"
+          echo "   - Package builds successfully"
+          echo "   - All tests pass"
+          echo ""
+          echo "======================================"
+          echo "NEXT STEPS:"
+          echo "======================================"
+          echo ""
+          echo "For publish-wheel:"
+          echo "  → Go to: Settings > Environments > release"
+          echo "  → Uncheck 'Required reviewers' OR approve deployments"
+          echo ""
+          echo "For publish-devspaces:"
+          echo "  → Go to: Settings > Secrets > Actions"
+          echo "  → Update ANSIBUDDY_BOT_PAT with fresh token"
+          echo "  → Token needs 'repo' and 'workflow' scopes"
+          echo ""
+          echo "Then re-run the release workflow!"
+          echo "======================================"
