@@ -101,15 +101,15 @@ wheels = [
 
 [[package]]
 name = "ansible-creator"
-version = "26.3.2"
+version = "26.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2", marker = "sys_platform != 'win32'" },
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/d1/7f4d40461ad3de061ad3eb0732322de5b0e88f2b4f4972cf9ac17a5c8efc/ansible_creator-26.3.2.tar.gz", hash = "sha256:411a368b740e66b36e58ea4f1eebf0ef5c53eb56dca8a9bd1411613be50ff2a6", size = 9828603, upload-time = "2026-03-19T08:06:59.274Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/50/5a58ccf5abdd546b27e1af07b42115d2c230ae29584bfa9bfcd9a8be7cce/ansible_creator-26.3.3.tar.gz", hash = "sha256:07e81c7e8436e4379039f189de7ddc48a0b3d21dd2b312202ec5953c6252890a", size = 9838855, upload-time = "2026-03-31T12:30:25.515Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/58/474cd21af2702de913d145911295b5d7cbbb51b836555f0d31ceae2b5e72/ansible_creator-26.3.2-py3-none-any.whl", hash = "sha256:6613749abd172011ac08290d61338255995b9c9dae7fcb6a7d6a4e29abc23876", size = 119244, upload-time = "2026-03-19T08:06:57.543Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/49/e867f0eb38ba6126a99753a43bb452debc0bce4c0740c8c858ac8706b774/ansible_creator-26.3.3-py3-none-any.whl", hash = "sha256:77f180eb1c4f974d8715bf1813e68d63d0c6efd62a4b5377543bbb66a3ed9ab3", size = 123561, upload-time = "2026-03-31T12:30:23.744Z" },
 ]
 
 [[package]]
@@ -215,7 +215,7 @@ pkg = [
 requires-dist = [
     { name = "ansible-builder", specifier = ">=3.1.1" },
     { name = "ansible-compat", specifier = ">=25.12.1" },
-    { name = "ansible-creator", specifier = ">=26.3.0" },
+    { name = "ansible-creator", specifier = ">=26.3.3" },
     { name = "ansible-dev-environment", specifier = ">=26.2.0" },
     { name = "ansible-dev-tools", extras = ["server"], marker = "extra == 'test'", editable = "." },
     { name = "ansible-dev-tools", extras = ["server", "test"], marker = "extra == 'full'", editable = "." },
