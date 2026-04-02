@@ -43,12 +43,32 @@ if [ "--publish" == "${1:-}" ]; then
         echo "Unable to find GITHUB_SHA variable."
         exit 1
     fi
-    ${ADT_CONTAINER_ENGINE} pull -q "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
-    ${ADT_CONTAINER_ENGINE} pull -q "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-amd64"
 
-    for TAG in ghcr.io/ansible/community-ansible-dev-tools:${2:-} ghcr.io/ansible/community-ansible-dev-tools:${3:-}; do
-        ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-amd64" --amend "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
-        ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA:-}-arm64"
+    FINAL_REPO="ghcr.io/ansible/community-ansible-dev-tools"
+    TMP_REPO="ghcr.io/ansible/community-ansible-dev-tools-tmp"
+
+    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-arm64"
+    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-amd64"
+
+    # Re-tag and push arch-specific images to the final repository to avoid
+    # cross-repository blob mounting issues when creating the manifest.
+    # GHCR cannot mount blobs across different repositories, so we must push
+    # the images to the target repository before creating the manifest.
+    for IMG_ARCH in amd64 arm64; do
+        ${ADT_CONTAINER_ENGINE} tag "${TMP_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}" "${FINAL_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}"
+        if [ "${CI:-}" == "true" ]; then
+            ${ADT_CONTAINER_ENGINE} push "${FINAL_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}"
+        fi
+    done
+
+    TAGS=("${FINAL_REPO}:${2:-}")
+    if [ -n "${3:-}" ]; then
+        TAGS+=("${FINAL_REPO}:${3}")
+    fi
+
+    for TAG in "${TAGS[@]}"; do
+        ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-amd64" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
+        ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
 
         if [ "${CI:-}" == "true" ]; then
             ${ADT_CONTAINER_ENGINE} manifest push "$TAG"
