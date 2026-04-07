@@ -17,6 +17,7 @@ default_language_version:
   # minimal version determined by minimal version required by ansible-core, but
   # we might keep a backwards compatibility version for older ones
   python: "3.11"
+  node: "24"
 repos:
   - repo: meta
     hooks:
@@ -33,6 +34,8 @@ repos:
         priority: 1
       - id: cspell
         priority: 0
+        language_version: "24"
+        language: node
       - id: pylint
         priority: 5
       - id: codecov
