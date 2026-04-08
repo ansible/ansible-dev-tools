@@ -31,7 +31,7 @@ VNC_GEOMETRY="1600x900" \
 SELENIUM_VERSION=${SELENIUM_MAJOR_VERSION}.${SELENIUM_MINOR_VERSION}.${SELENIUM_PATCH_VERSION} \
 SELENIUM_PATH=${SELENIUM_HOME}/selenium-server/selenium-server-standalone.jar \
 SELENIUM_HTTP_JDK_CLIENT_PATH=${SELENIUM_HOME}/selenium-server/selenium-http-jdk-client.jar \
-PATH=${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH}
+PATH=${SELENIUM_HOME}/.local/bin:${SELENIUM_HOME}/firefox:/opt/google/chrome:${PATH}
 
 EXPOSE ${SELENIUM_PORT} ${VNC_PORT} ${API_PORT}
 
@@ -125,6 +125,7 @@ python3-cffi \
 python3-devel \
 python3-markupsafe \
 python3-pip \
+python3-virtualenv \
 python3-pyyaml \
 python3-ruamel-yaml \
 python3-wheel \
@@ -140,7 +141,11 @@ xkeyboard-config" && \
 microdnf -q -y install ${PACKAGES} >/dev/null
 # ^ https://github.com/rpm-software-management/dnf5/issues/570
 
-RUN --mount=type=bind,src=dist,dst=/dist python3 -m pip install --no-cache-dir --extra server "$(ls -1 /dist/ansible_dev_tools-*)[server]"
+
+# install uv and all supported python versions with it
+RUN --mount=type=cache,target=/.cache/uv python3 -m pip install --root-user-action=ignore uv
+
+RUN --mount=type=bind,src=dist,dst=/dist uv pip install --system --no-break-system-packages "$(ls -1 /dist/ansible_dev_tools-*)[server]"
 
 RUN --mount=type=cache,target=/.cache --mount=type=cache,target=/home/selenium/.cache/code-server \
 GECKODRIVER_ARCH=$([ "$(arch)" = "aarch64" ] && echo linux-aarch64 || echo linux64) && \
@@ -182,6 +187,8 @@ if [ "$(arch)" = "aarch64" ]; then export JAVA_TOOL_OPTIONS=-XX:UseSVE=0; fi && 
 java -Dwebdriver.http.factory=jdk-http-client -jar ${SELENIUM_PATH} --ext ${SELENIUM_HTTP_JDK_CLIENT_PATH} info
 
 USER 1001
+# /home/selenium
+RUN uv python install 3.10 3.11 3.12 3.13 3.14
 
 # install packages needed for go file
 RUN go vet /init.go
