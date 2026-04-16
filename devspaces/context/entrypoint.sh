@@ -22,8 +22,8 @@ USER=$(whoami)
 CURRENT_UID=$(id -u)
 START_ID=$(( CURRENT_UID + 1 ))
 
-# Ensure user is in the wheel group for passwordless sudo.
-# usermod requires root, so edit /etc/group directly (made writable by setup.sh).
+# Ensure user is in the wheel group for NOPASSWD sudo.
+# Edit /etc/group directly as usermod requires root (made writable by setup.sh).
 if [ -w /etc/group ] && ! id -nG "$USER" 2>/dev/null | grep -qw wheel; then
     sed -i "s/^\(wheel:x:[0-9]*:.*\)/\1,${USER}/; s/:,/:/" /etc/group
 fi
