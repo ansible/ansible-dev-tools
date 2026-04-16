@@ -26,6 +26,7 @@ lightspeed
 microdnf
 modifyitems
 netcommon
+nopasswd
 pinentry
 prek
 pylibssh
