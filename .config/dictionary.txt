@@ -1,6 +1,7 @@
 Ansibuddy
 BUILDAH
 Containerfile
+DEVWORKSPACE
 Devfile
 NOPASSWD
 PKGMGR
