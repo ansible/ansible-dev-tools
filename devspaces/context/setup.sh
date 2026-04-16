@@ -50,6 +50,11 @@ setcap cap_setgid+ep /usr/bin/newgidmap
 touch /etc/subgid /etc/subuid
 chown 0:0 /etc/subgid /etc/subuid
 
+if [[ "${ENABLE_NOPASSWD_SUDO:-false}" == "true" ]]; then
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel-nopasswd
+    chmod 0440 /etc/sudoers.d/wheel-nopasswd
+fi
+
 chgrp -R 0 /home && chmod -R g=u /etc/passwd /etc/group /etc/subuid /etc/subgid /home
 
 # Install the colored bash prompt

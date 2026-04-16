@@ -1,7 +1,9 @@
 Ansibuddy
 BUILDAH
 Containerfile
+DEVWORKSPACE
 Devfile
+NOPASSWD
 PKGMGR
 Unmarshal
 accesslog
@@ -25,6 +27,7 @@ lightspeed
 microdnf
 modifyitems
 netcommon
+nopasswd
 pinentry
 prek
 pylibssh
