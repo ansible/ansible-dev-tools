@@ -53,7 +53,10 @@ _adt_build_prompt() {
         status_indicator="${red}[${last_exit}]${reset} "
     fi
 
-    PS1="${status_indicator}${prefix}${bold}${green}\u@\h${reset}:${bold}${blue}\w${reset}\$(_adt_git_branch)\$ "
+    local host_label
+    host_label="${ADT_PROMPT_HOST:-${DEVWORKSPACE_NAME:-\h}}"
+
+    PS1="${status_indicator}${prefix}${bold}${green}\u@${host_label}${reset}:${bold}${blue}\w${reset}\$(_adt_git_branch)\$ "
 }
 
 # Preserve any existing PROMPT_COMMAND hooks
