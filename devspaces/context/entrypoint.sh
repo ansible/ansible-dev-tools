@@ -2,7 +2,7 @@
 # Entrypoint for the Ansible Dev Spaces container image.
 # Sets up the dynamic UID mapping required for rootless podman
 # with user namespaces (container-in-container without kubedock).
-# cspell: ignore subuid subgid catatonit
+# cspell: ignore subuid subgid catatonit usermod
 set -euo pipefail
 
 if [ ! -d "${HOME}" ]; then
@@ -21,6 +21,11 @@ fi
 USER=$(whoami)
 CURRENT_UID=$(id -u)
 START_ID=$(( CURRENT_UID + 1 ))
+
+# Ensure user is in the wheel group for passwordless sudo
+if [ -w /etc/group ] && ! id -nG "$USER" 2>/dev/null | grep -qw wheel; then
+    usermod -aG wheel "$USER" 2>/dev/null || true
+fi
 
 # Derive the available subordinate ID count from the UID namespace mapping
 # (same count used for both subuid and subgid).
