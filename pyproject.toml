@@ -656,6 +656,7 @@ description = """Run the tests: py{py_dot_ver}"""
 extras = ["server"]
 package = "editable"
 pass_env = [
+  "ADT_*",
   "CI",
   "CONTAINER_*",
   "CURL_CA_BUNDLE",
