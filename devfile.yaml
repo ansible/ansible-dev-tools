@@ -12,6 +12,8 @@ components:
       env:
         - name: "ANSIBLE_COLLECTIONS_PATH"
           value: "~/.ansible/collections:/usr/share/ansible/collections:/projects/ansible-devspaces-demo/collections"
+        - name: "ADT_CONTAINER_ENGINE"
+          value: "podman"
 commands:
   - id: molecule-create
     exec:
