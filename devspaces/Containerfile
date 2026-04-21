@@ -16,7 +16,8 @@ RUN --mount=type=bind,target=. --mount=type=cache,dst=/var/cache/dnf --mount=typ
 
 ENV BUILDAH_ISOLATION=chroot
 
-USER 10001
+# Reflect the UID that the SCC will force the workspace to run as.
+USER 1000
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["tail", "-f", "/dev/null"]

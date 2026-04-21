@@ -49,6 +49,16 @@ setcap cap_setuid+ep /usr/bin/newuidmap
 setcap cap_setgid+ep /usr/bin/newgidmap
 touch /etc/subgid /etc/subuid
 chown 0:0 /etc/subgid /etc/subuid
+# Remove the base image entries for user
+if id user >/dev/null 2>&1
+then
+  userdel user
+  # Add the user with the UID that the SCC will enforce
+  useradd -u 1000 -G wheel,root -d /home/user --shell /bin/bash -m user
+  usermod -L user
+  chmod 400 /etc/shadow
+  chown -R user /home/user
+fi
 
 if [[ "${ENABLE_NOPASSWD_SUDO:-false}" == "true" ]]; then
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel-nopasswd
