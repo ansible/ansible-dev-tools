@@ -39,4 +39,5 @@ skopeo
 unmarshal
 unmarshalling
 urandom
+userdel
 userns
