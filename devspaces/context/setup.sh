@@ -54,7 +54,10 @@ if id user >/dev/null 2>&1
 then
   userdel user
   # Add the user with the UID that the SCC will enforce
-  useradd -u 1000 -G wheel,root -d /home/user --shell /bin/bash -m user
+  if ! useradd -u 1000 -G wheel,root -d /home/user --shell /bin/bash -m user; then
+    echo "ERROR: Failed to create user with UID 1000" >&2
+    exit 1
+  fi
   usermod -L user
   chmod 400 /etc/shadow
   chown -R user /home/user
