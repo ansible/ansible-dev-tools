@@ -20,10 +20,8 @@ confest
 crun
 devfile
 devspaces
-geckodriver
 kubedock
 libonig
-lightspeed
 microdnf
 modifyitems
 netcommon
