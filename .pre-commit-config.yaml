@@ -17,13 +17,14 @@ default_language_version:
   # minimal version determined by minimal version required by ansible-core, but
   # we might keep a backwards compatibility version for older ones
   python: "3.11"
+  node: "24"
 repos:
   - repo: meta
     hooks:
       - id: check-useless-excludes
         priority: 0
   - repo: https://github.com/ansible/actions
-    rev: v1.0.0
+    rev: v1.1.2
     hooks:
       - id: toml
         priority: 0
@@ -33,6 +34,8 @@ repos:
         priority: 1
       - id: cspell
         priority: 0
+        language_version: "24"
+        language: node
       - id: pylint
         priority: 5
       - id: codecov
@@ -40,7 +43,7 @@ repos:
       - id: shellcheck
         priority: 0
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.8
+    rev: 0.11.16
     hooks:
       - id: uv-sync
       - id: uv-lock
@@ -49,7 +52,7 @@ repos:
         args: ["--upgrade"]
         stages: [manual]
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v2.4.5"
+    rev: "v2.4.15"
     hooks:
       - id: biome-check
         name: biome
@@ -74,7 +77,7 @@ repos:
       - id: trailing-whitespace
         priority: 1
   - repo: https://github.com/jsh9/pydoclint
-    rev: "0.8.3"
+    rev: "0.8.4"
     hooks:
       - id: pydoclint
         # This allows automatic reduction of the baseline file when needed.
@@ -82,7 +85,7 @@ repos:
         pass_filenames: false
         priority: 6
   - repo: https://github.com/ansible/team-devtools
-    rev: v26.2.0
+    rev: v26.4.0
     hooks:
       - id: check-platform-constraints
         priority: 1
