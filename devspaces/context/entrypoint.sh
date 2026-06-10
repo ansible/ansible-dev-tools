@@ -55,4 +55,25 @@ done
 echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subuid
 echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subgid
 
+# Configure Z shell
+if [ ! -f "${HOME}/.zshrc" ]; then
+    cat > "${HOME}/.zshrc" << 'EOF'
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+if [ -f "${PROJECT_SOURCE}/workspace.rc" ]; then
+    . "${PROJECT_SOURCE}/workspace.rc"
+fi
+EOF
+fi
+
+# Configure Bash shell
+if [ ! -f "${HOME}/.bashrc" ]; then
+    cat > "${HOME}/.bashrc" << 'EOF'
+if [ -f "${PROJECT_SOURCE}/workspace.rc" ]; then
+    . "${PROJECT_SOURCE}/workspace.rc"
+fi
+EOF
+fi
+
 exec /usr/libexec/podman/catatonit -- "$@"
