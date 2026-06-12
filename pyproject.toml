@@ -508,6 +508,7 @@ env_dir = "{work_dir}/lint"
 skip_install = true
 
 [tool.tox.env.devel]
+base_python = "python3.13"
 dependency_groups = ["dev"]
 deps = [
   "ansible-compat@ git+https://github.com/ansible/ansible-compat.git",
