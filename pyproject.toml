@@ -393,6 +393,7 @@ fail-on = ["useless-suppression"]
 addopts = [
   "--durations=10",
   "--showlocals",
+  "-p no:libtmux",
   "-p no:pytest-ansible",
   "-p no:xdist",
   "-ra"
