@@ -2,18 +2,27 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 import time
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 
+from libtmux import exc
+from libtmux.server import Server
+from libtmux.test.constants import TEST_SESSION_PREFIX
+from libtmux.test.random import get_test_session_name, namer
+
 
 if TYPE_CHECKING:
+    import pathlib
+
     from collections.abc import Generator
 
-    from libtmux import Pane, Session
+    from libtmux import Pane
+    from libtmux.session import Session
 
     from ansible_dev_tools.tests.conftest import Infrastructure
 
@@ -29,6 +38,75 @@ def session_params() -> dict[str, int]:
         "x": 132,
         "y": 24,
     }
+
+
+@pytest.fixture
+def server(
+    tmp_path: pathlib.Path,
+) -> Generator[Server, None, None]:
+    """Create a temporary tmux server.
+
+    Args:
+        tmp_path: Temporary path for config file.
+
+    Yields:
+        Server: A libtmux Server instance.
+    """
+    config_file = tmp_path / ".tmux.conf"
+    config_file.write_text("set -g base-index 1\n", encoding="utf-8")
+
+    srv = Server(socket_name=f"libtmux_test{next(namer)}")
+
+    yield srv
+
+    if srv.socket_name:
+        with contextlib.suppress(exc.LibTmuxException, OSError):
+            if srv.is_alive():
+                srv.kill()
+
+
+@pytest.fixture
+def session(
+    session_params: dict[str, Any],
+    server: Server,
+) -> Session:
+    """Create a temporary tmux session.
+
+    Args:
+        session_params: Parameters for session creation.
+        server: The tmux server.
+
+    Returns:
+        Session: A libtmux Session instance.
+    """
+    session_name = "tmuxp"
+
+    if not server.has_session(session_name):
+        server.new_session(session_name=session_name)
+
+    test_session_name = get_test_session_name(server=server)
+
+    _session = server.new_session(
+        session_name=test_session_name,
+        **session_params,
+    )
+
+    session_id = _session.session_id
+    assert session_id is not None
+
+    with contextlib.suppress(exc.LibTmuxException):
+        server.switch_client(target_session=session_id)
+
+    for s in server.sessions:
+        old_name = s.session_name
+        if (
+            old_name is not None
+            and old_name.startswith(TEST_SESSION_PREFIX)
+            and old_name != test_session_name
+        ):
+            server.kill_session(old_name)
+
+    return _session
 
 
 class ContainerTmux:
