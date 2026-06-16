@@ -508,6 +508,7 @@ env_dir = "{work_dir}/lint"
 skip_install = true
 
 [tool.tox.env.devel]
+base_python = "python3.13"
 dependency_groups = ["dev"]
 deps = [
   "ansible-compat@ git+https://github.com/ansible/ansible-compat.git",
@@ -518,6 +519,7 @@ deps = [
   "ansible-navigator@ git+https://github.com/ansible/ansible-navigator.git",
   "molecule@ git+https://github.com/ansible/molecule.git",
   "pytest-ansible@ git+https://github.com/ansible/pytest-ansible.git",
+  "pytest<9.1",  # libtmux applies marks to fixtures, blocked by pytest 9.1+ (https://docs.pytest.org/en/stable/deprecations.html#applying-a-mark-to-a-fixture-function)
   "tox-ansible@ git+https://github.com/ansible/tox-ansible.git"
 ]
 runner = "uv-venv-runner"
@@ -567,20 +569,6 @@ editable = true
 extras = ["server"]
 skip_install = false
 
-[tool.tox.env.selenium]
-commands = [
-  ["rm", "-rf", "selenium/dist/"],
-  ["uv", "build", "--out-dir", "selenium/dist", "--wheel", "-q"],
-  ["./tools/selenium.sh"]
-]
-commands_post = [["./tools/cleanup.sh"]]
-commands_pre = []
-dependency_groups = ["ee", "dev"]
-description = "Build the selenium-adt container image"
-editable = true
-extras = ["server"]
-skip_install = false
-
 [tool.tox.env.lint]
 commands = [["prek", "run", "--all-files", "--show-diff-on-failure"]]
 commands_post = []
@@ -622,7 +610,6 @@ allowlist_externals = [
   "./tools/cleanup.sh",
   "./tools/devspaces.sh",
   "./tools/ee.sh",
-  "./tools/selenium.sh"
 ]
 commands = [
   ["sh", "-c", "ansible --version | head -n 1"],
