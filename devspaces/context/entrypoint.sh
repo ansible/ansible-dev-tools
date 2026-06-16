@@ -56,24 +56,16 @@ echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subuid
 echo "${USER}:${START_ID}:${SUB_ID_COUNT}" >/etc/subgid
 
 # Configure Z shell
-if [ ! -f "${HOME}/.zshrc" ]; then
-    cat > "${HOME}/.zshrc" << 'EOF'
-HISTFILE=${HOME}/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
-if [ -f "${PROJECT_SOURCE}/workspace.rc" ]; then
-    . "${PROJECT_SOURCE}/workspace.rc"
-fi
-EOF
+if [ ! -f "${HOME}/.zshrc" ]
+then
+  (echo "HISTFILE=${HOME}/.zsh_history"; echo "HISTSIZE=1000"; echo "SAVEHIST=1000") > "${HOME}/.zshrc"
+  (echo "if [ -f \"${PROJECT_SOURCE}/workspace.rc\" ]"; echo "then"; echo "  . \"${PROJECT_SOURCE}/workspace.rc\""; echo "fi") >> "${HOME}/.zshrc"
 fi
 
 # Configure Bash shell
-if [ ! -f "${HOME}/.bashrc" ]; then
-    cat > "${HOME}/.bashrc" << 'EOF'
-if [ -f "${PROJECT_SOURCE}/workspace.rc" ]; then
-    . "${PROJECT_SOURCE}/workspace.rc"
-fi
-EOF
+if [ ! -f "${HOME}/.bashrc" ]
+then
+  (echo "if [ -f \"${PROJECT_SOURCE}/workspace.rc\" ]"; echo "then"; echo "  . \"${PROJECT_SOURCE}/workspace.rc\""; echo "fi") > "${HOME}/.bashrc"
 fi
 
 exec /usr/libexec/podman/catatonit -- "$@"
