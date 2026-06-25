@@ -103,15 +103,15 @@ wheels = [
 
 [[package]]
 name = "ansible-creator"
-version = "26.4.3"
+version = "26.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2", marker = "sys_platform != 'win32'" },
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/29/43/b6d5e389fb41f689459fd0d148c6f4f7e7bc3c30f1d8ec9e3386415973e8/ansible_creator-26.4.3.tar.gz", hash = "sha256:db8a33fa765f5a3cb4f17ac6856a2e9e93b2434a7ecf5cbbdd495d96b0ec71d1", size = 9856828, upload-time = "2026-04-30T03:29:40.095Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/72/466f53d93fd26a16c8020b5c53e1594757491ce75be58abffa48790a5266/ansible_creator-26.6.0.tar.gz", hash = "sha256:411cbadc595c18945e2c5e4f4bbdab82c6c2db524dbc816b22fb47157252622e", size = 9877774, upload-time = "2026-06-22T11:38:05.41Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/41/46a9ffd096d08cb6bf874ad39ebc4ac7f70def1ce93231b794fdde5455ec/ansible_creator-26.4.3-py3-none-any.whl", hash = "sha256:21c5229a03beb3cfaa7d6ff1dd5a6c2945c475f8d664fad31ac6234d29e21173", size = 130614, upload-time = "2026-04-30T03:29:38.33Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/bc/c826d3317a478d86026391a237af36b240db3e95e045d0619f2042be5e9b/ansible_creator-26.6.0-py3-none-any.whl", hash = "sha256:0d7eba30927f65e2c27a1651e18a6e0602e2f68f8300a1c2ee05eccce0fe0893", size = 132845, upload-time = "2026-06-22T11:38:03.585Z" },
 ]
 
 [[package]]
