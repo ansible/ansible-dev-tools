@@ -60,7 +60,8 @@ class Infrastructure:
         image_name: The image name
         include_container: Include container tests
         only_container: Only container tests
-        proc: The server process
+        proc: The host server process
+        proc_container: The container server process
         server: Server required
         navigator_ee: The image to use with ansible navigator
     """
@@ -73,6 +74,7 @@ class Infrastructure:
     include_container: bool = False
     only_container: bool = False
     proc: None | subprocess.Popen[bytes] = None
+    proc_container: None | subprocess.Popen[bytes] = None
     server: bool = False
     navigator_ee: str = ""
 
@@ -271,7 +273,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     if INFRASTRUCTURE.server:
         _start_server(container=False)
     if not INFRASTRUCTURE.container and not INFRASTRUCTURE.server:  # pragma: no cover
-        err = "Cannot run tests with any server option."
+        err = "Cannot run tests without any server option."
         pytest.exit(err, 2)
 
 
@@ -327,13 +329,11 @@ END = """ {image_name}
 
 
 def _get_container_cmd() -> str:
-    """Start the container.
+    """Build the container run command string.
 
-    The default image for navigator is pulled ahead of time.
-    It is determined by the container image name. If the image name
-    starts with localhost, the default ee for navigator is pulled.
-    If the image name contains a /, that is used, otherwise the default
-    ee for navigator is pulled.
+    Constructs the command to start the container with the appropriate
+    engine-specific flags. Cleans up any existing container with the
+    same name before building the command.
 
     Returns:
         str: The container command.
@@ -375,13 +375,18 @@ def _get_container_cmd() -> str:
         .replace("  ", " ")
     )
 
+    return cmd
+
+
+def _load_container_image() -> None:
+    """Load the navigator EE image inside the running container."""
+    assert INFRASTRUCTURE is not None
     if INFRASTRUCTURE.image_name:
         INFRASTRUCTURE.navigator_ee = INFRASTRUCTURE.image_name
-        _proc = _exec_container(command="podman load < image.tar")
+        _exec_container(command="podman load < image.tar")
     else:
         nav_ee = get_nav_default_ee_in_container()
-        _proc = _exec_container(command=f"podman pull {nav_ee}")
-    return cmd
+        _exec_container(command=f"podman pull {nav_ee}")
 
 
 def get_nav_default_ee_in_container() -> str:
@@ -495,56 +500,71 @@ def _start_server(*, container: bool = False) -> None:
         RuntimeError: If the server could not be started.
     """
     assert INFRASTRUCTURE is not None
-    bin_path = shutil.which("adt")
-    if bin_path is None:
-        msg = "adt not found in $PATH"
-        raise RuntimeError(msg)
-    log_file_name = "server.log" if not container else "container-server.log"
+    log_file_name = "container-server.log" if container else "server.log"
     server_log_file = Path(os.environ.get("TOX_ENV_DIR", ".tox")) / "log" / log_file_name
-
     server_log_file.parent.mkdir(parents=True, exist_ok=True)
-    cmd = (
-        f"{bin_path} server -p {ADT_SERVER_PORT} --debug" if not container else _get_container_cmd()
-    )
-    msg = f"Starting adt server with `{cmd}` and log file at {server_log_file}"
-    LOGGER.warning(msg)
-    start_time = time.time()
-    with server_log_file.open("w") as log_file:
-        INFRASTRUCTURE.proc = subprocess.Popen(
-            cmd,
-            env=os.environ,
-            shell=True,
-            stdout=log_file,
-            stderr=subprocess.STDOUT,
-        )
-        tries = 0
-        timeout = 3
-        max_tries = 15
-        # GHA macos runner showed occasional failures with 30s
-        while tries < max_tries:
-            try:
-                # timeout increased to 2s due to observed GHA macos failures
-                res = requests.get(f"http://localhost:{ADT_SERVER_PORT}", timeout=timeout)
-                if res.status_code == requests.codes.get("not_found"):
-                    return
-            except (requests.exceptions.ConnectionError, requests.RequestException):
-                time.sleep(timeout)
-            tries += 1
 
-        INFRASTRUCTURE.proc.terminate()
-        stdout_bytes, _ = INFRASTRUCTURE.proc.communicate()
-        # apparently communicate can also return None in addition to bytes
-        stdout = stdout_bytes.decode() if stdout_bytes else ""
-        total_time = int(time.time() - start_time)
-        msg = f"Could not start the server after {tries} retries, total time ({total_time}s).\n{stdout}"
-        log = server_log_file.read_text()
-        if log:
-            msg += f"\n{log}"
+    port = ADT_SERVER_CONTAINER_PORT if container else ADT_SERVER_PORT
+
+    if container:
+        cmd_str = _get_container_cmd()
+        msg = f"Starting container server with `{cmd_str}` and log file at {server_log_file}"
+        LOGGER.warning(msg)
+        start_time = time.time()
+        with server_log_file.open("w") as log_file:
+            proc = subprocess.Popen(
+                cmd_str,
+                env=os.environ,
+                shell=True,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+            )
+        INFRASTRUCTURE.proc_container = proc
+    else:
+        bin_path = shutil.which("adt")
+        if bin_path is None:
+            msg = "adt not found in $PATH"
+            raise RuntimeError(msg)
+        cmd_args = [bin_path, "server", "-p", ADT_SERVER_PORT, "--debug"]
+        msg = f"Starting adt server with `{shlex.join(cmd_args)}` and log file at {server_log_file}"
+        LOGGER.warning(msg)
+        start_time = time.time()
+        with server_log_file.open("w") as log_file:
+            proc = subprocess.Popen(  # noqa: S603
+                cmd_args,
+                env=os.environ,
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+            )
+        INFRASTRUCTURE.proc = proc
+
+    tries = 0
+    timeout = 3
+    max_tries = 15
+    while tries < max_tries:
+        try:
+            res = requests.get(f"http://localhost:{port}", timeout=timeout)
+            if res.status_code == requests.codes.get("not_found"):
+                if container:
+                    _load_container_image()
+                return
+        except (requests.exceptions.ConnectionError, requests.RequestException):
+            time.sleep(timeout)
+        tries += 1
+
+    proc.terminate()
+    stdout_bytes, _ = proc.communicate()
+    stdout = stdout_bytes.decode() if stdout_bytes else ""
+    total_time = int(time.time() - start_time)
+    msg = f"Could not start the server after {tries} retries, total time ({total_time}s).\n{stdout}"
+    log = server_log_file.read_text()
+    if log:
+        msg += f"\n{log}"
     raise RuntimeError(msg)
 
 
 def _stop_server() -> None:
-    """Stop the server.
+    """Stop the host server.
 
     Raises:
         RuntimeError: If the server is not running.
