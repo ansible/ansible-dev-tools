@@ -364,7 +364,7 @@ def _get_container_cmd() -> str:
         err = f"Container engine {INFRASTRUCTURE.container_engine} not found."
         raise ValueError(err)
 
-    cmd = (
+    return (
         cmd.replace("\n", " ")
         .format(
             container_engine=INFRASTRUCTURE.container_engine,
@@ -374,8 +374,6 @@ def _get_container_cmd() -> str:
         )
         .replace("  ", " ")
     )
-
-    return cmd
 
 
 def _load_container_image() -> None:
