@@ -521,6 +521,7 @@ deps = [
   "ansible-navigator@ git+https://github.com/ansible/ansible-navigator.git",
   "molecule@ git+https://github.com/ansible/molecule.git",
   "pytest-ansible@ git+https://github.com/ansible/pytest-ansible.git",
+  "pytest<9.1",  # libtmux applies marks to fixtures, blocked by pytest 9.1+ (https://docs.pytest.org/en/stable/deprecations.html#applying-a-mark-to-a-fixture-function)
   "tox-ansible@ git+https://github.com/ansible/tox-ansible.git"
 ]
 runner = "uv-venv-runner"
