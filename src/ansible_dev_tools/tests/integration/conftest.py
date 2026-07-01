@@ -108,6 +108,9 @@ def container_tmux(
     Yields:
         ContainerTmux: A tmux session attached to the container.
     """
-    container_tmux_instance = ContainerTmux(infrastructure=infrastructure, session=session)  # pragma: no cover
+    container_tmux_instance = ContainerTmux(  # pragma: no cover
+        infrastructure=infrastructure,
+        session=session,
+    )
     yield container_tmux_instance  # pragma: no cover
     container_tmux_instance.exit()  # pragma: no cover
