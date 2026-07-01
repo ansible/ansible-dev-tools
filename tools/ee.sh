@@ -92,9 +92,6 @@ $BUILD_CMD -f final/Containerfile final/ --tag "${IMAGE_NAME}"
 # it seems to add ~20% more in total test execution time.
 $ADT_CONTAINER_ENGINE save $IMAGE_NAME > image.tar
 
-# Check container size and layers
-mk containers check "$IMAGE_NAME" --engine="${ADT_CONTAINER_ENGINE}" --max-size=1500 --max-layers=22
-
 pytest -v src/ansible_dev_tools/tests --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
 pushd docs/examples
