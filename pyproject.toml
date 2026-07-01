@@ -79,8 +79,8 @@ docs = [
 ee = [
   "ansible-builder>=3.1.1",
   "build>=1.3.0",
-  "mk>=3.0.0",
-  "setuptools>=65.5.1"
+  "setuptools>=65.5.1",
+  "twine>=6.2.0",
 ]
 lint = [
   "mypy>=1.17.1",
