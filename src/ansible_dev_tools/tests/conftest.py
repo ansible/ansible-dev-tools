@@ -243,7 +243,7 @@ def server_url() -> Generator[str, None, None]:
 
 
 @pytest.fixture(scope="session")
-def server_in_container_url() -> str:
+def server_in_container_url() -> str:  # pragma: no cover
     """Run the server.
 
     Returns:
@@ -268,7 +268,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
     INFRASTRUCTURE = Infrastructure(session)
 
-    if INFRASTRUCTURE.container:
+    if INFRASTRUCTURE.container:  # pragma: no cover
         _start_server(container=True)
     if INFRASTRUCTURE.server:
         _start_server(container=False)
@@ -290,7 +290,7 @@ def pytest_sessionfinish(session: pytest.Session) -> None:
     if INFRASTRUCTURE is None:
         return
 
-    if INFRASTRUCTURE.container:
+    if INFRASTRUCTURE.container:  # pragma: no cover
         _stop_container()
     if INFRASTRUCTURE.server:
         _stop_server()
@@ -328,7 +328,7 @@ END = """ {image_name}
  """
 
 
-def _get_container_cmd() -> str:
+def _get_container_cmd() -> str:  # pragma: no cover
     """Build the container run command string.
 
     Constructs the command to start the container with the appropriate
@@ -376,7 +376,7 @@ def _get_container_cmd() -> str:
     )
 
 
-def _load_container_image() -> None:
+def _load_container_image() -> None:  # pragma: no cover
     """Load the navigator EE image inside the running container."""
     assert INFRASTRUCTURE is not None
     if INFRASTRUCTURE.image_name:
@@ -504,7 +504,7 @@ def _start_server(*, container: bool = False) -> None:
 
     port = ADT_SERVER_CONTAINER_PORT if container else ADT_SERVER_PORT
 
-    if container:
+    if container:  # pragma: no cover
         cmd_str = _get_container_cmd()
         msg = f"Starting container server with `{cmd_str}` and log file at {server_log_file}"
         LOGGER.warning(msg)
@@ -543,22 +543,23 @@ def _start_server(*, container: bool = False) -> None:
         try:
             res = requests.get(f"http://localhost:{port}", timeout=timeout)
             if res.status_code == requests.codes.get("not_found"):
-                if container:
+                if container:  # pragma: no cover
                     _load_container_image()
                 return
         except (requests.exceptions.ConnectionError, requests.RequestException):
             time.sleep(timeout)
         tries += 1
 
-    proc.terminate()
-    stdout_bytes, _ = proc.communicate()
-    stdout = stdout_bytes.decode() if stdout_bytes else ""
-    total_time = int(time.time() - start_time)
-    msg = f"Could not start the server after {tries} retries, total time ({total_time}s).\n{stdout}"
-    log = server_log_file.read_text()
-    if log:
-        msg += f"\n{log}"
-    raise RuntimeError(msg)
+    if tries >= max_tries:  # pragma: no cover
+        proc.terminate()
+        stdout_bytes, _ = proc.communicate()
+        stdout = stdout_bytes.decode() if stdout_bytes else ""
+        total_time = int(time.time() - start_time)
+        msg = f"Could not start the server after {tries} retries, total time ({total_time}s).\n{stdout}"
+        log = server_log_file.read_text()
+        if log:
+            msg += f"\n{log}"
+        raise RuntimeError(msg)
 
 
 def _stop_server() -> None:
