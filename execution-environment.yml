@@ -3,7 +3,7 @@ version: 3
 
 images:
   base_image:
-    name: quay.io/fedora/fedora-minimal:42
+    name: quay.io/fedora/fedora-minimal:44
 
 dependencies:
   ansible_runner:
