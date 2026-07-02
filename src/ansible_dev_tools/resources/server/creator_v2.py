@@ -185,6 +185,11 @@ class CreatorBackend:
         """
         self.tmp_dir = tmp_dir
 
+    @property
+    def _creator_output(self) -> CreatorOutput:
+        """Return a CreatorOutput configured for the current temp directory."""
+        return CreatorOutput(log_file=str(self.tmp_dir / "creator.log"))
+
     def collection(self, collection: str, project: str) -> Path:
         """Scaffold a collection.
 
@@ -199,7 +204,7 @@ class CreatorBackend:
         config = Config(
             creator_version=creator_version,
             init_path=str(init_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            output=self._creator_output,
             collection=collection,
             subcommand="init",
             project=project,
@@ -229,7 +234,7 @@ class CreatorBackend:
         config = Config(
             creator_version=creator_version,
             init_path=str(init_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            output=self._creator_output,
             project=project,
             namespace=namespace,
             collection_name=collection_name,
@@ -254,7 +259,7 @@ class CreatorBackend:
             resource_type="devfile",
             creator_version=creator_version,
             path=str(add_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            output=self._creator_output,
             subcommand="add",
             overwrite=True,
         )
@@ -273,7 +278,7 @@ class CreatorBackend:
         config = Config(
             creator_version=creator_version,
             init_path=str(init_path),
-            output=CreatorOutput(log_file=str(self.tmp_dir / "creator.log")),
+            output=self._creator_output,
             project="execution_env",
             subcommand="init",
         )
