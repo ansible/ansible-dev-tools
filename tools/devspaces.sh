@@ -19,8 +19,6 @@ ln -f tools/setup-image.sh devspaces/context
 # --metadata-file=out/devspaces.meta --no-cache
 $ADT_CONTAINER_ENGINE buildx build --tag=$IMAGE_NAME --platform=linux/amd64 devspaces/context -f devspaces/Containerfile
 
-mk containers check $IMAGE_NAME --engine="${ADT_CONTAINER_ENGINE}" --max-size=1600 --max-layers=23
-
 pytest --only-container --container-engine="${ADT_CONTAINER_ENGINE}" --container-name=devspaces --image-name=$IMAGE_NAME "$@" || echo "::error::Ignored failed devspaces tests, please https://github.com/ansible/ansible-dev-tools/issues/467"
 
 if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then

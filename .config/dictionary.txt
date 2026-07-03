@@ -5,6 +5,7 @@ DEVWORKSPACE
 Devfile
 NOPASSWD
 PKGMGR
+SAVEHIST
 Unmarshal
 accesslog
 addinivalue

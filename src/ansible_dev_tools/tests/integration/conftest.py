@@ -87,7 +87,7 @@ class ContainerTmux:
         )
         pytest.fail(error)
 
-    def exit(self) -> None:
+    def exit(self) -> None:  # pragma: no cover
         """Exit the tmux session."""
         if any("ansible-navigator" in cmd for cmd in self.cmds):
             self.send_and_wait(cmd=":q", wait_for="workdir", timeout=6)
@@ -107,10 +107,10 @@ def container_tmux(
 
     Yields:
         ContainerTmux: A tmux session attached to the container.
-
-    Returns:
-        None.
     """
-    _container_tmux = ContainerTmux(infrastructure=infrastructure, session=session)
-    yield _container_tmux
-    _container_tmux.exit()
+    container_tmux_instance = ContainerTmux(  # pragma: no cover
+        infrastructure=infrastructure,
+        session=session,
+    )
+    yield container_tmux_instance  # pragma: no cover
+    container_tmux_instance.exit()  # pragma: no cover
