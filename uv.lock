@@ -208,7 +208,7 @@ pkg = [
 requires-dist = [
     { name = "ansible-builder", specifier = ">=3.1.1" },
     { name = "ansible-compat", specifier = ">=26.3.0" },
-    { name = "ansible-creator", specifier = ">=26.3.3" },
+    { name = "ansible-creator", specifier = ">=26.6.1" },
     { name = "ansible-dev-environment", specifier = ">=26.4.0" },
     { name = "ansible-dev-tools", extras = ["server"], marker = "extra == 'test'", editable = "." },
     { name = "ansible-dev-tools", extras = ["server", "test"], marker = "extra == 'full'", editable = "." },
