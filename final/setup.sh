@@ -103,6 +103,14 @@ done
 # this must run as user root
 find "$DIR/dist/" -iname '*.whl' -maxdepth 1 -exec python3 -m pip install --no-cache-dir '{}[server]' \;
 
+# Overlay ADT ecosystem packages from git tip (final/from-main-requirements.txt,
+# shared with tox.env.devel) so :devel / date-tagged images pick up unreleased
+# tips. Leave default images on PyPI release versions from the wheel install.
+if [ "${ADT_IMAGE_FROM_MAIN:-0}" = "1" ]; then
+    python3 -m pip install --no-cache-dir --upgrade --force-reinstall \
+        -r "$DIR/from-main-requirements.txt"
+fi
+
 mkdir -p ~/.ansible/roles /usr/share/ansible/roles /etc/ansible/roles
 git config --system --add safe.directory /
 

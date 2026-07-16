@@ -10,9 +10,15 @@ LABEL org.opencontainers.image.description="An execution environment targeted fo
 
 USER root
 
+# Set to 1 to overlay ADT ecosystem packages from git tip after the wheel install
+# (used for :devel / date-tagged images). Default keeps PyPI release deps.
+# ARG (not ENV) so the flag is available to RUN setup.sh but not baked into the image.
+ARG ADT_IMAGE_FROM_MAIN=0
+
 ENV _CONTAINERS_USERNS_CONFIGURED=""
 ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
 ENV PIP_ROOT_USER_ACTION=ignore
+# ARG above is in scope for this RUN (not persisted as ENV in the image).
 RUN --mount=type=bind,target=/final --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip /final/setup.sh
 
 # Note VOLUME options must always happen after setup.sh due to some chown inside that affects the mount
