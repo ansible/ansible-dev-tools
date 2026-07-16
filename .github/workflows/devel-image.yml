@@ -2,13 +2,15 @@
 # dependency repo's default-branch tip (see final/from-main-requirements.txt).
 # Publishes :YYYYMMDD (UTC) and floating :devel. Does not retag :main or :latest.
 #
-# To enable nightly from-main builds later, uncomment the schedule block below.
+# Nightly schedule enabled after a successful manual run:
+# https://github.com/ansible/ansible-dev-tools/actions/runs/29510692708
+# (:devel / :20260716 validated with tip .dev* ADT packages).
 name: devel-image
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 0 * * *"
+  schedule:
+    - cron: "0 0 * * *"
 
 concurrency:
   # Do not cancel in-flight runs: publish tags :YYYYMMDD then :devel sequentially;
