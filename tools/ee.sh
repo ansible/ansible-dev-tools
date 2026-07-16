@@ -88,6 +88,16 @@ if [ "--publish" == "${1:-}" ]; then
 fi
 
 # Code for building the container (call script again with --publish to merge and push already build container)
+
+# Self-hosted builders keep docker/podman cache across jobs; leftover layers
+# have been causing out-of-disk errors in nested ansible-builder (test_builder).
+if [ "${CI:-}" = "true" ]; then
+    df -h || true
+    ${ADT_CONTAINER_ENGINE} system prune -af --volumes || true
+    ${ADT_CONTAINER_ENGINE} builder prune -af || true
+    df -h || true
+fi
+
 if [ -d "$REPO_DIR/final/dist/" ]; then
     find "$REPO_DIR/final/dist/" -type f -delete
 fi
@@ -103,6 +113,12 @@ $BUILD_CMD \
 # Do not try to gzip the image because there is no notable change in size and
 # it seems to add ~20% more in total test execution time.
 $ADT_CONTAINER_ENGINE save $IMAGE_NAME > image.tar
+
+# Drop intermediate base/build cache before nested EE builds; keep the test image.
+${ADT_CONTAINER_ENGINE} rmi "${TAG_BASE}" || true
+${ADT_CONTAINER_ENGINE} builder prune -af || true
+${ADT_CONTAINER_ENGINE} image prune -f || true
+df -h || true
 
 pytest -v src/ansible_dev_tools/tests --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
