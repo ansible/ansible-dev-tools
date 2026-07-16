@@ -513,16 +513,8 @@ skip_install = true
 base_python = "python3.13"
 dependency_groups = ["dev"]
 deps = [
-  "ansible-compat@ git+https://github.com/ansible/ansible-compat.git",
-  "ansible-core@ git+https://github.com/ansible/ansible.git",
-  "ansible-creator@ git+https://github.com/ansible/ansible-creator.git",
-  "ansible-dev-environment@ git+https://github.com/ansible/ansible-dev-environment.git",
-  "ansible-lint@ git+https://github.com/ansible/ansible-lint.git",
-  "ansible-navigator@ git+https://github.com/ansible/ansible-navigator.git",
-  "molecule@ git+https://github.com/ansible/molecule.git",
-  "pytest-ansible@ git+https://github.com/ansible/pytest-ansible.git",
-  "pytest<9.1",  # libtmux applies marks to fixtures, blocked by pytest 9.1+ (https://docs.pytest.org/en/stable/deprecations.html#applying-a-mark-to-a-fixture-function)
-  "tox-ansible@ git+https://github.com/ansible/tox-ansible.git"
+  "-r{tox_root}/final/from-main-requirements.txt",
+  "pytest<9.1"  # libtmux applies marks to fixtures, blocked by pytest 9.1+ (https://docs.pytest.org/en/stable/deprecations.html#applying-a-mark-to-a-fixture-function)
 ]
 runner = "uv-venv-runner"
 uv_sync_flags = ["--upgrade", "--prerelease=allow"]
@@ -569,6 +561,17 @@ dependency_groups = ["ee", "dev"]
 description = "Build the ee container image"
 editable = true
 extras = ["server"]
+skip_install = false
+
+[tool.tox.env.ee-devel]
+commands = [["python", "-m", "build", "--version"], ["./tools/ee.sh"]]
+commands_post = [["./tools/cleanup.sh"]]
+commands_pre = []
+dependency_groups = ["ee", "dev"]
+description = "Build the ee container image with ADT packages from default-branch tips"
+editable = true
+extras = ["server"]
+set_env = { ADT_IMAGE_FROM_MAIN = "1" }
 skip_install = false
 
 [tool.tox.env.lint]

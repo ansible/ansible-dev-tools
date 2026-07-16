@@ -1,0 +1,76 @@
+# Build community-ansible-dev-tools with ADT ecosystem packages from each
+# dependency repo's default-branch tip (see final/from-main-requirements.txt).
+# Publishes :YYYYMMDD (UTC) and floating :devel. Does not retag :main or :latest.
+#
+# To enable nightly from-main builds later, uncomment the schedule block below.
+name: devel-image
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 * * *"
+
+concurrency:
+  # Do not cancel in-flight runs: publish tags :YYYYMMDD then :devel sequentially;
+  # cancel mid-loop can leave those tags pointing at different builds.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: build-${{ matrix.arch }}
+    # Only build/push tmp images from main; non-main dispatch must not write to GHCR.
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: devtools-multiarch-builder
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Switch to using Python 3.13 by default
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install tox
+        run: python3 -m pip install --user "tox>=4.46.0" "tox-uv>=1.32.0"
+
+      - name: Run test setup
+        run: ./tools/test-setup.sh
+
+      - name: Build from-main image
+        env:
+          ADT_IMAGE_FROM_MAIN: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 -m tox -e ee-devel
+
+  publish:
+    name: publish-devel
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Publish :YYYYMMDD and :devel manifests
+        env:
+          ADT_IMAGE_FROM_MAIN: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE_TAG="$(date -u +%Y%m%d)"
+          echo "Publishing ghcr.io/ansible/community-ansible-dev-tools:${DATE_TAG} and :devel"
+          ./tools/ee.sh --publish "${DATE_TAG}" "devel"

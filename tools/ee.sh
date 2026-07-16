@@ -4,6 +4,15 @@ set -exuo pipefail
 
 
 ADT_CONTAINER_ENGINE=${ADT_CONTAINER_ENGINE:-docker}
+# When set to 1, final image overlays ADT ecosystem packages from each repo's
+# default-branch tip (see final/setup.sh / final/from-main-requirements.txt) and
+# uses a distinct tmp tag suffix to avoid colliding with the default :main build
+# for the same commit SHA.
+ADT_IMAGE_FROM_MAIN="${ADT_IMAGE_FROM_MAIN:-0}"
+TMP_TAG_SUFFIX=""
+if [ "${ADT_IMAGE_FROM_MAIN}" = "1" ]; then
+    TMP_TAG_SUFFIX="-from-main"
+fi
 
 # Identify the architecture in format used by the container engines because
 # `arch` command returns either arm64 or aarch64 depending on the system
@@ -46,18 +55,19 @@ if [ "--publish" == "${1:-}" ]; then
 
     FINAL_REPO="ghcr.io/ansible/community-ansible-dev-tools"
     TMP_REPO="ghcr.io/ansible/community-ansible-dev-tools-tmp"
+    SHA_TAG="${GITHUB_SHA:-}${TMP_TAG_SUFFIX}"
 
-    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-arm64"
-    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${GITHUB_SHA:-}-amd64"
+    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${SHA_TAG}-arm64"
+    ${ADT_CONTAINER_ENGINE} pull -q "${TMP_REPO}:${SHA_TAG}-amd64"
 
     # Re-tag and push arch-specific images to the final repository to avoid
     # cross-repository blob mounting issues when creating the manifest.
     # GHCR cannot mount blobs across different repositories, so we must push
     # the images to the target repository before creating the manifest.
     for IMG_ARCH in amd64 arm64; do
-        ${ADT_CONTAINER_ENGINE} tag "${TMP_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}" "${FINAL_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}"
+        ${ADT_CONTAINER_ENGINE} tag "${TMP_REPO}:${SHA_TAG}-${IMG_ARCH}" "${FINAL_REPO}:${SHA_TAG}-${IMG_ARCH}"
         if [ "${CI:-}" == "true" ]; then
-            ${ADT_CONTAINER_ENGINE} push "${FINAL_REPO}:${GITHUB_SHA:-}-${IMG_ARCH}"
+            ${ADT_CONTAINER_ENGINE} push "${FINAL_REPO}:${SHA_TAG}-${IMG_ARCH}"
         fi
     done
 
@@ -67,8 +77,8 @@ if [ "--publish" == "${1:-}" ]; then
     fi
 
     for TAG in "${TAGS[@]}"; do
-        ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-amd64" --amend "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
-        ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "${FINAL_REPO}:${GITHUB_SHA:-}-arm64"
+        ${ADT_CONTAINER_ENGINE} manifest create "$TAG" --amend "${FINAL_REPO}:${SHA_TAG}-amd64" --amend "${FINAL_REPO}:${SHA_TAG}-arm64"
+        ${ADT_CONTAINER_ENGINE} manifest annotate --arch arm64 "$TAG" "${FINAL_REPO}:${SHA_TAG}-arm64"
 
         if [ "${CI:-}" == "true" ]; then
             ${ADT_CONTAINER_ENGINE} manifest push "$TAG"
@@ -85,7 +95,9 @@ python -m build --outdir "$REPO_DIR/final/dist/" --wheel "$REPO_DIR"
 ansible-builder create -f execution-environment.yml --output-filename Containerfile -v3
 $BUILD_CMD -f context/Containerfile context/ --tag "${TAG_BASE}"
 ln -f tools/setup-image.sh final/
-$BUILD_CMD -f final/Containerfile final/ --tag "${IMAGE_NAME}"
+$BUILD_CMD \
+    --build-arg "ADT_IMAGE_FROM_MAIN=${ADT_IMAGE_FROM_MAIN}" \
+    -f final/Containerfile final/ --tag "${IMAGE_NAME}"
 
 # We save local image in order to import it inside the container later for c-in-c testing
 # Do not try to gzip the image because there is no notable change in size and
@@ -99,7 +111,7 @@ ansible-builder build --container-runtime="${ADT_CONTAINER_ENGINE}"
 popd
 
 if [[ -n "${GITHUB_SHA:-}" && "${GITHUB_EVENT_NAME:-}" != "pull_request" ]]; then
-    FQ_IMAGE_NAME="ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA}-$ARCH"
+    FQ_IMAGE_NAME="ghcr.io/ansible/community-ansible-dev-tools-tmp:${GITHUB_SHA}${TMP_TAG_SUFFIX}-$ARCH"
     $ADT_CONTAINER_ENGINE tag $IMAGE_NAME "${FQ_IMAGE_NAME}"
     # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
     set +x  # Disable echo for lines with GITHUB_TOKEN
