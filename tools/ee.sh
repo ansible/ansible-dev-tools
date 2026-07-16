@@ -88,6 +88,25 @@ if [ "--publish" == "${1:-}" ]; then
 fi
 
 # Code for building the container (call script again with --publish to merge and push already build container)
+
+# Free build cache only (not system prune) on CI. Self-hosted builders share a
+# daemon across jobs; aggressive prune can disrupt siblings, but leftover
+# BuildKit/Buildah cache has caused out-of-disk errors in nested ansible-builder.
+prune_build_cache() {
+    if [[ "${ADT_CONTAINER_ENGINE}" == *podman* ]]; then
+        # Podman has no docker-compatible `builder prune`.
+        ${ADT_CONTAINER_ENGINE} image prune -f --build-cache || true
+    else
+        ${ADT_CONTAINER_ENGINE} builder prune -af || true
+    fi
+}
+
+if [ "${CI:-}" = "true" ]; then
+    df -h || true
+    prune_build_cache
+    df -h || true
+fi
+
 if [ -d "$REPO_DIR/final/dist/" ]; then
     find "$REPO_DIR/final/dist/" -type f -delete
 fi
@@ -103,6 +122,14 @@ $BUILD_CMD \
 # Do not try to gzip the image because there is no notable change in size and
 # it seems to add ~20% more in total test execution time.
 $ADT_CONTAINER_ENGINE save $IMAGE_NAME > image.tar
+
+# CI only: drop this job's intermediate base + build cache before nested EE builds.
+# Keep IMAGE_NAME for pytest; do not system-prune the shared host daemon.
+if [ "${CI:-}" = "true" ]; then
+    ${ADT_CONTAINER_ENGINE} rmi "${TAG_BASE}" || true
+    prune_build_cache
+    df -h || true
+fi
 
 pytest -v src/ansible_dev_tools/tests --include-container --container-engine="${ADT_CONTAINER_ENGINE}" --image-name "${IMAGE_NAME}"
 # Test the build of example execution environment to avoid regressions
