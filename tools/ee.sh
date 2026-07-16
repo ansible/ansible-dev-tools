@@ -4,9 +4,10 @@ set -exuo pipefail
 
 
 ADT_CONTAINER_ENGINE=${ADT_CONTAINER_ENGINE:-docker}
-# When set to 1, final image overlays ADT ecosystem packages from git main
-# (see final/setup.sh) and uses a distinct tmp tag suffix to avoid colliding
-# with the default :main build for the same commit SHA.
+# When set to 1, final image overlays ADT ecosystem packages from each repo's
+# default-branch tip (see final/setup.sh / from-main-requirements.txt) and uses
+# a distinct tmp tag suffix to avoid colliding with the default :main build for
+# the same commit SHA.
 ADT_IMAGE_FROM_MAIN="${ADT_IMAGE_FROM_MAIN:-0}"
 TMP_TAG_SUFFIX=""
 if [ "${ADT_IMAGE_FROM_MAIN}" = "1" ]; then

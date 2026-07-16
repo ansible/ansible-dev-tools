@@ -1,4 +1,5 @@
-# Build community-ansible-dev-tools with ADT ecosystem packages from git main.
+# Build community-ansible-dev-tools with ADT ecosystem packages from each
+# dependency repo's default-branch tip (see final/from-main-requirements.txt).
 # Publishes :YYYYMMDD (UTC) and floating :devel. Does not retag :main or :latest.
 #
 # To enable nightly from-main builds later, uncomment the schedule block below.

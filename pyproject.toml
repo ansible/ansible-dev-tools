@@ -568,7 +568,7 @@ commands = [["python", "-m", "build", "--version"], ["./tools/ee.sh"]]
 commands_post = [["./tools/cleanup.sh"]]
 commands_pre = []
 dependency_groups = ["ee", "dev"]
-description = "Build the ee container image with ADT packages from git main"
+description = "Build the ee container image with ADT packages from default-branch tips"
 editable = true
 extras = ["server"]
 set_env = { ADT_IMAGE_FROM_MAIN = "1" }
