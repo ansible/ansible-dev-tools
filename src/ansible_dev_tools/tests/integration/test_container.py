@@ -341,8 +341,9 @@ def test_builder(
         tmp_path: The temporary directory.
     """
     ee_file = test_fixture_dir_container / "execution-environment.yml"
-    # Nested podman (vfs) layers from earlier c-in-c tests can fill the container
-    # filesystem on self-hosted builders (out of disk during builder steps).
-    exec_container("podman system prune -af --volumes || true")
+    # Nested podman (vfs) build cache from earlier c-in-c tests can fill the
+    # container filesystem on self-hosted builders. Prune build cache only so
+    # images loaded for other container tests are not removed.
+    exec_container("podman image prune -f --build-cache || true")
     result = exec_container(f"ANSIBLE_NOCOLOR=1 ansible-builder build -f {ee_file} -c {tmp_path}")
     assert "Complete!" in result.stdout
