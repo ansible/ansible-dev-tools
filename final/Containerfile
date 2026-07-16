@@ -18,8 +18,10 @@ ARG ADT_IMAGE_FROM_MAIN=0
 ENV _CONTAINERS_USERNS_CONFIGURED=""
 ENV ANSIBLE_DEV_TOOLS_CONTAINER=1
 ENV PIP_ROOT_USER_ACTION=ignore
-# ARG above is in scope for this RUN (not persisted as ENV in the image).
-RUN --mount=type=bind,target=/final --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip /final/setup.sh
+# Pass ARG explicitly into the RUN env (same pattern as devspaces/Containerfile);
+# do not use ENV so the flag is not baked into the image config.
+RUN --mount=type=bind,target=/final --mount=type=cache,dst=/var/cache/dnf --mount=type=cache,dst=/root/.cache/pip \
+    ADT_IMAGE_FROM_MAIN="${ADT_IMAGE_FROM_MAIN}" /final/setup.sh
 
 # Note VOLUME options must always happen after setup.sh due to some chown inside that affects the mount
 # RUN commands can not modify existing volumes
