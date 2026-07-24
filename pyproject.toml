@@ -32,7 +32,7 @@ dependencies = [
   "molecule>=26.3.0",
   "pytest-ansible>=26.4.0",
   "setuptools>=65.5.1",
-  "tox-ansible>=26.3.0",
+  "tox-ansible>=26.7.1",
 ]
 dynamic = ["version"]
 

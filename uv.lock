@@ -225,7 +225,7 @@ requires-dist = [
     { name = "pytest-ansible", specifier = ">=26.4.0" },
     { name = "requests", marker = "extra == 'test'", specifier = ">=2.32.0" },
     { name = "setuptools", specifier = ">=65.5.1" },
-    { name = "tox-ansible", specifier = ">=26.3.0" },
+    { name = "tox-ansible", specifier = ">=26.7.1" },
 ]
 provides-extras = ["container", "full", "server", "test"]
 
@@ -2987,7 +2987,7 @@ wheels = [
 
 [[package]]
 name = "tox-ansible"
-version = "26.7.0"
+version = "26.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
@@ -2996,9 +2996,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "tox" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/98/2c/bccd5a8e553bcf592632cb4b94ec8574f622c7b5bdba39173105790effe7/tox_ansible-26.7.0.tar.gz", hash = "sha256:66017932e70852c0c3e0907734dd3fe74fa905cafba4c91fa4313a2a2c00f036", size = 190879, upload-time = "2026-07-01T06:38:08.191Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/aa/82/a264efc2a1c3e20cd32bc8587f526825cacff857c78d37e45c1383c42a1a/tox_ansible-26.7.1.tar.gz", hash = "sha256:87306cbbc8a6a0de6737298f13b1ad0a0b61e0bdf6748d394ea0b06216d6d7b4", size = 216700, upload-time = "2026-07-22T07:40:58.674Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b8/a6/12d79da87f45937b5de59439858d642c52f3c00cc2bdf64d3286a4006f41/tox_ansible-26.7.0-py3-none-any.whl", hash = "sha256:16c679f417b8bfdadfcf6b91b6f1cd96f08391aa67b7ea6c95876212f9af3132", size = 13175, upload-time = "2026-07-01T06:38:06.827Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/73/58e7beeeaa67a7c86abb1a725bd551b73db5358116fd0fa31005835f1ee3/tox_ansible-26.7.1-py3-none-any.whl", hash = "sha256:a3e9e2d51eb35700d3c0b1d0903c31beddadc20c640e3dc041dc9c77600e0dc5", size = 15639, upload-time = "2026-07-22T07:40:57.434Z" },
 ]
 
 [[package]]
