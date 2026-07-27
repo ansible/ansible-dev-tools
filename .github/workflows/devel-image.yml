@@ -43,9 +43,9 @@ jobs:
           fetch-depth: 0
 
       - name: Switch to using Python 3.13 by default
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Install tox
         run: python3 -m pip install --user "tox>=4.46.0" "tox-uv>=1.32.0"
