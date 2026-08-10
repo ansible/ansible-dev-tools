@@ -165,7 +165,6 @@ test = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "ansible-dev-tools", extra = ["full"] },
     { name = "black" },
     { name = "coverage", extra = ["toml"] },
     { name = "django-stubs" },
@@ -231,7 +230,6 @@ provides-extras = ["container", "full", "server", "test"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "ansible-dev-tools", extras = ["full"], editable = "." },
     { name = "black", specifier = ">=25.1.0" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.10.5" },
     { name = "django-stubs", specifier = ">=5.2.2" },
