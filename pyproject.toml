@@ -60,7 +60,6 @@ test = [
 
 [dependency-groups]
 dev = [
-  "ansible-dev-tools[full]",  # see https://github.com/astral-sh/uv/issues/8607#issuecomment-2540156984
   "black>=25.1.0",
   "coverage[toml]>=7.10.5",
   "django-stubs>=5.2.2",

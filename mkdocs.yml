@@ -108,19 +108,6 @@ plugins:
   # https://github.com/squidfunk/mkdocs-material/issues/6983
   # - material/social
   - material/tags
-  - mkdocstrings:
-      handlers:
-        python:
-          paths: [src]
-          options:
-            # Sphinx is for historical reasons, but we could consider switching if needed
-            # https://mkdocstrings.github.io/griffe/docstrings/
-            docstring_style: sphinx
-            merge_init_into_class: yes
-            show_submodules: yes
-          inventories:
-            - url: https://docs.ansible.com/projects/ansible/latest/objects.inv
-              domains: [py, std]
 
 markdown_extensions:
   - attr_list
