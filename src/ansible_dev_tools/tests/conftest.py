@@ -73,8 +73,8 @@ class Infrastructure:
     image_name: str = ""
     include_container: bool = False
     only_container: bool = False
-    proc: None | subprocess.Popen[bytes] = None
-    proc_container: None | subprocess.Popen[bytes] = None
+    proc: subprocess.Popen[bytes] | None = None
+    proc_container: subprocess.Popen[bytes] | None = None
     server: bool = False
     navigator_ee: str = ""
 
