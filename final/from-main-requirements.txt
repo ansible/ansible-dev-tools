@@ -1,0 +1,12 @@
+# ADT ecosystem packages from git tip (default branch of each repo).
+# Shared by tox.env.devel and final/setup.sh (ADT_IMAGE_FROM_MAIN=1).
+# Note: ansible/ansible's default branch is devel, not main.
+ansible-compat @ git+https://github.com/ansible/ansible-compat.git
+ansible-core @ git+https://github.com/ansible/ansible.git
+ansible-creator @ git+https://github.com/ansible/ansible-creator.git
+ansible-dev-environment @ git+https://github.com/ansible/ansible-dev-environment.git
+ansible-lint @ git+https://github.com/ansible/ansible-lint.git
+ansible-navigator @ git+https://github.com/ansible/ansible-navigator.git
+molecule @ git+https://github.com/ansible/molecule.git
+pytest-ansible @ git+https://github.com/ansible/pytest-ansible.git
+tox-ansible @ git+https://github.com/ansible/tox-ansible.git

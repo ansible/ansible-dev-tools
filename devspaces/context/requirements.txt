@@ -1,2 +1,2 @@
-kubernetes==36.0.2
-molecule-plugins[podman]==25.8.12
+kubernetes==36.0.3
+molecule-plugins[podman]==26.7.15

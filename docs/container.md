@@ -12,6 +12,17 @@ The current version in use can be found in the [`execution-environment.yml`](htt
 podman pull ghcr.io/ansible/community-ansible-dev-tools:latest
 ```
 
+## Image tags
+
+| Tag | Contents |
+| --- | --- |
+| `:latest` | Last **release** of `ansible-dev-tools` with ADT dependencies from PyPI release versions. |
+| `:main` | Built from this repository's `main` branch; `ansible-dev-tools` is the current tip, but other ADT packages are still the latest **released** versions from PyPI. |
+| `:devel` | Built by the GitHub Actions `devel-image` workflow (nightly UTC midnight and `workflow_dispatch`) with ADT ecosystem packages installed from each project's default branch tip (same set as `tox -e devel` / [`final/from-main-requirements.txt`](https://github.com/ansible/ansible-dev-tools/blob/main/final/from-main-requirements.txt)). Floating tag; moves on each successful run. |
+| `:YYYYMMDD` | Same contents as that run's `:devel` build, tagged with the UTC date at publish time. Prefer over `:devel` when you want a day-scoped reference; a second successful run on the same UTC day overwrites the date tag (last build wins). For a content-addressed pin, use the image digest. |
+
+The `devel-image` workflow runs on a nightly `schedule` (`0 0 * * *` UTC) and on demand via `workflow_dispatch`. Locally you can build the same image with `tox -e ee-devel` (sets `ADT_IMAGE_FROM_MAIN=1`). Container tests run before publish, so a broken tip can block a `:devel` image until the tip is green again.
+
 ## Usage
 
 ### Using this as a VS code Dev Container
