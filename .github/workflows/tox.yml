@@ -48,7 +48,7 @@ jobs:
 
   codeql:
     name: codeql
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       actions: read
       contents: read
@@ -85,7 +85,7 @@ jobs:
 
   publish-image:
     # environment: release # approval
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: publish-${{ matrix.image }}
     strategy:
       fail-fast: false
@@ -108,7 +108,7 @@ jobs:
         run: ./tools/${{ matrix.image }}.sh --publish "${{ github.event.release.tag_name || github.sha }}" "${{ (github.event_name == 'release' && github.event.action == 'published') && 'latest' || 'main' }}"
 
   publish-devspaces:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs:
       - codeql
       - tox
@@ -164,7 +164,7 @@ jobs:
       - tox
     if: github.event_name == 'release' && github.event.action == 'published'
     environment: release # approval
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       FORCE_COLOR: 1
       PY_COLORS: 1
@@ -174,7 +174,7 @@ jobs:
       - name: Switch to using Python 3.11 by default
         uses: actions/setup-python@v7
         with:
-          python-version: "3.14"
+          python-version: "3.15"
 
       - name: Install tox
         run: python3 -m pip install --user "tox>=4.46.0"
@@ -199,7 +199,7 @@ jobs:
       - publish-wheel
       - publish-image
       - publish-devspaces
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Retreive the forum post script from team-devtools
