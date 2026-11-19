@@ -4,10 +4,17 @@ set -eux pipefail
 
 DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-dnf --noplugins remove -y -q subscription-manager dnf-plugin-subscription-manager iptables-legacy
 dnf install -y -q iptables-nft
+dnf --noplugins remove -y -q --noautoremove subscription-manager dnf-plugin-subscription-manager
+dnf remove -y -q --noautoremove iptables-legacy iptables-legacy-libs
 dnf -y -q makecache
-dnf -y -q update
+# Skip full `dnf update`: UBI AppStream may ship netavark 3.x before matching
+# aardvark-dns (epoch >= 3) is published, which breaks podman/buildah installs.
+if ! rpm -q aardvark-dns netavark >/dev/null 2>&1; then
+    dnf install -y -q \
+        'aardvark-dns-2:1.17.1-1.el9_8' \
+        'netavark-2:1.17.2-1.el9'
+fi
 dnf install -y -q \
     buildah \
     crun \
