@@ -37,7 +37,7 @@ wheels = [
 
 [[package]]
 name = "ansible-compat"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-core", version = "2.19.13", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and sys_platform != 'win32'" },
@@ -47,9 +47,9 @@ dependencies = [
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
     { name = "subprocess-tee", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/bf/75ac51c0377ffe4863900a1ad4b2726c7cb664dd5da5c33c2c6b4fc3040a/ansible_compat-26.9.0.tar.gz", hash = "sha256:e101649196e4fffc810c3f9f4f185107cc1e5be0ef26d38ad9c4abfa22b0b183", size = 256824, upload-time = "2026-09-22T09:37:17.218Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/4e/52311092d3168346557c31d1090225cc57dbe48ecc399c2e400da4c6065f/ansible_compat-26.11.1.tar.gz", hash = "sha256:d22e0a48d8d79e727b0f56db3573b02bde2189b5bfbef067230a34c0bcbff94a", size = 305831, upload-time = "2026-11-25T10:39:51.937Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1f/ad/19b4698bcf4af5e730e1b002eac0a4174ca4088c5178348783735132d041/ansible_compat-26.9.0-py3-none-any.whl", hash = "sha256:6756ba0adee1a07d609ede35483fc563b9838df25ec70e57378ae8b564f185cf", size = 28980, upload-time = "2026-09-22T09:37:15.86Z" },
+    { url = "https://files.pythonhosted.org/packages/13/aa/eec431e7b5db6f86defb0acb6805d3101255c48c74637cf1bc1c6fd7aa86/ansible_compat-26.11.1-py3-none-any.whl", hash = "sha256:ed9717fde1705a58678c1503e46316a36f7392229c2444d2b2f1b6de12be9f25", size = 29025, upload-time = "2026-11-25T10:39:50.619Z" },
 ]
 
 [[package]]
@@ -94,20 +94,20 @@ wheels = [
 
 [[package]]
 name = "ansible-creator"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2", marker = "sys_platform != 'win32'" },
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/a1/74bbbc43d3c0b195060a91a69dabeb30462125a057d2d2d27601ce62b5c9/ansible_creator-26.9.0.tar.gz", hash = "sha256:8f8d47009ebc33852e23137654c612532c78be0d97c1958432b6f6aa70d99d7c", size = 9907366, upload-time = "2026-09-22T09:39:57.175Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/51/0092ba38b3dda96dcf626d5df9b8238c92332dc36605d40820a7f66ae9c4/ansible_creator-26.11.1.tar.gz", hash = "sha256:99eebe6dba30539eb76549d2bdcaee692dd0b2b48e6f942abc5728ce2ec9f4e5", size = 9888608, upload-time = "2026-11-25T11:07:52.759Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/9a/5156ec8b25a688a51b24654240d80251b9e8273065bea4ed7305e0b568bb/ansible_creator-26.9.0-py3-none-any.whl", hash = "sha256:3c3e8bdb19c0c3448c15441bfa1a4b1db1132622a3cb15769574f6014a6ecc4c", size = 138276, upload-time = "2026-09-22T09:39:55.45Z" },
+    { url = "https://files.pythonhosted.org/packages/ec/80/a9ddf308fda2718ee2c94e7f47e7a8116a02dba7dcd0f9ebc55f7735f5bb/ansible_creator-26.11.1-py3-none-any.whl", hash = "sha256:c0804ffc235b69b6a4ee89f0186ce5018fd96579a265511294c732b5a5cc15f5", size = 138163, upload-time = "2026-11-25T11:07:50.553Z" },
 ]
 
 [[package]]
 name = "ansible-dev-environment"
-version = "26.9.0"
+version = "26.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-builder", marker = "sys_platform != 'win32'" },
@@ -115,9 +115,9 @@ dependencies = [
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
     { name = "subprocess-tee", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/8e/baa4312ca101f00768d63100a1ec0350671925fcd4aefd03c47e3817144d/ansible_dev_environment-26.9.0.tar.gz", hash = "sha256:b0cf0051bc4befee2339f0f5fb4a6cb4fd7117fc382d310ff2ae79fe0c7032db", size = 264889, upload-time = "2026-09-22T09:40:44.7Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/3b/a12e6f2d57aac6912a21e82d4424f73e817a7baff08312f0980ae8b433b5/ansible_dev_environment-26.11.0.tar.gz", hash = "sha256:ce234f9ab838db4d10578d51ac8dd59a8baacb5a4c9dba246a2acf593deb4d8d", size = 253029, upload-time = "2026-11-05T08:47:09.58Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/a3/4212bfaf3935df0ad27a148d12431112fed66f54085edbf0ebe6483dc6c9/ansible_dev_environment-26.9.0-py3-none-any.whl", hash = "sha256:ea5c949a4ae9477d4a9a012881c1a13a99f8d444a371b2372a5c8389bca5246f", size = 59197, upload-time = "2026-09-22T09:40:43.436Z" },
+    { url = "https://files.pythonhosted.org/packages/b5/50/0aa6cd95bc9c7db7c62c4022d9fc14dda2e70f231ed3d84b8ffa87f14a3a/ansible_dev_environment-26.11.0-py3-none-any.whl", hash = "sha256:c80e46256c7bd0601f7179031da79784c2bdebf98bbd543f48b46e2c407b77c4", size = 62069, upload-time = "2026-11-05T08:47:08.292Z" },
 ]
 
 [[package]]
@@ -268,7 +268,7 @@ pkg = [
 
 [[package]]
 name = "ansible-lint"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat", marker = "sys_platform != 'win32'" },
@@ -289,14 +289,14 @@ dependencies = [
     { name = "wcmatch", marker = "sys_platform != 'win32'" },
     { name = "yamllint", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/b5/841f5ae439a2a039c6045880042d6acd8a8e2fd4e2fb66bc706e321ecb59/ansible_lint-26.9.0.tar.gz", hash = "sha256:cb3265888f30815de0dcf0964d34768b45c98bb4361eea7eb42c0342e81b51b4", size = 826447, upload-time = "2026-09-22T17:05:32.099Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/61/30/07fcc88e71584f3804b3cd498903f6f71454cb0efe7c084bdd48e9837ff5/ansible_lint-26.11.1.tar.gz", hash = "sha256:4264fcad6c1e9eb4f1d8ee369302d0d908e9397338f3fb20814071cae5ad2d4f", size = 878370, upload-time = "2026-11-25T10:43:04.016Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/23/abf992bbe521b4c9cac629d87a5928b35b3a39084ea299df64daed216e55/ansible_lint-26.9.0-py3-none-any.whl", hash = "sha256:4d01903fca9c42f7ce2b366ea5503d0701a27b3c6fdf684276a72888eea57f50", size = 341699, upload-time = "2026-09-22T17:05:30.311Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/03/966160a4d39059a77233af629c1dc36698178c81551ab898705af62e4d8e/ansible_lint-26.11.1-py3-none-any.whl", hash = "sha256:c1d2c1cec0448ffae4df0d8960114936c403343fe988dccd9e609726fe851ffa", size = 349669, upload-time = "2026-11-25T10:43:02.567Z" },
 ]
 
 [[package]]
 name = "ansible-navigator"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-builder", marker = "sys_platform != 'win32'" },
@@ -309,9 +309,9 @@ dependencies = [
     { name = "setuptools", marker = "sys_platform != 'win32'" },
     { name = "tzdata", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fc/c5/ab3485611f98bff4d54552c95e8e18386392cf49856a70c78d5c06e04c98/ansible_navigator-26.9.0.tar.gz", hash = "sha256:30bce88a923e2cf8cd985002e7a213c2bd6252ec496260da6253146b0da18b96", size = 417104, upload-time = "2026-09-23T08:52:54.573Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ed/50/f91b3d0f800130acb90be4edca2753a5fcccab1b2733e38f7c2f7e1e4e0c/ansible_navigator-26.11.1.tar.gz", hash = "sha256:37a9dd9f49d1c6ad86390171ad01d9840b28dbd1fd5d5508eb772d48682224ef", size = 417283, upload-time = "2026-11-25T11:15:01.977Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ad/25/6aeb44b3c85756c14b422269b51afc0e82944a817d200c4070c36eea0470/ansible_navigator-26.9.0-py3-none-any.whl", hash = "sha256:791cc856eaec7fff94b02387a599edeaa262bd89b0421275829d2d1020aac622", size = 315223, upload-time = "2026-09-23T08:52:52.787Z" },
+    { url = "https://files.pythonhosted.org/packages/47/83/19432b067540ca40cdf7b29cb3cd0b8e5908585e27faf7369c631e8f1b2a/ansible_navigator-26.11.1-py3-none-any.whl", hash = "sha256:5a9717f54de271846dc7cbfd23ebc92bf20297d7152adf9bda187c6f1fc460c1", size = 315911, upload-time = "2026-11-25T11:14:59.984Z" },
 ]
 
 [[package]]
@@ -1889,7 +1889,7 @@ wheels = [
 
 [[package]]
 name = "molecule"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat", marker = "sys_platform != 'win32'" },
@@ -1905,9 +1905,9 @@ dependencies = [
     { name = "rich", marker = "sys_platform != 'win32'" },
     { name = "wcmatch", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/87/eb/ef1f1a0eba6e2fac4e59001c539109bc65c4dcd1b8a9d2b93c9097241d71/molecule-26.9.0.tar.gz", hash = "sha256:1c44254eb173d0a3a48217b874d19bfa436614fb0c6faa75d9b192a843360188", size = 4757309, upload-time = "2026-09-22T17:07:07.35Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/d1/c9e0c748e2158dc58508188bc36ebbc88cdceacdfc7df77fe4b5a90b699c/molecule-26.11.1.tar.gz", hash = "sha256:34035f2852f1c0461539051ec1dd2398492c1e4f370ba507b81a781f322e4147", size = 4737608, upload-time = "2026-11-25T11:16:19.718Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/b7/4041d1b53467e12a4fd72ae7e0bb8ccc2909e126e2bb0cf2babcae82cc41/molecule-26.9.0-py3-none-any.whl", hash = "sha256:ad8f468c01f35a27cd12858e24c86ad27344dc1076845f03d78fdb563fb69f82", size = 163709, upload-time = "2026-09-22T17:07:05.163Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/74/b6975aaef1f5a7b0305e8ccc7c922cae07961faeff93fa0c730a8efa6d53/molecule-26.11.1-py3-none-any.whl", hash = "sha256:dcd147fb60bb66c060e0bf6a3eaa18f34433a18254a6f56f25ac254fb7980f64", size = 163664, upload-time = "2026-11-25T11:16:17.719Z" },
 ]
 
 [[package]]
@@ -2508,7 +2508,7 @@ wheels = [
 
 [[package]]
 name = "pytest-ansible"
-version = "26.9.0"
+version = "26.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat", marker = "sys_platform != 'win32'" },
@@ -2520,9 +2520,9 @@ dependencies = [
     { name = "pytest-xdist", marker = "sys_platform != 'win32'" },
     { name = "typing-extensions", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/60/d7/fbba50b3bfb0f73301027d114984245dfe71d81e882a959daf1980e04340/pytest_ansible-26.9.0.tar.gz", hash = "sha256:bede6952305f01e82fa20a35589a023472255b1a75cf2dd9bad0d09ef5b68740", size = 228406, upload-time = "2026-09-22T17:08:25.619Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/45/4e/b76c14714459f2b979eafa77a1ec73ecf6fa7d46de183faf8c90f7586ee9/pytest_ansible-26.11.0.tar.gz", hash = "sha256:f3102076d207dce1d3441bee84862f4a470716a213a1d796ce38a169097bc554", size = 246126, upload-time = "2026-11-05T08:53:30.936Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/10/c299ff219071e787b454bb97f32cfa147b5d0b30e2a5d5e00e5400b974cc/pytest_ansible-26.9.0-py3-none-any.whl", hash = "sha256:c1b6f2db8e6741b865f3bf1f7be5629e75eab87c970643c725aa7411849ab1a9", size = 33728, upload-time = "2026-09-22T17:08:24.049Z" },
+    { url = "https://files.pythonhosted.org/packages/81/03/fb04f02f58d211c62b1f11d58e438a454b9109bdb63060f33d08a72ee37b/pytest_ansible-26.11.0-py3-none-any.whl", hash = "sha256:9875c449aa21dec9be1e977e98140c6bc8b61824dd827b54de2272f0050fc3fc", size = 33770, upload-time = "2026-11-05T08:53:29.28Z" },
 ]
 
 [[package]]
@@ -3113,18 +3113,17 @@ wheels = [
 
 [[package]]
 name = "tox-ansible"
-version = "26.9.0"
+version = "26.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest", marker = "sys_platform != 'win32'" },
-    { name = "pytest-ansible", marker = "sys_platform != 'win32'" },
     { name = "pytest-xdist", marker = "sys_platform != 'win32'" },
     { name = "pyyaml", marker = "sys_platform != 'win32'" },
     { name = "tox", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/35/46/ec5913edfbb8d3571e155b9ad1c5b20a0793b1fc79b0161710ed5538c0d1/tox_ansible-26.9.0.tar.gz", hash = "sha256:a4638171db7032f22d4f61e3cdb490329304efab7b753061d3ad8e43dbf07349", size = 238599, upload-time = "2026-09-23T08:54:22.47Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/cc/54768540820925b182c612af80bdd3f83af1963598f4154c0dc932ef4e93/tox_ansible-26.11.1.tar.gz", hash = "sha256:9af2215d31d88bb0927f921c0388663f9b5723c71cbde54540e654215461f8fc", size = 240940, upload-time = "2026-11-25T10:45:48.292Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/f9/056a63b386bc71ac1e63df998bf557d60deccf59955bf553f3d8d5b00994/tox_ansible-26.9.0-py3-none-any.whl", hash = "sha256:426cb0001c90121c426905a41bf50bcc8a70b9004ff349cbb5b7d425fbf6e969", size = 15638, upload-time = "2026-09-23T08:54:21.254Z" },
+    { url = "https://files.pythonhosted.org/packages/a7/23/21ab2b1801cc019f4be1cd3b9a460fc6c159554f02ca54959258cacd2842/tox_ansible-26.11.1-py3-none-any.whl", hash = "sha256:ff12b4c0c2d33333ba4d0425d7b2c478309455332a816a66b1db061bc24d0ac1", size = 29384, upload-time = "2026-11-25T10:45:47.02Z" },
 ]
 
 [[package]]
