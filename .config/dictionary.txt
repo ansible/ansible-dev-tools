@@ -14,7 +14,6 @@ addoption
 antsibull
 arcname
 autoplay
-autouse
 buildah
 capsys
 collectonly
